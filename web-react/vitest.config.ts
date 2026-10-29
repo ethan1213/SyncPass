@@ -4,7 +4,7 @@ export default defineConfig({
     environment: 'jsdom',
     coverage: {
       provider: 'v8',
-      include: ['src/data/participantQr.ts', 'src/clients/api.ts', 'src/data/localDb.js', 'src/components/GeofenceNote.tsx', 'src/auth/SessionProvider.tsx'],
+      include: ['src/data/participantQr.ts', 'src/clients/api.ts', 'src/data/localDb.js', 'src/components/GeofenceNote.tsx', 'src/auth/SessionProvider.tsx', 'src/hooks/useRoles.ts', 'src/config/auth.ts'],
       reporter: ['text', 'html', 'json-summary'],
       thresholds: { lines: 80, functions: 80, branches: 80, statements: 80 }
     }

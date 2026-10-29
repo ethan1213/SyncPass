@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSession } from '../auth/SessionProvider';
-import { useUserRoles } from '../hooks/useRoles.js';
-import { roleLabel } from '../config/auth.js';
+import { useUserRoles } from '../hooks/useRoles';
+import { roleLabel } from '../config/auth';
 
 /**
  * Envuelve rutas que exigen sesion y, opcionalmente, alguno de los roles.

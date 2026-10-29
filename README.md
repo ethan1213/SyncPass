@@ -63,7 +63,7 @@ La cola local asigna registros al usuario actual. Al sincronizar, la API acepta 
 | `deploy/` | Instalación EC2, Caddy y recuperación de IP | Bash, systemd, AWS CLI |
 | `docs/` | Caso, arquitectura, requisitos, operación y demostración | Markdown |
 
-La entrada web es `main.tsx`; la sesión, el cliente HTTP, el aviso de geocerca y el parser de QR son TypeScript. Las páginas heredadas aún son `.jsx` y se migran gradualmente. `tsc --noEmit` verifica los módulos TypeScript antes del build. Tailwind está configurado con la paleta territorial y se usa para utilidades puntuales; el diseño principal permanece en CSS propio. Vite compila la web y Wouter resuelve las rutas.
+La entrada web es `main.tsx`; la sesión, los roles, la configuración, el cliente HTTP, el aviso de geocerca y el parser de QR son TypeScript. Las páginas heredadas aún son `.jsx` y se migran gradualmente. `tsc --noEmit` verifica los módulos TypeScript antes del build. Tailwind está configurado con la paleta territorial y se usa para utilidades puntuales; el diseño principal permanece en CSS propio. Vite compila la web y Wouter resuelve las rutas.
 
 ## Ejecutar en un equipo
 
@@ -78,7 +78,7 @@ La entrada web es `main.tsx`; la sesión, el cliente HTTP, el aviso de geocerca 
 ## Publicación, pruebas y colaboración
 
 - La publicación web se hace en Vercel desde `web-react/`. La API está en EC2 tras API Gateway. Cuando el laboratorio se reinicia, [la recuperación de IP](docs/OPERACION_LAB.md) actualiza Caddy y Gateway automáticamente una vez instalado el servicio.
-- Ejecutar `npm run coverage` en `web-react/` produce un informe Vitest. El alcance medido son la sesión, el cliente HTTP, IndexedDB, el parser QR y el aviso de geocerca: 24 pruebas, 94,28% de líneas y 93,33% de ramas en esos cinco módulos. **No es la cobertura de toda la aplicación**. El backend tiene 15 pruebas de controladores y geocerca; para la evaluación que exija 80% global aún faltan pruebas de las páginas.
+- Ejecutar `npm run coverage` en `web-react/` produce un informe Vitest. El alcance medido son la sesión, los roles, la configuración, el cliente HTTP, IndexedDB, el parser QR y el aviso de geocerca: 28 pruebas, 95,45% de líneas y 94,2% de ramas en esos siete módulos. **No es la cobertura de toda la aplicación**. El backend tiene 15 pruebas de controladores y geocerca; para la evaluación que exija 80% global aún faltan pruebas de las páginas.
 - Los resultados concretos de la integración web, API Gateway, Cognito, EC2 y Android están en [Verificación del despliegue](docs/VERIFICACION_DESPLIEGUE.md).
 - `main` contiene la versión integrada. Las ramas `developer/ethan`, `developer/jorge` y `feature/*` son puntos de partida para cambios revisados mediante pull request. Ver [convención de ramas](docs/RAMAS.md).
 - No subir `.env`, contraseñas, claves de AWS, tokens ni APK de depuración. El repositorio contiene archivos de ejemplo sin secretos.

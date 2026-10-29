@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'wouter';
 import { useSession } from '../auth/SessionProvider';
-import { useUserRoles } from '../hooks/useRoles.js';
-import { ROLES, roleLabel } from '../config/auth.js';
+import { useUserRoles } from '../hooks/useRoles';
+import { ROLES, roleLabel } from '../config/auth';
 
 const ENLACES = [
   { href: '/', label: 'Inicio' },

@@ -31,7 +31,7 @@
 - **¿Cómo se ejecuta?** `npm install && npm run dev` en `web-react/`; `./mvnw test && ./mvnw package` en `backend/`; Android Studio compila `mobile-kotlin/`.
 - **¿Cómo se usó Tailwind?** Se configuró con preflight desactivado y la paleta territorial. Aporta utilidades puntuales a la interfaz; el diseño principal sigue en CSS propio.
 - **¿Es TypeScript?** La entrada `main.tsx`, la sesión, el cliente HTTP, el aviso GPS y el parser QR sí. Las páginas heredadas todavía son `.jsx` y se migran gradualmente.
-- **¿Cobertura 80%?** Vitest mide 94,28% de líneas en cinco módulos, no en toda la web. No presentar ese número como cobertura global.
+- **¿Cobertura 80%?** Vitest mide 95,45% de líneas en siete módulos, no en toda la web. No presentar ese número como cobertura global.
 
 ## Comprobación el mismo viernes
 

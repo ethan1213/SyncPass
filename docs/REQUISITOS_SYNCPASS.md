@@ -26,7 +26,7 @@ Fuente: caso SyncPass de Duoc UC y pauta compartida por el equipo el 27 de octub
 | RNF04 | Transporte seguro | Vercel y API Gateway exponen HTTPS; Caddy protege la entrada a la EC2. |
 | RNF05 | Disponibilidad con señal intermitente | IndexedDB en web y Room en Android conservan datos locales. El login nuevo requiere conexión. |
 | RNF06 | Datos y cambios trazables | PostgreSQL en Supabase, migraciones Flyway, versión optimista de proyectos y talleres. |
-| RNF07 | Pruebas repetibles | Maven ejecuta 15 pruebas de API y geocerca. Vitest reporta 94,28% de líneas en cinco módulos (sesión, cliente HTTP, IndexedDB, parser QR y aviso de geocerca), no sobre toda la web. El 80% global aún no está demostrado. |
+| RNF07 | Pruebas repetibles | Maven ejecuta 15 pruebas de API y geocerca. Vitest reporta 95,45% de líneas en siete módulos de autenticación, acceso a datos y QR/GPS; no sobre toda la web. El 80% global aún no está demostrado. |
 | RNF08 | Mantenibilidad | Componentes compartidos, páginas por ruta Wouter, cliente HTTP separado y README con comandos de ejecución. |
 
 ## Fuera del alcance del viernes 30
