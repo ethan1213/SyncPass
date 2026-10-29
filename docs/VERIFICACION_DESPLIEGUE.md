@@ -21,7 +21,7 @@ Esta evidencia corresponde al laboratorio activo al momento de comprobarlo. La I
 
 La rama actual agrega geocerca opcional por taller con migración Flyway V3. Web y Android capturan latitud, longitud y precisión antes de guardar una asistencia; la API valida el formato del QR y la distancia al radio al sincronizar. La migración pasó en H2 y las pruebas completas de backend suman 15 casos sin fallos. El APK compila con la migración Room 2→3.
 
-La web usa `main.tsx`, sesión, roles, configuración, cliente HTTP y parser QR en TypeScript, un componente `GeofenceNote.tsx`, Tailwind configurado y las páginas existentes en JSX. `npm run coverage` ejecutó 28 pruebas y reportó 95,45% de líneas en siete módulos seleccionados. **Ese porcentaje no representa toda la web.** Faltan prueba física de cámara/GPS entre dispositivos y comprobación en el JAR publicado tras aplicar la migración en Supabase.
+La web usa `main.tsx`, sesión, roles, configuración, cliente HTTP y parser QR en TypeScript, un componente `GeofenceNote.tsx`, Tailwind configurado y las páginas existentes en JSX. `npm run coverage` ejecutó 33 pruebas y reportó 97,24% de líneas en nueve módulos seleccionados, incluidos los dos mantenedores. **Ese porcentaje no representa toda la web.** Faltan prueba física de cámara/GPS entre dispositivos y comprobación en el JAR publicado tras aplicar la migración en Supabase.
 
 No se ha medido un porcentaje de cobertura. La sesión real, los cuatro perfiles en vivo y el recorrido completo de cámara/QR en el APK requieren pruebas manuales con una cuenta y un teléfono durante la presentación. En la última compilación no había teléfono ADB conectado.
 
