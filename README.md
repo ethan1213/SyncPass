@@ -27,6 +27,8 @@ Android ── Room/SQLite: catálogo y registros pendientes
 3. Spring Security valida los JWT y los grupos de Cognito. Los controladores autorizan cada acción. JPA persiste proyectos y talleres; Flyway aplica las migraciones de PostgreSQL. La sincronización guarda asistencias y encuestas recibidas.
 4. Vercel sirve el frontend. API Gateway ofrece una dirección HTTPS fija. Caddy termina TLS en EC2 y entrega la petición al JAR en `127.0.0.1:8080`. La instancia está en una VPC del laboratorio AWS Academy.
 
+API Gateway está **delante de EC2**: recibe peticiones de web, Android y Postman. No está entre EC2 y Cognito. Para el registro y login web, el JAR llama directamente al servicio Cognito mediante el SDK de AWS. Para las rutas protegidas, Spring verifica la firma del JWT con las claves públicas de Cognito, su emisor, vencimiento, tipo de token y cliente. Android abre Cognito desde el navegador del teléfono para OAuth con PKCE y después envía el access token a la misma API Gateway.
+
 ## Funciones y permisos
 
 | Función | Web | Android | API y permiso |
@@ -77,6 +79,7 @@ La web usa componentes `.jsx` y CSS propio. No hay componentes `.tsx` ni configu
 
 - La publicación web se hace en Vercel desde `web-react/`. La API está en EC2 tras API Gateway. Cuando el laboratorio se reinicia, [la recuperación de IP](docs/OPERACION_LAB.md) actualiza Caddy y Gateway automáticamente una vez instalado el servicio.
 - La última comprobación local de esta versión pasó `npm run build` y 11 pruebas de backend (0 fallos). El reporte porcentual de cobertura no está configurado; no se declara un 80% alcanzado. La meta de Vitest 80% corresponde a una evaluación posterior.
+- Los resultados concretos de la integración web, API Gateway, Cognito, EC2 y Android están en [Verificación del despliegue](docs/VERIFICACION_DESPLIEGUE.md).
 - `main` contiene la versión integrada. Las ramas `developer/ethan`, `developer/jorge` y `feature/*` son puntos de partida para cambios revisados mediante pull request. Ver [convención de ramas](docs/RAMAS.md).
 - No subir `.env`, contraseñas, claves de AWS, tokens ni APK de depuración. El repositorio contiene archivos de ejemplo sin secretos.
 

@@ -15,6 +15,7 @@ Esta carpeta documenta exclusivamente la solución SyncPass. El punto de entrada
 | [MODELO_ESTRELLA_COPO_NIEVE.md](MODELO_ESTRELLA_COPO_NIEVE.md) | Modelos analíticos. |
 | [RAMAS.md](RAMAS.md) | Ramas para Ethan, Jorge y funcionalidades de SyncPass. |
 | [OPERACION_LAB.md](OPERACION_LAB.md) | Arranque de EC2, recuperación automática de IP y diagnóstico. |
+| [VERIFICACION_DESPLIEGUE.md](VERIFICACION_DESPLIEGUE.md) | Resultados reales de web, API, Cognito, Android y red. |
 
 
 
