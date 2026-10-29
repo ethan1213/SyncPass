@@ -38,6 +38,17 @@ sudo journalctl -u syncpass-gateway-sync -n 30 --no-pager
 
 La web de Vercel conserva su URL durante los apagados, pero no puede leer datos nuevos ni iniciar sesión mientras la API está fuera de servicio. La IP de EC2 cambia; compartir la URL estable de API Gateway para Postman y móvil.
 
+## Publicar una nueva versión del JAR
+
+Con Session Manager abierto y el laboratorio activo, después de subir los cambios a `main`:
+
+```bash
+curl -fsSLo /tmp/syncpass-update.sh https://raw.githubusercontent.com/ethan1213/SyncPass/main/deploy/update-lab.sh
+sudo bash /tmp/syncpass-update.sh
+```
+
+El script descarga `main`, compila, instala el JAR, reinicia la API y comprueba la salud local y la de Gateway. Flyway aplica las migraciones al iniciar, incluida V3 de geocercas. Conserva `/etc/syncpass/syncpass.env` sin mostrar sus valores.
+
 ## Si Gateway responde 503
 
 ```bash
