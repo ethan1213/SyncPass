@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="220" height="52" viewBox="0 0 220 52" role="img" aria-label="SyncPass">
+  <rect x="2" y="5" width="42" height="42" rx="8" fill="#315447"/>
+  <path d="M12 16h8v8h-8zm14 0h8v8h-8zM12 30h8v8h-8zm15 1h3v3h-3zm6 0h3v3h-3zm-6 6h9" fill="none" stroke="#f6efe2" stroke-width="2.5" stroke-linejoin="round"/>
+  <text x="54" y="35" font-family="Georgia,serif" font-size="28" font-weight="700" fill="#26332e">SyncPass</text>
+</svg>

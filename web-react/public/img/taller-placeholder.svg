@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 320" role="img" aria-label="Ilustración de taller comunitario">
+ <rect width="600" height="320" fill="#e8e4d8"/>
+ <path d="M0 255c105-45 165-21 269 2s188-28 331-3v66H0z" fill="#d4dccf"/>
+ <rect x="109" y="92" width="382" height="149" rx="4" fill="#f7f3e9" stroke="#63806d" stroke-width="5"/>
+ <path d="M109 132h382M197 132v109M404 132v109" stroke="#c4d0bd" stroke-width="4"/>
+ <circle cx="164" cy="178" r="19" fill="#c77948"/><circle cx="300" cy="178" r="19" fill="#63806d"/><circle cx="450" cy="178" r="19" fill="#c77948"/>
+ <path d="M135 225c4-25 53-25 58 0m78 0c4-25 53-25 58 0m92 0c4-25 53-25 58 0" fill="none" stroke="#315447" stroke-width="9" stroke-linecap="round"/>
+ <path d="M75 70h100m250 0h100" stroke="#8eaa91" stroke-width="8" stroke-linecap="round"/>
+</svg>
