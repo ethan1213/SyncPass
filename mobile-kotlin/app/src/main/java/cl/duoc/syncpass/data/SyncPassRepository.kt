@@ -82,8 +82,18 @@ data class PendingPayload(val id: String, val tipo: String, val tallerId: Long,
     val participante: String?, val rating: Int?, val comentario: String?,
     val utilidad: String?, val timestamp: String)
 data class SyncResult(val acceptedIds: List<String>)
+data class LoginRequest(val username: String, val password: String)
+data class LoginResult(val accessToken: String, val idToken: String, val refreshToken: String, val expiresIn: Int)
+data class RegisterRequest(val username: String, val email: String, val nickname: String, val password: String)
+data class RegisterResult(val userConfirmed: Boolean, val destination: String)
+data class ConfirmRequest(val username: String, val code: String)
+data class UsernameRequest(val username: String)
 
 interface SyncPassApi {
+    @POST("api/auth/login") suspend fun login(@Body request: LoginRequest): LoginResult
+    @POST("api/auth/register") suspend fun register(@Body request: RegisterRequest): RegisterResult
+    @POST("api/auth/confirm") suspend fun confirm(@Body request: ConfirmRequest)
+    @POST("api/auth/resend") suspend fun resend(@Body request: UsernameRequest)
     @GET("api/eventos") suspend fun talleres(): List<TallerDto>
     @POST("api/sync/batch") suspend fun sync(
         @Header("Authorization") authorization: String, @Body batch: SyncBatch): SyncResult
@@ -96,6 +106,12 @@ class SyncPassRepository(context: Context) {
     private val api = Retrofit.Builder().baseUrl(BuildConfig.API_BASE_URL)
         .client(OkHttpClient.Builder().build()).addConverterFactory(GsonConverterFactory.create()).build()
         .create(SyncPassApi::class.java)
+
+    suspend fun login(username: String, password: String) = api.login(LoginRequest(username, password))
+    suspend fun register(username: String, email: String, nickname: String, password: String) =
+        api.register(RegisterRequest(username, email, nickname, password))
+    suspend fun confirm(username: String, code: String) = api.confirm(ConfirmRequest(username, code))
+    suspend fun resend(username: String) = api.resend(UsernameRequest(username))
 
     suspend fun cachedTalleres(): List<TallerDto> = db.talleres().all()
 

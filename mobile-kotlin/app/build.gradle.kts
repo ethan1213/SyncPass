@@ -11,7 +11,6 @@ android {
 
     defaultConfig {
         applicationId = "cl.duoc.syncpass"
-        manifestPlaceholders["appAuthRedirectScheme"] = "syncpass"
         // Caso §5.1: compatibilidad desde Android 8.0 (API 26).
         minSdk = 26
         targetSdk = 35
@@ -97,7 +96,6 @@ dependencies {
     implementation(libs.camera.lifecycle)
     implementation(libs.camera.view)
     implementation(libs.mlkit.barcode.scanning)
-    implementation("net.openid:appauth:0.11.1")
     implementation("com.google.zxing:core:3.5.3")
 
     testImplementation(libs.junit)

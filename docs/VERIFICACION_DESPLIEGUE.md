@@ -12,7 +12,7 @@ Esta evidencia corresponde al laboratorio activo al momento de comprobarlo. La I
 | CORS web | Preflight `OPTIONS /api/proyectos` desde Vercel respondió HTTP 204 con origen, métodos y cabeceras permitidos. |
 | Cognito desde EC2 | Un login con cuenta ficticia devolvió `NOT_AUTHORIZED`, respuesta propia del controlador tras consultar Cognito. No se usaron credenciales personales. |
 | Grupos Cognito | `admin`, `coordinador`, `monitor` y `participante` presentes. El cliente usado por la API admite login con contraseña y refresh. |
-| OAuth Android | El cliente usado por `MainActivity` tiene `syncpass://auth/callback` y flujo `code` entre sus retornos permitidos. |
+| Acceso Android | El código Kotlin usa Retrofit hacia `/api/auth/*` en Gateway; se retiró AppAuth y el retorno directo de Cognito del APK. Falta probar login real con la versión recompilada en teléfono. |
 | EC2 y red | Instancia `i-01d851d6163897cb1` en ejecución; IPv4 temporal `13.223.59.116`; grupo de seguridad con ingreso público solo 80 y 443; puerto 8080 permanece interno. |
 | Arranque automático | `syncpass-api`, `caddy` y `syncpass-gateway-sync` habilitados y activos; este último terminó con `Result=success` y registró la IP. |
 | Pruebas y compilación | 11 pruebas de Spring Boot sin fallos, `npm run build` correcto y `:app:assembleDebug` correcto. |

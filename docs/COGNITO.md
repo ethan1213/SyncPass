@@ -88,9 +88,9 @@ su perfil, pero no crear talleres. Para darle permisos se agrega al grupo en
 
 ## Android
 
-La app móvil usa el cliente público `677bhbj1qg892bmlk2pr1h6had`, compartido con
-la API, porque esta valida el `client_id` del access token. Android realiza OAuth
-con PKCE y Cognito tiene registrado el retorno `syncpass://auth/callback`. La web
-usa el mismo cliente para el flujo de contraseña gestionado por la API. El cliente
-antiguo llamado «My mobile app» no se usa en el código actual. Referencia de clase:
+La app móvil llama a `/api/auth/register`, `/confirm`, `/resend` y `/login` por API Gateway.
+El JAR en EC2 usa el cliente público `677bhbj1qg892bmlk2pr1h6had` para hablar con
+Cognito y validar el `client_id` del token. La web usa las mismas rutas de Gateway.
+El retorno `syncpass://auth/callback` sigue configurado en Cognito por compatibilidad,
+pero la versión actual del APK no lo utiliza. Referencia de clase:
 [Integración Cognito con Web App y Mobile](https://www.youtube.com/watch?v=_E0L5mn-sTM).

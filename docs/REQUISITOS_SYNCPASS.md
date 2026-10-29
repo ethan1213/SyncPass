@@ -6,7 +6,7 @@ Fuente: caso SyncPass de Duoc UC y pauta compartida por el equipo el 27 de octub
 
 | ID | Requisito | Implementación y prueba de aceptación |
 | --- | --- | --- |
-| RF01 | Registro e inicio de sesión | Web: `/registro` y `/login` consumen `/api/auth/*`; EC2 valida con Cognito. Móvil: OAuth PKCE con Cognito. Probar con cuenta de demostración, sin compartir contraseñas. |
+| RF01 | Registro e inicio de sesión | Web y móvil consumen `/api/auth/*` por Gateway; EC2 se comunica con Cognito. Probar con cuenta de demostración, sin compartir contraseñas. |
 | RF02 | Cuatro perfiles | Grupos Cognito `admin`, `coordinador`, `monitor`, `participante`; el menú y las rutas cambian según el token. |
 | RF03 | Mantenedor de proyectos | `/proyectos` y `/api/proyectos`: crear, listar, consultar, actualizar, eliminar. Solo admin/coordinador. |
 | RF04 | Mantenedor de talleres | `/talleres` y `/api/eventos`: crear, listar, consultar, actualizar, eliminar. Asociación opcional con un proyecto. Solo admin/coordinador. |

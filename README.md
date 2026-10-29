@@ -23,11 +23,11 @@ Android ── Room/SQLite: catálogo y registros pendientes
 ```
 
 1. La web muestra el catálogo público desde `GET /api/eventos`. El login y el registro web envían las credenciales a la API (`/api/auth/*`); la API habla con Cognito. La web conserva la sesión en `sessionStorage` y adjunta el token a las operaciones protegidas.
-2. Android usa el navegador del teléfono para el acceso OAuth con PKCE a Cognito y regresa a la app. Retrofit consume la misma API. Room conserva el catálogo y los pendientes del dispositivo.
+2. Android usa Retrofit para registrar, confirmar e iniciar sesión mediante `/api/auth/*` en Gateway. Room conserva el catálogo y los pendientes del dispositivo.
 3. Spring Security valida los JWT y los grupos de Cognito. Los controladores autorizan cada acción. JPA persiste proyectos y talleres; Flyway aplica las migraciones de PostgreSQL. La sincronización guarda asistencias y encuestas recibidas.
 4. Vercel sirve el frontend. API Gateway ofrece una dirección HTTPS fija. Caddy termina TLS en EC2 y entrega la petición al JAR en `127.0.0.1:8080`. La instancia está en una VPC del laboratorio AWS Academy.
 
-API Gateway está **delante de EC2**: recibe peticiones de web, Android y Postman. No está entre EC2 y Cognito. Para el registro y login web, el JAR llama directamente al servicio Cognito mediante el SDK de AWS. Para las rutas protegidas, Spring verifica la firma del JWT con las claves públicas de Cognito, su emisor, vencimiento, tipo de token y cliente. Android abre Cognito desde el navegador del teléfono para OAuth con PKCE y después envía el access token a la misma API Gateway.
+API Gateway está **delante de EC2**: recibe peticiones de web, Android y Postman. El JAR llama al servicio Cognito mediante el SDK de AWS para registro, confirmación, login y renovación. Para las rutas protegidas, Spring verifica la firma del JWT con las claves públicas de Cognito, su emisor, vencimiento, tipo de token y cliente. Ningún cliente llama directamente a Cognito.
 
 ## Funciones y permisos
 
