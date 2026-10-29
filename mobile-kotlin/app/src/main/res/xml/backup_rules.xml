@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Caso §5.1: no se respaldan datos personales. Solo el cache del catalogo. -->
+<full-backup-content>
+    <exclude domain="database" path="syncpass.db" />
+    <exclude domain="sharedpref" path="syncpass_session.xml" />
+</full-backup-content>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Tema claro. El esquema de color real lo define Compose en ui/theme/Theme.kt;
+         este tema solo cubre la ventana antes de que Compose se dibuje. -->
+    <style name="Theme.SyncPass" parent="@android:style/Theme.Material.Light.NoActionBar">
+        <item name="android:statusBarColor">@color/azul_primario</item>
+        <item name="android:windowBackground">@android:color/white</item>
+    </style>
+</resources>

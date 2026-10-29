@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">SyncPass</string>
+    <string name="app_subtitle">Duoc UC · CITT Plaza Vespucio</string>
+
+    <!-- Permisos: textos que se muestran al solicitarlos -->
+    <string name="permiso_camara_titulo">Permitir el uso de la cámara</string>
+    <string name="permiso_camara_detalle">La cámara se usa solo para leer el código QR de acreditación. No se guardan fotografías ni se identifica a personas reales.</string>
+    <string name="permiso_ubicacion_titulo">Permitir la ubicación aproximada</string>
+    <string name="permiso_ubicacion_detalle">La ubicación es referencial: confirma que la marcación ocurra dentro del radio de la unidad vecinal del evento.</string>
+
+    <!-- Estados de sincronización -->
+    <string name="estado_online">Conexión activa</string>
+    <string name="estado_offline">Modo terreno (sin conexión)</string>
+    <string name="sync_pendientes">Registros pendientes de sincronizar</string>
+</resources>
