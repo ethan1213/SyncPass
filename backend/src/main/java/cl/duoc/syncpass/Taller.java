@@ -14,6 +14,9 @@ public class Taller {
  @NotBlank @Size(max=120) public String docenteLider;
  @Min(1) @Max(10000) public int cuposMaximos;
  @Column(name="proyecto_id") public Long proyectoId;
+ @DecimalMin("-90.0") @DecimalMax("90.0") public Double latitud;
+ @DecimalMin("-180.0") @DecimalMax("180.0") public Double longitud;
+ @Min(10) @Max(5000) public Integer radioMetros;
  @Version public Long version;
  @Transient public long inscritos;
  public double getQuorumPct(){return cuposMaximos>0 ? Math.round(inscritos*1000.0/cuposMaximos)/10.0 : 0;}

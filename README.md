@@ -44,7 +44,7 @@ API Gateway está **delante de EC2**: recibe peticiones de web, Android y Postma
 
 `admin` y `coordinador` administran proyectos y talleres. `monitor` acredita y consulta quórum. `participante` accede a su QR y a encuestas. La interfaz oculta acciones ajenas al perfil, y la API vuelve a comprobar el permiso; ocultar un botón por sí solo no protege los datos.
 
-La cola local asigna registros al usuario actual. Al sincronizar, la API acepta lotes de hasta 100 registros, devuelve `acceptedIds` y el cliente elimina únicamente los aceptados. La creación de sesión necesita conexión. QR entre dispositivos y validación GPS completa se reservan para la siguiente evaluación; no se presentan como funciones verificadas de punta a punta.
+La cola local asigna registros al usuario actual. Al sincronizar, la API acepta lotes de hasta 100 registros, devuelve `acceptedIds` y el cliente elimina únicamente los aceptados. La creación de sesión necesita conexión. Los QR `SP1:<UUID>` se generan en web y Android, se leen por cámara y se validan en la API. Un taller puede tener latitud, longitud y radio; si están configurados, la acreditación exige una ubicación reciente y la API calcula la distancia. Esta funcionalidad compiló y tiene pruebas de API, pero aún requiere una demostración física entre dispositivos. El identificador QR no lleva firma criptográfica; para uso real debe sustituirse por una credencial verificable.
 
 ## Tecnologías y directorios
 
@@ -53,7 +53,7 @@ La cola local asigna registros al usuario actual. Al sincronizar, la API acepta 
 | `web-react/src/pages/` | Pantallas por ruta: inicio, login, perfiles, mantenedores, QR, encuestas y sincronización | React 18, JSX, Wouter |
 | `web-react/src/components/` | Barra, pie y control de ruta protegida | React |
 | `web-react/src/auth/`, `clients/`, `data/` | Sesión, cliente `fetch`, IndexedDB y QR | `idb`, `qrcode`, `@zxing/browser` |
-| `web-react/src/index.css` | Paleta propia, componentes visuales y diseño adaptable | CSS |
+| `web-react/src/index.css` | Paleta propia, componentes visuales y diseño adaptable | CSS y utilidades Tailwind |
 | `backend/src/main/java/` | Controladores REST, autorización y entidades | Java 21, Spring Boot 3.5, Spring Security, JPA |
 | `backend/src/main/resources/db/migration/` | Cambios versionados de tablas | Flyway, PostgreSQL |
 | `backend/src/test/` | Pruebas de API y permisos | JUnit, Spring Boot Test, H2 |
@@ -63,7 +63,7 @@ La cola local asigna registros al usuario actual. Al sincronizar, la API acepta 
 | `deploy/` | Instalación EC2, Caddy y recuperación de IP | Bash, systemd, AWS CLI |
 | `docs/` | Caso, arquitectura, requisitos, operación y demostración | Markdown |
 
-La web usa componentes `.jsx` y CSS propio. No hay componentes `.tsx` ni configuración de Tailwind en esta versión. Vite compila la web y Wouter resuelve las rutas. Tailwind y TypeScript pueden describirse como tecnologías del curso, pero no se deben atribuir a este código.
+La entrada web es `main.tsx`; el cliente HTTP y el parser de QR son TypeScript. Las páginas heredadas aún son `.jsx` y se migran gradualmente. `tsc --noEmit` verifica los módulos TypeScript antes del build. Tailwind está configurado con la paleta territorial y se usa para utilidades puntuales; el diseño principal permanece en CSS propio. Vite compila la web y Wouter resuelve las rutas.
 
 ## Ejecutar en un equipo
 
@@ -78,7 +78,7 @@ La web usa componentes `.jsx` y CSS propio. No hay componentes `.tsx` ni configu
 ## Publicación, pruebas y colaboración
 
 - La publicación web se hace en Vercel desde `web-react/`. La API está en EC2 tras API Gateway. Cuando el laboratorio se reinicia, [la recuperación de IP](docs/OPERACION_LAB.md) actualiza Caddy y Gateway automáticamente una vez instalado el servicio.
-- La última comprobación local de esta versión pasó `npm run build` y 11 pruebas de backend (0 fallos). El reporte porcentual de cobertura no está configurado; no se declara un 80% alcanzado. La meta de Vitest 80% corresponde a una evaluación posterior.
+- Ejecutar `npm run coverage` en `web-react/` produce un informe Vitest. El alcance medido son el cliente HTTP, IndexedDB, el parser QR y el aviso de geocerca: 19 pruebas y 100% de líneas, ramas, funciones y sentencias en esos cuatro módulos. **No es la cobertura de toda la aplicación**. El backend tiene pruebas de controladores y geocerca; para la evaluación que exija 80% global aún faltan pruebas de las páginas y la sesión.
 - Los resultados concretos de la integración web, API Gateway, Cognito, EC2 y Android están en [Verificación del despliegue](docs/VERIFICACION_DESPLIEGUE.md).
 - `main` contiene la versión integrada. Las ramas `developer/ethan`, `developer/jorge` y `feature/*` son puntos de partida para cambios revisados mediante pull request. Ver [convención de ramas](docs/RAMAS.md).
 - No subir `.env`, contraseñas, claves de AWS, tokens ni APK de depuración. El repositorio contiene archivos de ejemplo sin secretos.

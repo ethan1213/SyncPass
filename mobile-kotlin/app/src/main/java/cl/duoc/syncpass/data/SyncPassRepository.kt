@@ -31,6 +31,7 @@ data class TallerDto(
     @PrimaryKey val id: Long, val title: String, val descripcion: String?, val area: String?,
     val unidadVecinal: String?, val comuna: String?, val direccion: String?,
     val fechaHora: String?, val docenteLider: String?, val cuposMaximos: Int,
+    val latitud: Double? = null, val longitud: Double? = null, val radioMetros: Int? = null,
     val inscritos: Int = 0
 )
 
@@ -40,6 +41,7 @@ data class PendingRecord(
     val owner: String, val tipo: String, val tallerId: Long,
     val participante: String? = null, val rating: Int? = null,
     val comentario: String? = null, val utilidad: String? = null,
+    val latitud: Double? = null, val longitud: Double? = null, val precisionMetros: Float? = null,
     val timestamp: String = Instant.now().toString()
 )
 
@@ -61,7 +63,7 @@ data class PendingRecord(
     suspend fun clear()
 }
 
-@Database(entities = [PendingRecord::class, TallerDto::class], version = 2, exportSchema = false)
+@Database(entities = [PendingRecord::class, TallerDto::class], version = 3, exportSchema = false)
 abstract class SyncPassDb : RoomDatabase() {
     abstract fun pending(): PendingDao
     abstract fun talleres(): TallerDao
@@ -76,11 +78,22 @@ private val catalogMigration = object : Migration(1, 2) {
             `cuposMaximos` INTEGER NOT NULL, `inscritos` INTEGER NOT NULL)""")
     }
 }
+private val geoMigration = object : Migration(2, 3) {
+    override fun migrate(db: SupportSQLiteDatabase) {
+        db.execSQL("ALTER TABLE talleres ADD COLUMN latitud REAL")
+        db.execSQL("ALTER TABLE talleres ADD COLUMN longitud REAL")
+        db.execSQL("ALTER TABLE talleres ADD COLUMN radioMetros INTEGER")
+        db.execSQL("ALTER TABLE pending ADD COLUMN latitud REAL")
+        db.execSQL("ALTER TABLE pending ADD COLUMN longitud REAL")
+        db.execSQL("ALTER TABLE pending ADD COLUMN precisionMetros REAL")
+    }
+}
 
 data class SyncBatch(val registros: List<PendingPayload>)
 data class PendingPayload(val id: String, val tipo: String, val tallerId: Long,
     val participante: String?, val rating: Int?, val comentario: String?,
-    val utilidad: String?, val timestamp: String)
+    val utilidad: String?, val timestamp: String,
+    val latitud: Double?, val longitud: Double?, val precisionMetros: Float?)
 data class SyncResult(val acceptedIds: List<String>)
 data class LoginRequest(val username: String, val password: String)
 data class LoginResult(val accessToken: String, val idToken: String, val refreshToken: String, val expiresIn: Int)
@@ -102,7 +115,7 @@ interface SyncPassApi {
 class SyncPassRepository(context: Context) {
     private val syncMutex = Mutex()
     private val db = Room.databaseBuilder(context.applicationContext, SyncPassDb::class.java, "syncpass.db")
-        .addMigrations(catalogMigration).build()
+        .addMigrations(catalogMigration, geoMigration).build()
     private val api = Retrofit.Builder().baseUrl(BuildConfig.API_BASE_URL)
         .client(OkHttpClient.Builder().build()).addConverterFactory(GsonConverterFactory.create()).build()
         .create(SyncPassApi::class.java)
@@ -114,6 +127,7 @@ class SyncPassRepository(context: Context) {
     suspend fun resend(username: String) = api.resend(UsernameRequest(username))
 
     suspend fun cachedTalleres(): List<TallerDto> = db.talleres().all()
+    suspend fun cachedTaller(id: Long): TallerDto? = db.talleres().all().find { it.id == id }
 
     suspend fun talleres(): List<TallerDto> {
         val rows = api.talleres()
@@ -131,7 +145,7 @@ class SyncPassRepository(context: Context) {
         for (batch in db.pending().forOwner(owner).chunked(100)) {
             val result = api.sync("Bearer $accessToken", SyncBatch(batch.map {
                 PendingPayload(it.id, it.tipo, it.tallerId, it.participante, it.rating,
-                    it.comentario, it.utilidad, it.timestamp)
+                    it.comentario, it.utilidad, it.timestamp, it.latitud, it.longitud, it.precisionMetros)
             }))
             val accepted = result.acceptedIds.toSet()
             for (row in batch) if (row.id in accepted) {

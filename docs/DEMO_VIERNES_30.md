@@ -8,7 +8,7 @@
 4. **Login y dos mantenedores (2 min).** Iniciar sesión como admin/coordinador. En `/proyectos`, crear, listar, editar y eliminar un proyecto ficticio. En `/talleres`, hacer lo mismo con un taller y asociarlo a un proyecto. Mostrar que el monitor no puede entrar a estas rutas. No borrar registros que se necesiten para el resto de la exposición.
 5. **CRUD local (45 s).** En `/borradores`, crear una encuesta, editarla, recargar para demostrar persistencia y eliminarla. Si se muestra modo sin conexión, preparar el taller antes de desconectarse.
 6. **Móvil (60 s).** Mostrar APK Kotlin instalado, catálogo y pantalla de login. Mostrar escáner, encuesta y pendientes locales como funciones del caso; declarar exactamente cuáles se probaron en el teléfono.
-7. **Pruebas y cierre (45 s).** Ejecutar `npm run build` y `./mvnw test` con resultado visible. Mostrar el reporte de cobertura **solo si existe** y citar el porcentaje real. Vitest 80% corresponde a la próxima evaluación.
+7. **Pruebas y cierre (45 s).** Ejecutar `npm run build`, `npm run coverage` y `./mvnw test` con resultado visible. Explicar que la cobertura reportada corresponde a cuatro módulos seleccionados; el 80% global aún no está demostrado.
 
 ## Qué abrir antes de comenzar
 
@@ -29,9 +29,9 @@
 - **¿Dónde están los datos?** PostgreSQL en Supabase; los pendientes locales viven en IndexedDB o Room.
 - **¿Qué librerías usa?** React, Wouter, Vite, `idb`, Spring Boot, JPA, Flyway, Jetpack Compose, Retrofit, Room y CameraX/ML Kit.
 - **¿Cómo se ejecuta?** `npm install && npm run dev` en `web-react/`; `./mvnw test && ./mvnw package` en `backend/`; Android Studio compila `mobile-kotlin/`.
-- **¿Cómo se usó Tailwind?** No se usó. La interfaz actual tiene CSS propio. Tailwind permite aplicar utilidades CSS desde clases y se vio en el curso; no conviene atribuirlo a este código.
-- **¿Es TypeScript?** No; los componentes son `.jsx`. Se puede explicar su estructura por componentes, páginas y rutas sin llamarla `.tsx`.
-- **¿Cobertura 80%?** Meta de Vitest para la próxima evaluación. Indicar el porcentaje real del reporte si ya se generó; no inventarlo.
+- **¿Cómo se usó Tailwind?** Se configuró con preflight desactivado y la paleta territorial. Aporta utilidades puntuales a la interfaz; el diseño principal sigue en CSS propio.
+- **¿Es TypeScript?** La entrada `main.tsx`, el cliente HTTP y el parser QR sí. Las páginas heredadas todavía son `.jsx` y se migran gradualmente.
+- **¿Cobertura 80%?** Vitest mide 100% en tres módulos de lógica, no en toda la web. No presentar ese número como cobertura global.
 
 ## Comprobación el mismo viernes
 

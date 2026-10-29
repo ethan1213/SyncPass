@@ -13,7 +13,7 @@ Fuente: caso SyncPass de Duoc UC y pauta compartida por el equipo el 27 de octub
 | RF05 | Persistencia local web | `/borradores`: crear, leer, editar y eliminar encuestas en IndexedDB; al enviar, pasan a la cola local. |
 | RF06 | Catálogo móvil | Android descarga talleres de API Gateway y conserva copia en Room/SQLite. |
 | RF07 | Sincronización | La web y Android envían registros pendientes por lotes a `/api/sync/batch`. |
-| RF08 | Acreditación y encuesta | QR, cámara y encuesta breve forman parte del caso; su demostración completa en móvil se reserva para la tercera evaluación. |
+| RF08 | Acreditación y encuesta | QR generado y leído en web/Android; encuesta local y sincronización. Validación de geocerca cuando el taller tiene coordenadas y radio. Falta prueba física entre dispositivos con la versión actual. |
 | RF09 | Quórum | Personal autorizado consulta el panel de asistencias y la API `/api/quorum`. |
 
 ## No funcionales
@@ -26,9 +26,9 @@ Fuente: caso SyncPass de Duoc UC y pauta compartida por el equipo el 27 de octub
 | RNF04 | Transporte seguro | Vercel y API Gateway exponen HTTPS; Caddy protege la entrada a la EC2. |
 | RNF05 | Disponibilidad con señal intermitente | IndexedDB en web y Room en Android conservan datos locales. El login nuevo requiere conexión. |
 | RNF06 | Datos y cambios trazables | PostgreSQL en Supabase, migraciones Flyway, versión optimista de proyectos y talleres. |
-| RNF07 | Pruebas repetibles | Maven ejecuta pruebas de la API. Vitest con meta de 80% queda para la próxima evaluación; no se debe afirmar un porcentaje sin reporte. |
+| RNF07 | Pruebas repetibles | Maven ejecuta pruebas de API y geocerca. Vitest reporta 100% sobre cuatro módulos (cliente HTTP, IndexedDB, parser QR y aviso de geocerca), no sobre toda la web. El 80% global aún no está demostrado. |
 | RNF08 | Mantenibilidad | Componentes compartidos, páginas por ruta Wouter, cliente HTTP separado y README con comandos de ejecución. |
 
 ## Fuera del alcance del viernes 30
 
-La validación GPS, la prueba integral del QR entre dos dispositivos y la nube completa son objetivos de la tercera evaluación. El viernes se muestran las pantallas y la arquitectura previstas, diferenciando diseño de función verificada.
+La validación GPS y QR entre dispositivos está implementada en código para adelantar la tercera evaluación. Se muestra como función terminada solo después de repetirla con dispositivos reales y la API desplegada. La disponibilidad de la API depende del laboratorio AWS Academy.

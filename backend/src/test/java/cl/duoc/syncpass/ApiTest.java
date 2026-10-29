@@ -53,4 +53,27 @@ class ApiTest {
   var id=Jwt.withTokenValue("test").header("alg","RS256").subject("user").claim("client_id","our-client").claim("token_use","id").build();
   assertTrue(validator.validate(id).hasErrors());
  }
+ @Test void qrAttendanceRequiresAccurateLocationInsideWorkshopRadius() throws Exception {
+  var site=(com.fasterxml.jackson.databind.node.ObjectNode)json.readTree(taller());
+  site.put("latitud",-33.45).put("longitud",-70.67).put("radioMetros",100);
+  var response=mvc.perform(post("/api/eventos").with(jwt().authorities(new SimpleGrantedAuthority("ROLE_coordinador")))
+    .contentType(MediaType.APPLICATION_JSON).content(site.toString())).andExpect(status().isCreated()).andReturn();
+  long workshop=json.readTree(response.getResponse().getContentAsString()).get("id").asLong();
+  var staff=jwt().jwt(j->j.subject("monitor").claim("cognito:groups",List.of("monitor")))
+    .authorities(new SimpleGrantedAuthority("ROLE_monitor"));
+  var record=json.createObjectNode();
+  record.put("id",UUID.randomUUID().toString()).put("tipo","asistencia").put("tallerId",workshop)
+    .put("participante","SP1:123e4567-e89b-12d3-a456-426614174000")
+    .put("timestamp",Instant.now().minusSeconds(1).toString());
+  var payload=json.createObjectNode();payload.set("registros",json.createArrayNode().add(record));
+  mvc.perform(post("/api/sync/batch").with(staff).contentType(MediaType.APPLICATION_JSON).content(payload.toString()))
+    .andExpect(status().isBadRequest());
+  record.put("latitud",-33.46).put("longitud",-70.67).put("precisionMetros",5);
+  mvc.perform(post("/api/sync/batch").with(staff).contentType(MediaType.APPLICATION_JSON).content(payload.toString()))
+    .andExpect(status().isUnprocessableEntity());
+  record.put("latitud",-33.45).put("precisionMetros",10);
+  mvc.perform(post("/api/sync/batch").with(staff).contentType(MediaType.APPLICATION_JSON).content(payload.toString()))
+    .andExpect(status().isOk()).andExpect(jsonPath("acceptedIds[0]").value(record.get("id").asText()));
+  assertEquals(1,db.queryForObject("SELECT COUNT(*) FROM registros WHERE tipo='asistencia'",Integer.class));
+ }
 }

@@ -10,6 +10,7 @@
      5. Componentes (hero, tarjetas, formularios, tablas, pills, alertas)
      6. Capa responsive: movil -> tablet -> escritorio
    ========================================================================== */
+@tailwind utilities;
 
 /* ------------------------------------------------------------------ 1. Tokens */
 :root {

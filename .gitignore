@@ -6,6 +6,7 @@ Thumbs.db
 # Dependencias y builds (web-react)
 node_modules/
 dist/
+coverage/
 .vite/
 *.local
 

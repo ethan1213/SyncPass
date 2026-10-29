@@ -12,7 +12,7 @@ flowchart LR
   A --> L[(Room/SQLite local)]
 ```
 
-La web usa React, Vite, componentes JSX, rutas Wouter y CSS propio. El móvil es Kotlin con Jetpack Compose. Ambos consumen la API REST de Spring Boot. El backend usa JWT/Cognito para identidad y roles, JPA para datos y Flyway para migraciones. PostgreSQL está en Supabase; Room/SQLite conserva operaciones locales del móvil.
+La web usa React, Vite, entrada y módulos TypeScript, páginas JSX, rutas Wouter, CSS propio y utilidades Tailwind. El móvil es Kotlin con Jetpack Compose. Ambos consumen la API REST de Spring Boot. El backend usa JWT/Cognito para identidad y roles, JPA para datos y Flyway para migraciones. PostgreSQL está en Supabase; Room/SQLite conserva operaciones locales del móvil.
 
 ## Flujos para demostrar
 
@@ -23,6 +23,6 @@ La web usa React, Vite, componentes JSX, rutas Wouter y CSS propio. El móvil es
 
 ## Despliegue y límites
 
-Vercel sirve el frontend. API Gateway publica HTTPS hacia EC2, donde corre el JAR. EC2 está dentro de la VPC del laboratorio. La API y la web dependen de que el laboratorio permanezca activo. QR, GPS y operación completa en nube son objetivos de la tercera evaluación; no se presentan como terminados en la demostración del viernes.
+Vercel sirve el frontend. API Gateway publica HTTPS hacia EC2, donde corre el JAR. EC2 está dentro de la VPC del laboratorio. La API y la web dependen de que el laboratorio permanezca activo. El flujo QR/GPS ya tiene implementación y pruebas locales; su recorrido completo en teléfonos y su despliegue nuevo en EC2 aún requieren comprobación.
 
-La implementación actual usa JSX y CSS propio. TypeScript y Tailwind no están integrados: se pueden explicar como tecnologías propuestas, sin atribuirles código existente.
+La entrada `main.tsx`, el cliente HTTP y el parser QR usan TypeScript; las páginas siguen en JSX. Tailwind está configurado con preflight desactivado para preservar la paleta propia.

@@ -61,7 +61,7 @@ export default function App(){
  <Route path="/mi-qr">{protect(<MyQrPage/>)}</Route>
  <Route path="/talleres">{protect(<TalleresAdminPage talleres={talleres} onRefresh={refresh}/>,[ROLES.admin,ROLES.coordinator])}</Route>
  <Route path="/proyectos">{protect(<ProyectosAdminPage/>,[ROLES.admin,ROLES.coordinator])}</Route>
- <Route path="/acreditar">{protect(<ScannerPage talleres={talleres} isOfflineMode={isOfflineMode} onAddAttendance={(tallerId,a)=>queue({id:crypto.randomUUID(),tipo:'asistencia',tallerId,participante:a.participante,timestamp:new Date().toISOString()})}/>,staff)}</Route>
+ <Route path="/acreditar">{protect(<ScannerPage talleres={talleres} isOfflineMode={isOfflineMode} onAddAttendance={(tallerId,a)=>queue({id:crypto.randomUUID(),tipo:'asistencia',tallerId,participante:a.participante,latitud:a.latitud,longitud:a.longitud,precisionMetros:a.precisionMetros,timestamp:new Date().toISOString()})}/>,staff)}</Route>
  <Route path="/encuesta">{protect(<DraftsPage talleres={talleres} onQueue={queue}/>)}</Route>
  <Route path="/borradores">{protect(<DraftsPage talleres={talleres} onQueue={queue}/>)}</Route>
  <Route path="/sincronizacion">{protect(<SyncPage unsyncedItems={unsyncedItems} isOfflineMode={isOfflineMode} onPerformSync={sync}/>)}</Route>

@@ -21,6 +21,7 @@ import androidx.core.content.ContextCompat
 import cl.duoc.syncpass.data.AuthSession
 import cl.duoc.syncpass.data.PendingRecord
 import cl.duoc.syncpass.data.SyncPassRepository
+import cl.duoc.syncpass.data.currentLocation
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.common.InputImage
 import kotlinx.coroutines.launch
@@ -35,9 +36,19 @@ fun ScannerScreen(repository: SyncPassRepository, tallerId: Long, onNavigateBack
     val permission = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { granted = it }
     var code by remember { mutableStateOf("") }
     var message by remember { mutableStateOf("") }
+    var geofenceRequired by remember { mutableStateOf(false) }
+    var locationGranted by remember { mutableStateOf(
+        ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED ||
+        ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
+    ) }
+    val locationPermission = rememberLauncherForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) {
+        locationGranted = it.values.any { allowed -> allowed }
+        if (!locationGranted) message = "Permite la ubicación para acreditar este taller."
+    }
     val previewView = remember { PreviewView(context) }
     val scanner = remember { BarcodeScanning.getClient() }
     LaunchedEffect(Unit) { if (!granted) permission.launch(Manifest.permission.CAMERA) }
+    LaunchedEffect(tallerId) { geofenceRequired = repository.cachedTaller(tallerId)?.latitud != null }
 
     DisposableEffect(granted) {
         if (granted) {
@@ -73,14 +84,28 @@ fun ScannerScreen(repository: SyncPassRepository, tallerId: Long, onNavigateBack
             OutlinedTextField(value = code, onValueChange = { code = it.trim() },
                 label = { Text("Código del participante") }, modifier = Modifier.fillMaxWidth())
             if (message.isNotEmpty()) Text(message)
+            if (geofenceRequired) {
+                Text("Este taller exige una ubicación GPS precisa dentro de su radio.")
+                if (!locationGranted) TextButton(onClick = {
+                    locationPermission.launch(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION))
+                }) { Text("Permitir ubicación") }
+            }
             Button(onClick = {
                 val owner = AuthSession.participantId
                 if (owner == null) message = "Inicia sesión antes de acreditar."
                 else if (AuthSession.roles.none { it in listOf("admin","coordinador","monitor") }) message = "Tu perfil no puede acreditar."
                 else if (tallerId <= 0 || !code.matches(participantPattern)) message = "Selecciona un taller y lee un QR válido."
+                else if (geofenceRequired && !locationGranted) message = "Permite la ubicación GPS para este taller."
                 else scope.launch {
                     try {
-                        repository.queue(PendingRecord(owner = owner, tipo = "asistencia", tallerId = tallerId, participante = code))
+                        val location = if (geofenceRequired) currentLocation(context) else null
+                        if (geofenceRequired && location == null) {
+                            message = "No se obtuvo ubicación reciente. Comprueba GPS y vuelve a intentar."
+                            return@launch
+                        }
+                        repository.queue(PendingRecord(owner = owner, tipo = "asistencia", tallerId = tallerId,
+                            participante = code, latitud = location?.latitude, longitud = location?.longitude,
+                            precisionMetros = location?.accuracy))
                         message = "Asistencia guardada en el dispositivo. Sincronízala desde Inicio."
                         code = ""
                     } catch (e: Exception) { message = e.message ?: "No se pudo guardar." }

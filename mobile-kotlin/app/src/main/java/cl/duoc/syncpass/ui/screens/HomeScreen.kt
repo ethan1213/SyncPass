@@ -28,7 +28,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cl.duoc.syncpass.data.model.TallerComunitario
-import cl.duoc.syncpass.data.model.talleresSyncPass
 import cl.duoc.syncpass.data.AuthSession
 import cl.duoc.syncpass.data.SyncPassRepository
 import cl.duoc.syncpass.ui.layout.AREA_TACTIL_MINIMA
