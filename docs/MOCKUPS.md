@@ -42,8 +42,8 @@ El visor incluye además el [mantenedor de proyectos](../img/mockups/crud-proyec
 el de talleres, los borradores locales y las vistas por perfil. En la exposición,
 mostrar primero estos dibujos y después abrir la aplicación. El login web real
 envía credenciales a la API en EC2, que consulta Cognito; cualquier referencia
-antigua a Auth0 en dibujos previos se considera obsoleta. GPS y el recorrido QR
-entre dispositivos pertenecen a la tercera evaluación.
+antigua a Auth0 en dibujos previos se considera obsoleta. El recorrido QR/GPS
+ya está implementado; su prueba física entre dispositivos sigue pendiente.
 <!-- /dibujos -->
 
 
