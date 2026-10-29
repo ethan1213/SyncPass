@@ -1,0 +1,42 @@
+services:
+  api:
+    build: ../backend
+    environment:
+      DATABASE_URL: ${DATABASE_URL:?Pega la URL JDBC de Supabase en el .env de EC2}
+      DATABASE_USER: ${DATABASE_USER:?Define el usuario del pooler de Supabase}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD:?Define la clave de la base Supabase}
+      COGNITO_ISSUER: ${COGNITO_ISSUER:?Define el issuer del user pool}
+      COGNITO_CLIENT_ID: ${COGNITO_CLIENT_ID:?Define el cliente SPA publico}
+      CORS_ORIGINS: ${CORS_ORIGINS:?Define los origenes de Vercel y localhost}
+    expose:
+      - "8080"
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q -O /dev/null http://localhost:8080/actuator/health || exit 1"]
+      interval: 20s
+      timeout: 5s
+      start_period: 90s
+      retries: 6
+    restart: unless-stopped
+    mem_limit: 700m
+
+  proxy:
+    image: caddy:2-alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      API_DOMAIN: ${API_DOMAIN:?Define api.IP-con-guiones.nip.io}
+      ACME_EMAIL: ${ACME_EMAIL:?Define correo para el certificado TLS}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+      - caddy-config:/config
+    depends_on:
+      api:
+        condition: service_healthy
+    restart: unless-stopped
+    mem_limit: 96m
+
+volumes:
+  caddy-data:
+  caddy-config:

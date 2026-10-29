@@ -1,0 +1,52 @@
+services:
+  db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: syncpass
+      POSTGRES_USER: syncpass
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD:?Define DATABASE_PASSWORD en .env}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U syncpass -d syncpass"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+    mem_limit: 256m
+  api:
+    build: ./backend
+    environment:
+      DATABASE_URL: jdbc:postgresql://db:5432/syncpass
+      DATABASE_USER: syncpass
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+      COGNITO_ISSUER: ${COGNITO_ISSUER:?Define COGNITO_ISSUER}
+      COGNITO_CLIENT_ID: ${COGNITO_CLIENT_ID:?Define COGNITO_CLIENT_ID}
+      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:3000}
+    ports:
+      - "127.0.0.1:8080:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q -O /dev/null http://localhost:8080/actuator/health || exit 1"]
+      interval: 20s
+      timeout: 5s
+      start_period: 60s
+      retries: 6
+    restart: unless-stopped
+    mem_limit: 512m
+  web:
+    build:
+      context: ./web-react
+      args:
+        VITE_API_URL: ${VITE_API_URL:-}
+    ports:
+      - "127.0.0.1:3000:80"
+    depends_on:
+      api:
+        condition: service_healthy
+    restart: unless-stopped
+    mem_limit: 64m
+volumes:
+  postgres-data:
