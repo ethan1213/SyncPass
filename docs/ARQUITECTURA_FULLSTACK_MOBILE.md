@@ -25,4 +25,4 @@ La web usa React, Vite, entrada y módulos TypeScript, páginas JSX, rutas Woute
 
 Vercel sirve el frontend. API Gateway publica HTTPS hacia EC2, donde corre el JAR. EC2 está dentro de la VPC del laboratorio. La API y la web dependen de que el laboratorio permanezca activo. El flujo QR/GPS ya tiene implementación y pruebas locales; su recorrido completo en teléfonos y su despliegue nuevo en EC2 aún requieren comprobación.
 
-La entrada `main.tsx`, el cliente HTTP y el parser QR usan TypeScript; las páginas siguen en JSX. Tailwind está configurado con preflight desactivado para preservar la paleta propia.
+La entrada `main.tsx`, la sesión, el cliente HTTP, el aviso de geocerca y el parser QR usan TypeScript; las páginas siguen en JSX. Tailwind está configurado con preflight desactivado para preservar la paleta propia.
