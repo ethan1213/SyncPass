@@ -1,0 +1,293 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1520 940" width="1520" height="940" role="img" aria-label="Esquema en copo de nieve de SyncPass" font-family="Helvetica, 'Helvetica Neue', Arial, sans-serif">
+<title>Esquema en copo de nieve de SyncPass</title>
+<rect width="1520" height="940" fill="#ffffff"/>
+<text x="24.0" y="32.0" font-size="17" fill="#1a1a1a" font-weight="700">SyncPass · Data warehouse en copo de nieve</text>
+<text x="24.0" y="52.0" font-size="11.5" fill="#5d6673" font-weight="400">Las mismas dimensiones de la estrella, pero divididas en sus jerarquías naturales</text>
+<rect x="1391.1" y="16.0" width="104.9" height="24.0" rx="3" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1"/>
+<text x="1443.5" y="32.0" font-size="11" fill="#1a1a1a" font-weight="700" text-anchor="middle">Copo de nieve</text>
+<rect x="620.0" y="420.0" width="280.0" height="209.0" rx="0" fill="#ffffff" stroke="#d79b00" stroke-width="1.2"/>
+<rect x="620.0" y="420.0" width="280.0" height="38.0" rx="0" fill="#ffe6cc" stroke="#d79b00" stroke-width="1.2"/>
+<text x="760.0" y="435.0" font-size="11.5" fill="#1a1a1a" font-weight="700" text-anchor="middle">fact_asistencia_impacto</text>
+<text x="760.0" y="448.0" font-size="9" fill="#5d6673" font-weight="400" text-anchor="middle">tabla de hechos</text>
+<text x="627.0" y="471.0" font-size="8.5" fill="#b85450" font-weight="700" font-family="Consolas, 'Courier New', monospace">PK</text>
+<text x="664.0" y="471.0" font-size="10.5" fill="#1a1a1a" font-weight="700" font-family="Consolas, 'Courier New', monospace">id_hecho</text>
+<text x="893.0" y="471.0" font-size="9" fill="#5d6673" font-weight="400" text-anchor="end" font-family="Consolas, 'Courier New', monospace">INT</text>
+<line x1="620.0" y1="477.0" x2="900.0" y2="477.0" stroke="#dde3ea" stroke-width="1"/>
+<text x="627.0" y="490.0" font-size="8.5" fill="#6c8ebf" font-weight="700" font-family="Consolas, 'Courier New', monospace">FK</text>
+<text x="664.0" y="490.0" font-size="10.5" fill="#1a1a1a" font-weight="400" font-family="Consolas, 'Courier New', monospace">id_tiempo</text>
+<text x="893.0" y="490.0" font-size="9" fill="#5d6673" font-weight="400" text-anchor="end" font-family="Consolas, 'Courier New', monospace">INT</text>
+<line x1="620.0" y1="496.0" x2="900.0" y2="496.0" stroke="#dde3ea" stroke-width="1"/>
+<text x="627.0" y="509.0" font-size="8.5" fill="#6c8ebf" font-weight="700" font-family="Consolas, 'Courier New', monospace">FK</text>
+<text x="664.0" y="509.0" font-size="10.5" fill="#1a1a1a" font-weight="400" font-family="Consolas, 'Courier New', monospace">id_taller</text>
+<text x="893.0" y="509.0" font-size="9" fill="#5d6673" font-weight="400" text-anchor="end" font-family="Consolas, 'Courier New', monospace">INT</text>
+<line x1="620.0" y1="515.0" x2="900.0" y2="515.0" stroke="#dde3ea" stroke-width="1"/>
+<text x="627.0" y="528.0" font-size="8.5" fill="#6c8ebf" font-weight="700" font-family="Consolas, 'Courier New', monospace">FK</text>
+<text x="664.0" y="528.0" font-size="10.5" fill="#1a1a1a" font-weight="400" font-family="Consolas, 'Courier New', monospace">id_territorio</text>
+<text x="893.0" y="528.0" font-size="9" fill="#5d6673" font-weight="400" text-anchor="end" font-family="Consolas, 'Courier New', monospace">INT</text>
+<line x1="620.0" y1="534.0" x2="900.0" y2="534.0" stroke="#dde3ea" stroke-width="1"/>
+<text x="627.0" y="547.0" font-size="8.5" fill="#6c8ebf" font-weight="700" font-family="Consolas, 'Courier New', monospace">FK</text>
+<text x="664.0" y="547.0" font-size="10.5" fill="#1a1a1a" font-weight="400" font-family="Consolas, 'Courier New', monospace">id_participante</text>
+<text x="893.0" y="547.0" font-size="9" fill="#5d6673" font-weight="400" text-anchor="end" font-family="Consolas, 'Courier New', monospace">INT</text>
+<line x1="620.0" y1="553.0" x2="900.0" y2="553.0" stroke="#dde3ea" stroke-width="1"/>
+<text x="627.0" y="566.0" font-size="8.5" fill="#6c8ebf" font-weight="700" font-family="Consolas, 'Courier New', monospace">FK</text>
+<text x="664.0" y="566.0" font-size="10.5" fill="#1a1a1a" font-weight="400" font-family="Consolas, 'Courier New', monospace">id_conectividad</text>
+<text x="893.0" y="566.0" font-size="9" fill="#5d6673" font-weight="400" text-anchor="end" font-family="Consolas, 'Courier New', monospace">INT</text>
+<line x1="620.0" y1="572.0" x2="900.0" y2="572.0" stroke="#dde3ea" stroke-width="1"/>
+<text x="627.0" y="585.0" font-size="8.5" fill="#82b366" font-weight="700" font-family="Consolas, 'Courier New', monospace">M</text>
+<text x="664.0" y="585.0" font-size="10.5" fill="#1a1a1a" font-weight="400" font-family="Consolas, 'Courier New', monospace">asistencias_efectivas</text>
+<text x="893.0" y="585.0" font-size="9" fill="#5d6673" font-weight="400" text-anchor="end" font-family="Consolas, 'Courier New', monospace">INT</text>
+<line x1="620.0" y1="591.0" x2="900.0" y2="591.0" stroke="#dde3ea" stroke-width="1"/>
+<text x="627.0" y="604.0" font-size="8.5" fill="#82b366" font-weight="700" font-family="Consolas, 'Courier New', monospace">M</text>
+<text x="664.0" y="604.0" font-size="10.5" fill="#1a1a1a" font-weight="400" font-family="Consolas, 'Courier New', monospace">tiempo_acreditacion_seg</text>
+<text x="893.0" y="604.0" font-size="9" fill="#5d6673" font-weight="400" text-anchor="end" font-family="Consolas, 'Courier New', monospace">DECIMAL</text>
+<line x1="620.0" y1="610.0" x2="900.0" y2="610.0" stroke="#dde3ea" stroke-width="1"/>
+<text x="627.0" y="623.0" font-size="8.5" fill="#82b366" font-weight="700" font-family="Consolas, 'Courier New', monospace">M</text>
+<text x="664.0" y="623.0" font-size="10.5" fill="#1a1a1a" font-weight="400" font-family="Consolas, 'Courier New', monospace">calificacion_satisfaccion</text>
+<text x="893.0" y="623.0" font-size="9" fill="#5d6673" font-weight="400" text-anchor="end" font-family="Consolas, 'Courier New', monospace">TINYINT</text>
+<rect x="648.0" y="230.0" width="214.0" height="102.0" rx="0" fill="#ffffff" stroke="#6c8ebf" stroke-width="1.2"/>
+<rect x="648.0" y="230.0" width="214.0" height="26.0" rx="0" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1.2"/>
+<text x="755.0" y="247.0" font-size="11.5" fill="#1a1a1a" font-weight="700" text-anchor="middle">dim_tiempo</text>
+<text x="655.0" y="269.0" font-size="8.5" fill="#b85450" font-weight="700" font-family="Consolas, 'Courier New', monospace">PK</text>
+<text x="692.0" y="269.0" font-size="10.5" fill="#1a1a1a" font-weight="700" font-family="Consolas, 'Courier New', monospace">id_tiempo</text>
+<text x="855.0" y="269.0" font-size="9" fill="#5d6673" font-weight="400" text-anchor="end" font-family="Consolas, 'Courier New', monospace">INT</text>
+<line x1="648.0" y1="275.0" x2="862.0" y2="275.0" stroke="#dde3ea" stroke-width="1"/>
+<text x="655.0" y="288.0" font-size="8.5" fill="#6c8ebf" font-weight="700" font-family="Consolas, 'Courier New', monospace">FK</text>
+<text x="692.0" y="288.0" font-size="10.5" fill="#1a1a1a" font-weight="400" font-family="Consolas, 'Courier New', monospace">id_mes</text>
+<text x="855.0" y="288.0" font-size="9" fill="#5d6673" font-weight="400" text-anchor="end" font-family="Consolas, 'Courier New', monospace">INT</text>
+<line x1="648.0" y1="294.0" x2="862.0" y2="294.0" stroke="#dde3ea" stroke-width="1"/>
+<text x="692.0" y="307.0" font-size="10.5" fill="#1a1a1a" font-weight="400" font-family="Consolas, 'Courier New', monospace">fecha_completa</text>
+<text x="855.0" y="307.0" font-size="9" fill="#5d6673" font-weight="400" text-anchor="end" font-family="Consolas, 'Courier New', monospace">DATE</text>
+<line x1="648.0" y1="313.0" x2="862.0" y2="313.0" stroke="#dde3ea" stroke-width="1"/>
+<text x="692.0" y="326.0" font-size="10.5" fill="#1a1a1a" font-weight="400" font-family="Consolas, 'Courier New', monospace">dia_semana</text>
+<text x="855.0" y="326.0" font-size="9" fill="#5d6673" font-weight="400" text-anchor="end" font-family="Consolas, 'Courier New', monospace">VARCHAR(15)</text>
+<rect x="648.0" y="112.0" width="214.0" height="83.0" rx="0" fill="#ffffff" stroke="#9673a6" stroke-width="1.2"/>
+<rect x="648.0" y="112.0" width="214.0" height="26.0" rx="0" fill="#e1d5e7" stroke="#9673a6" stroke-width="1.2"/>
+<text x="755.0" y="129.0" font-size="11.5" fill="#1a1a1a" font-weight="700" text-anchor="middle">dim_mes</text>
+<text x="655.0" y="151.0" font-size="8.5" fill="#b85450" font-weight="700" font-family="Consolas, 'Courier New', monospace">PK</text>
+<text x="692.0" y="151.0" font-size="10.5" fill="#1a1a1a" font-weight="700" font-family="Consolas, 'Courier New', monospace">id_mes</text>
+<text x="855.0" y="151.0" font-size="9" fill="#5d6673" font-weight="400" text-anchor="end" font-family="Consolas, 'Courier New', monospace">INT</text>
+<line x1="648.0" y1="157.0" x2="862.0" y2="157.0" stroke="#dde3ea" stroke-width="1"/>
+<text x="655.0" y="170.0" font-size="8.5" fill="#6c8ebf" font-weight="700" font-family="Consolas, 'Courier New', monospace">FK</text>
+<text x="692.0" y="170.0" font-size="10.5" fill="#1a1a1a" font-weight="400" font-family="Consolas, 'Courier New', monospace">id_semestre</text>
+<text x="855.0" y="170.0" font-size="9" fill="#5d6673" font-weight="400" text-anchor="end" font-family="Consolas, 'Courier New', monospace">INT</text>
+<line x1="648.0" y1="176.0" x2="862.0" y2="176.0" stroke="#dde3ea" stroke-width="1"/>
+<text x="692.0" y="189.0" font-size="10.5" fill="#1a1a1a" font-weight="400" font-family="Consolas, 'Courier New', monospace">nombre_mes</text>
+<text x="855.0" y="189.0" font-size="9" fill="#5d6673" font-weight="400" text-anchor="end" font-family="Consolas, 'Courier New', monospace">VARCHAR(20)</text>
+<rect x="906.0" y="112.0" width="214.0" height="83.0" rx="0" fill="#ffffff" stroke="#9673a6" stroke-width="1.2"/>
+<rect x="906.0" y="112.0" width="214.0" height="26.0" rx="0" fill="#e1d5e7" stroke="#9673a6" stroke-width="1.2"/>
+<text x="1013.0" y="129.0" font-size="11.5" fill="#1a1a1a" font-weight="700" text-anchor="middle">dim_semestre</text>
+<text x="913.0" y="151.0" font-size="8.5" fill="#b85450" font-weight="700" font-family="Consolas, 'Courier New', monospace">PK</text>
+<text x="950.0" y="151.0" font-size="10.5" fill="#1a1a1a" font-weight="700" font-family="Consolas, 'Courier New', monospace">id_semestre</text>
+<text x="1113.0" y="151.0" font-size="9" fill="#5d6673" font-weight="400" text-anchor="end" font-family="Consolas, 'Courier New', monospace">INT</text>
+<line x1="906.0" y1="157.0" x2="1120.0" y2="157.0" stroke="#dde3ea" stroke-width="1"/>
+<text x="913.0" y="170.0" font-size="8.5" fill="#6c8ebf" font-weight="700" font-family="Consolas, 'Courier New', monospace">FK</text>
+<text x="950.0" y="170.0" font-size="10.5" fill="#1a1a1a" font-weight="400" font-family="Consolas, 'Courier New', monospace">id_anio</text>
+<text x="1113.0" y="170.0" font-size="9" fill="#5d6673" font-weight="400" text-anchor="end" font-family="Consolas, 'Courier New', monospace">INT</text>
+<line x1="906.0" y1="176.0" x2="1120.0" y2="176.0" stroke="#dde3ea" stroke-width="1"/>
+<text x="950.0" y="189.0" font-size="10.5" fill="#1a1a1a" font-weight="400" font-family="Consolas, 'Courier New', monospace">numero_semestre</text>
+<text x="1113.0" y="189.0" font-size="9" fill="#5d6673" font-weight="400" text-anchor="end" font-family="Consolas, 'Courier New', monospace">SMALLINT</text>
+<rect x="1164.0" y="112.0" width="214.0" height="64.0" rx="0" fill="#ffffff" stroke="#9673a6" stroke-width="1.2"/>
+<rect x="1164.0" y="112.0" width="214.0" height="26.0" rx="0" fill="#e1d5e7" stroke="#9673a6" stroke-width="1.2"/>
+<text x="1271.0" y="129.0" font-size="11.5" fill="#1a1a1a" font-weight="700" text-anchor="middle">dim_anio</text>
+<text x="1171.0" y="151.0" font-size="8.5" fill="#b85450" font-weight="700" font-family="Consolas, 'Courier New', monospace">PK</text>
+<text x="1208.0" y="151.0" font-size="10.5" fill="#1a1a1a" font-weight="700" font-family="Consolas, 'Courier New', monospace">id_anio</text>
+<text x="1371.0" y="151.0" font-size="9" fill="#5d6673" font-weight="400" text-anchor="end" font-family="Consolas, 'Courier New', monospace">INT</text>
+<line x1="1164.0" y1="157.0" x2="1378.0" y2="157.0" stroke="#dde3ea" stroke-width="1"/>
+<text x="1208.0" y="170.0" font-size="10.5" fill="#1a1a1a" font-weight="400" font-family="Consolas, 'Courier New', monospace">anio</text>
+<text x="1371.0" y="170.0" font-size="9" fill="#5d6673" font-weight="400" text-anchor="end" font-family="Consolas, 'Courier New', monospace">SMALLINT</text>
+<path d="M 755.0 332.0 L 760.0 420.0" fill="none" stroke="#6c8ebf" stroke-width="1.2" stroke-linecap="butt" stroke-linejoin="miter"/>
+<line x1="759.5" y1="341.0" x2="750.5" y2="341.0" stroke="#6c8ebf" stroke-width="1.4"/>
+<line x1="760.0" y1="420.0" x2="765.0" y2="410.0" stroke="#6c8ebf" stroke-width="1.2"/>
+<line x1="760.0" y1="420.0" x2="760.0" y2="410.0" stroke="#6c8ebf" stroke-width="1.2"/>
+<line x1="760.0" y1="420.0" x2="755.0" y2="410.0" stroke="#6c8ebf" stroke-width="1.2"/>
+<path d="M 755.0 195.0 L 755.0 230.0" fill="none" stroke="#6c8ebf" stroke-width="1.2" stroke-linecap="butt" stroke-linejoin="miter"/>
+<line x1="759.5" y1="204.0" x2="750.5" y2="204.0" stroke="#6c8ebf" stroke-width="1.4"/>
+<line x1="755.0" y1="230.0" x2="760.0" y2="220.0" stroke="#6c8ebf" stroke-width="1.2"/>
+<line x1="755.0" y1="230.0" x2="755.0" y2="220.0" stroke="#6c8ebf" stroke-width="1.2"/>
+<line x1="755.0" y1="230.0" x2="750.0" y2="220.0" stroke="#6c8ebf" stroke-width="1.2"/>
+<path d="M 906.0 152.0 L 862.0 152.0" fill="none" stroke="#6c8ebf" stroke-width="1.2" stroke-linecap="butt" stroke-linejoin="miter"/>
+<line x1="897.0" y1="156.5" x2="897.0" y2="147.5" stroke="#6c8ebf" stroke-width="1.4"/>
+<line x1="862.0" y1="152.0" x2="872.0" y2="157.0" stroke="#6c8ebf" stroke-width="1.2"/>
+<line x1="862.0" y1="152.0" x2="872.0" y2="152.0" stroke="#6c8ebf" stroke-width="1.2"/>
+<line x1="862.0" y1="152.0" x2="872.0" y2="147.0" stroke="#6c8ebf" stroke-width="1.2"/>
+<path d="M 1164.0 152.0 L 1120.0 152.0" fill="none" stroke="#6c8ebf" stroke-width="1.2" stroke-linecap="butt" stroke-linejoin="miter"/>
+<line x1="1155.0" y1="156.5" x2="1155.0" y2="147.5" stroke="#6c8ebf" stroke-width="1.4"/>
+<line x1="1120.0" y1="152.0" x2="1130.0" y2="157.0" stroke="#6c8ebf" stroke-width="1.2"/>
+<line x1="1120.0" y1="152.0" x2="1130.0" y2="152.0" stroke="#6c8ebf" stroke-width="1.2"/>
+<line x1="1120.0" y1="152.0" x2="1130.0" y2="147.0" stroke="#6c8ebf" stroke-width="1.2"/>
+<rect x="330.0" y="420.0" width="216.0" height="102.0" rx="0" fill="#ffffff" stroke="#6c8ebf" stroke-width="1.2"/>
+<rect x="330.0" y="420.0" width="216.0" height="26.0" rx="0" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1.2"/>
+<text x="438.0" y="437.0" font-size="11.5" fill="#1a1a1a" font-weight="700" text-anchor="middle">dim_territorio</text>
+<text x="337.0" y="459.0" font-size="8.5" fill="#b85450" font-weight="700" font-family="Consolas, 'Courier New', monospace">PK</text>
+<text x="374.0" y="459.0" font-size="10.5" fill="#1a1a1a" font-weight="700" font-family="Consolas, 'Courier New', monospace">id_territorio</text>
+<text x="539.0" y="459.0" font-size="9" fill="#5d6673" font-weight="400" text-anchor="end" font-family="Consolas, 'Courier New', monospace">INT</text>
+<line x1="330.0" y1="465.0" x2="546.0" y2="465.0" stroke="#dde3ea" stroke-width="1"/>
+<text x="337.0" y="478.0" font-size="8.5" fill="#6c8ebf" font-weight="700" font-family="Consolas, 'Courier New', monospace">FK</text>
+<text x="374.0" y="478.0" font-size="10.5" fill="#1a1a1a" font-weight="400" font-family="Consolas, 'Courier New', monospace">id_comuna</text>
+<text x="539.0" y="478.0" font-size="9" fill="#5d6673" font-weight="400" text-anchor="end" font-family="Consolas, 'Courier New', monospace">INT</text>
+<line x1="330.0" y1="484.0" x2="546.0" y2="484.0" stroke="#dde3ea" stroke-width="1"/>
+<text x="374.0" y="497.0" font-size="10.5" fill="#1a1a1a" font-weight="400" font-family="Consolas, 'Courier New', monospace">unidad_vecinal</text>
+<text x="539.0" y="497.0" font-size="9" fill="#5d6673" font-weight="400" text-anchor="end" font-family="Consolas, 'Courier New', monospace">VARCHAR(120)</text>
+<line x1="330.0" y1="503.0" x2="546.0" y2="503.0" stroke="#dde3ea" stroke-width="1"/>
+<text x="374.0" y="516.0" font-size="10.5" fill="#1a1a1a" font-weight="400" font-family="Consolas, 'Courier New', monospace">tipo_recinto</text>
+<text x="539.0" y="516.0" font-size="9" fill="#5d6673" font-weight="400" text-anchor="end" font-family="Consolas, 'Courier New', monospace">VARCHAR(80)</text>
+<rect x="70.0" y="420.0" width="214.0" height="83.0" rx="0" fill="#ffffff" stroke="#9673a6" stroke-width="1.2"/>
+<rect x="70.0" y="420.0" width="214.0" height="26.0" rx="0" fill="#e1d5e7" stroke="#9673a6" stroke-width="1.2"/>
+<text x="177.0" y="437.0" font-size="11.5" fill="#1a1a1a" font-weight="700" text-anchor="middle">dim_comuna</text>
+<text x="77.0" y="459.0" font-size="8.5" fill="#b85450" font-weight="700" font-family="Consolas, 'Courier New', monospace">PK</text>
+<text x="114.0" y="459.0" font-size="10.5" fill="#1a1a1a" font-weight="700" font-family="Consolas, 'Courier New', monospace">id_comuna</text>
+<text x="277.0" y="459.0" font-size="9" fill="#5d6673" font-weight="400" text-anchor="end" font-family="Consolas, 'Courier New', monospace">INT</text>
+<line x1="70.0" y1="465.0" x2="284.0" y2="465.0" stroke="#dde3ea" stroke-width="1"/>
+<text x="77.0" y="478.0" font-size="8.5" fill="#6c8ebf" font-weight="700" font-family="Consolas, 'Courier New', monospace">FK</text>
+<text x="114.0" y="478.0" font-size="10.5" fill="#1a1a1a" font-weight="400" font-family="Consolas, 'Courier New', monospace">id_region</text>
+<text x="277.0" y="478.0" font-size="9" fill="#5d6673" font-weight="400" text-anchor="end" font-family="Consolas, 'Courier New', monospace">INT</text>
+<line x1="70.0" y1="484.0" x2="284.0" y2="484.0" stroke="#dde3ea" stroke-width="1"/>
+<text x="114.0" y="497.0" font-size="10.5" fill="#1a1a1a" font-weight="400" font-family="Consolas, 'Courier New', monospace">nombre_comuna</text>
+<text x="277.0" y="497.0" font-size="9" fill="#5d6673" font-weight="400" text-anchor="end" font-family="Consolas, 'Courier New', monospace">VARCHAR(80)</text>
+<rect x="70.0" y="285.0" width="214.0" height="64.0" rx="0" fill="#ffffff" stroke="#9673a6" stroke-width="1.2"/>
+<rect x="70.0" y="285.0" width="214.0" height="26.0" rx="0" fill="#e1d5e7" stroke="#9673a6" stroke-width="1.2"/>
+<text x="177.0" y="302.0" font-size="11.5" fill="#1a1a1a" font-weight="700" text-anchor="middle">dim_region</text>
+<text x="77.0" y="324.0" font-size="8.5" fill="#b85450" font-weight="700" font-family="Consolas, 'Courier New', monospace">PK</text>
+<text x="114.0" y="324.0" font-size="10.5" fill="#1a1a1a" font-weight="700" font-family="Consolas, 'Courier New', monospace">id_region</text>
+<text x="277.0" y="324.0" font-size="9" fill="#5d6673" font-weight="400" text-anchor="end" font-family="Consolas, 'Courier New', monospace">INT</text>
+<line x1="70.0" y1="330.0" x2="284.0" y2="330.0" stroke="#dde3ea" stroke-width="1"/>
+<text x="114.0" y="343.0" font-size="10.5" fill="#1a1a1a" font-weight="400" font-family="Consolas, 'Courier New', monospace">nombre_region</text>
+<text x="277.0" y="343.0" font-size="9" fill="#5d6673" font-weight="400" text-anchor="end" font-family="Consolas, 'Courier New', monospace">VARCHAR(80)</text>
+<path d="M 544.0 460.0 L 620.0 460.0" fill="none" stroke="#6c8ebf" stroke-width="1.2" stroke-linecap="butt" stroke-linejoin="miter"/>
+<line x1="553.0" y1="455.5" x2="553.0" y2="464.5" stroke="#6c8ebf" stroke-width="1.4"/>
+<line x1="620.0" y1="460.0" x2="610.0" y2="455.0" stroke="#6c8ebf" stroke-width="1.2"/>
+<line x1="620.0" y1="460.0" x2="610.0" y2="460.0" stroke="#6c8ebf" stroke-width="1.2"/>
+<line x1="620.0" y1="460.0" x2="610.0" y2="465.0" stroke="#6c8ebf" stroke-width="1.2"/>
+<path d="M 284.0 460.0 L 330.0 460.0" fill="none" stroke="#6c8ebf" stroke-width="1.2" stroke-linecap="butt" stroke-linejoin="miter"/>
+<line x1="293.0" y1="455.5" x2="293.0" y2="464.5" stroke="#6c8ebf" stroke-width="1.4"/>
+<line x1="330.0" y1="460.0" x2="320.0" y2="455.0" stroke="#6c8ebf" stroke-width="1.2"/>
+<line x1="330.0" y1="460.0" x2="320.0" y2="460.0" stroke="#6c8ebf" stroke-width="1.2"/>
+<line x1="330.0" y1="460.0" x2="320.0" y2="465.0" stroke="#6c8ebf" stroke-width="1.2"/>
+<path d="M 177.0 349.0 L 177.0 420.0" fill="none" stroke="#6c8ebf" stroke-width="1.2" stroke-linecap="butt" stroke-linejoin="miter"/>
+<line x1="181.5" y1="358.0" x2="172.5" y2="358.0" stroke="#6c8ebf" stroke-width="1.4"/>
+<line x1="177.0" y1="420.0" x2="182.0" y2="410.0" stroke="#6c8ebf" stroke-width="1.2"/>
+<line x1="177.0" y1="420.0" x2="177.0" y2="410.0" stroke="#6c8ebf" stroke-width="1.2"/>
+<line x1="177.0" y1="420.0" x2="172.0" y2="410.0" stroke="#6c8ebf" stroke-width="1.2"/>
+<rect x="1024.0" y="420.0" width="228.6" height="102.0" rx="0" fill="#ffffff" stroke="#6c8ebf" stroke-width="1.2"/>
+<rect x="1024.0" y="420.0" width="228.6" height="26.0" rx="0" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1.2"/>
+<text x="1138.3" y="437.0" font-size="11.5" fill="#1a1a1a" font-weight="700" text-anchor="middle">dim_taller</text>
+<text x="1031.0" y="459.0" font-size="8.5" fill="#b85450" font-weight="700" font-family="Consolas, 'Courier New', monospace">PK</text>
+<text x="1068.0" y="459.0" font-size="10.5" fill="#1a1a1a" font-weight="700" font-family="Consolas, 'Courier New', monospace">id_taller</text>
+<text x="1245.6" y="459.0" font-size="9" fill="#5d6673" font-weight="400" text-anchor="end" font-family="Consolas, 'Courier New', monospace">INT</text>
+<line x1="1024.0" y1="465.0" x2="1252.6" y2="465.0" stroke="#dde3ea" stroke-width="1"/>
+<text x="1031.0" y="478.0" font-size="8.5" fill="#6c8ebf" font-weight="700" font-family="Consolas, 'Courier New', monospace">FK</text>
+<text x="1068.0" y="478.0" font-size="10.5" fill="#1a1a1a" font-weight="400" font-family="Consolas, 'Courier New', monospace">id_proyecto</text>
+<text x="1245.6" y="478.0" font-size="9" fill="#5d6673" font-weight="400" text-anchor="end" font-family="Consolas, 'Courier New', monospace">INT</text>
+<line x1="1024.0" y1="484.0" x2="1252.6" y2="484.0" stroke="#dde3ea" stroke-width="1"/>
+<text x="1068.0" y="497.0" font-size="10.5" fill="#1a1a1a" font-weight="400" font-family="Consolas, 'Courier New', monospace">nombre_actividad</text>
+<text x="1245.6" y="497.0" font-size="9" fill="#5d6673" font-weight="400" text-anchor="end" font-family="Consolas, 'Courier New', monospace">VARCHAR(160)</text>
+<line x1="1024.0" y1="503.0" x2="1252.6" y2="503.0" stroke="#dde3ea" stroke-width="1"/>
+<text x="1068.0" y="516.0" font-size="10.5" fill="#1a1a1a" font-weight="400" font-family="Consolas, 'Courier New', monospace">cupos_maximos</text>
+<text x="1245.6" y="516.0" font-size="9" fill="#5d6673" font-weight="400" text-anchor="end" font-family="Consolas, 'Courier New', monospace">INT</text>
+<rect x="1282.0" y="420.0" width="247.5" height="102.0" rx="0" fill="#ffffff" stroke="#9673a6" stroke-width="1.2"/>
+<rect x="1282.0" y="420.0" width="247.5" height="26.0" rx="0" fill="#e1d5e7" stroke="#9673a6" stroke-width="1.2"/>
+<text x="1405.8" y="437.0" font-size="11.5" fill="#1a1a1a" font-weight="700" text-anchor="middle">dim_proyecto</text>
+<text x="1289.0" y="459.0" font-size="8.5" fill="#b85450" font-weight="700" font-family="Consolas, 'Courier New', monospace">PK</text>
+<text x="1326.0" y="459.0" font-size="10.5" fill="#1a1a1a" font-weight="700" font-family="Consolas, 'Courier New', monospace">id_proyecto</text>
+<text x="1522.5" y="459.0" font-size="9" fill="#5d6673" font-weight="400" text-anchor="end" font-family="Consolas, 'Courier New', monospace">INT</text>
+<line x1="1282.0" y1="465.0" x2="1529.5" y2="465.0" stroke="#dde3ea" stroke-width="1"/>
+<text x="1289.0" y="478.0" font-size="8.5" fill="#6c8ebf" font-weight="700" font-family="Consolas, 'Courier New', monospace">FK</text>
+<text x="1326.0" y="478.0" font-size="10.5" fill="#1a1a1a" font-weight="400" font-family="Consolas, 'Courier New', monospace">id_area</text>
+<text x="1522.5" y="478.0" font-size="9" fill="#5d6673" font-weight="400" text-anchor="end" font-family="Consolas, 'Courier New', monospace">INT</text>
+<line x1="1282.0" y1="484.0" x2="1529.5" y2="484.0" stroke="#dde3ea" stroke-width="1"/>
+<text x="1326.0" y="497.0" font-size="10.5" fill="#1a1a1a" font-weight="400" font-family="Consolas, 'Courier New', monospace">nombre_proyecto</text>
+<text x="1522.5" y="497.0" font-size="9" fill="#5d6673" font-weight="400" text-anchor="end" font-family="Consolas, 'Courier New', monospace">VARCHAR(160)</text>
+<line x1="1282.0" y1="503.0" x2="1529.5" y2="503.0" stroke="#dde3ea" stroke-width="1"/>
+<text x="1326.0" y="516.0" font-size="10.5" fill="#1a1a1a" font-weight="400" font-family="Consolas, 'Courier New', monospace">docente_coordinador</text>
+<text x="1522.5" y="516.0" font-size="9" fill="#5d6673" font-weight="400" text-anchor="end" font-family="Consolas, 'Courier New', monospace">VARCHAR(120)</text>
+<rect x="1282.0" y="285.0" width="214.0" height="64.0" rx="0" fill="#ffffff" stroke="#9673a6" stroke-width="1.2"/>
+<rect x="1282.0" y="285.0" width="214.0" height="26.0" rx="0" fill="#e1d5e7" stroke="#9673a6" stroke-width="1.2"/>
+<text x="1389.0" y="302.0" font-size="11.5" fill="#1a1a1a" font-weight="700" text-anchor="middle">dim_area_tematica</text>
+<text x="1289.0" y="324.0" font-size="8.5" fill="#b85450" font-weight="700" font-family="Consolas, 'Courier New', monospace">PK</text>
+<text x="1326.0" y="324.0" font-size="10.5" fill="#1a1a1a" font-weight="700" font-family="Consolas, 'Courier New', monospace">id_area</text>
+<text x="1489.0" y="324.0" font-size="9" fill="#5d6673" font-weight="400" text-anchor="end" font-family="Consolas, 'Courier New', monospace">INT</text>
+<line x1="1282.0" y1="330.0" x2="1496.0" y2="330.0" stroke="#dde3ea" stroke-width="1"/>
+<text x="1326.0" y="343.0" font-size="10.5" fill="#1a1a1a" font-weight="400" font-family="Consolas, 'Courier New', monospace">area_tematica</text>
+<text x="1489.0" y="343.0" font-size="9" fill="#5d6673" font-weight="400" text-anchor="end" font-family="Consolas, 'Courier New', monospace">VARCHAR(80)</text>
+<path d="M 1024.0 460.0 L 900.0 460.0" fill="none" stroke="#6c8ebf" stroke-width="1.2" stroke-linecap="butt" stroke-linejoin="miter"/>
+<line x1="1015.0" y1="464.5" x2="1015.0" y2="455.5" stroke="#6c8ebf" stroke-width="1.4"/>
+<line x1="900.0" y1="460.0" x2="910.0" y2="465.0" stroke="#6c8ebf" stroke-width="1.2"/>
+<line x1="900.0" y1="460.0" x2="910.0" y2="460.0" stroke="#6c8ebf" stroke-width="1.2"/>
+<line x1="900.0" y1="460.0" x2="910.0" y2="455.0" stroke="#6c8ebf" stroke-width="1.2"/>
+<path d="M 1282.0 460.0 L 1238.0 460.0" fill="none" stroke="#6c8ebf" stroke-width="1.2" stroke-linecap="butt" stroke-linejoin="miter"/>
+<line x1="1273.0" y1="464.5" x2="1273.0" y2="455.5" stroke="#6c8ebf" stroke-width="1.4"/>
+<line x1="1238.0" y1="460.0" x2="1248.0" y2="465.0" stroke="#6c8ebf" stroke-width="1.2"/>
+<line x1="1238.0" y1="460.0" x2="1248.0" y2="460.0" stroke="#6c8ebf" stroke-width="1.2"/>
+<line x1="1238.0" y1="460.0" x2="1248.0" y2="455.0" stroke="#6c8ebf" stroke-width="1.2"/>
+<path d="M 1389.0 349.0 L 1389.0 420.0" fill="none" stroke="#6c8ebf" stroke-width="1.2" stroke-linecap="butt" stroke-linejoin="miter"/>
+<line x1="1393.5" y1="358.0" x2="1384.5" y2="358.0" stroke="#6c8ebf" stroke-width="1.4"/>
+<line x1="1389.0" y1="420.0" x2="1394.0" y2="410.0" stroke="#6c8ebf" stroke-width="1.2"/>
+<line x1="1389.0" y1="420.0" x2="1389.0" y2="410.0" stroke="#6c8ebf" stroke-width="1.2"/>
+<line x1="1389.0" y1="420.0" x2="1384.0" y2="410.0" stroke="#6c8ebf" stroke-width="1.2"/>
+<rect x="330.0" y="680.0" width="261.0" height="102.0" rx="0" fill="#ffffff" stroke="#6c8ebf" stroke-width="1.2"/>
+<rect x="330.0" y="680.0" width="261.0" height="26.0" rx="0" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1.2"/>
+<text x="460.5" y="697.0" font-size="11.5" fill="#1a1a1a" font-weight="700" text-anchor="middle">dim_participante</text>
+<text x="337.0" y="719.0" font-size="8.5" fill="#b85450" font-weight="700" font-family="Consolas, 'Courier New', monospace">PK</text>
+<text x="374.0" y="719.0" font-size="10.5" fill="#1a1a1a" font-weight="700" font-family="Consolas, 'Courier New', monospace">id_participante</text>
+<text x="584.0" y="719.0" font-size="9" fill="#5d6673" font-weight="400" text-anchor="end" font-family="Consolas, 'Courier New', monospace">INT</text>
+<line x1="330.0" y1="725.0" x2="591.0" y2="725.0" stroke="#dde3ea" stroke-width="1"/>
+<text x="374.0" y="738.0" font-size="10.5" fill="#1a1a1a" font-weight="400" font-family="Consolas, 'Courier New', monospace">tipo_participante</text>
+<text x="584.0" y="738.0" font-size="9" fill="#5d6673" font-weight="400" text-anchor="end" font-family="Consolas, 'Courier New', monospace">VARCHAR(50)</text>
+<line x1="330.0" y1="744.0" x2="591.0" y2="744.0" stroke="#dde3ea" stroke-width="1"/>
+<text x="374.0" y="757.0" font-size="10.5" fill="#1a1a1a" font-weight="400" font-family="Consolas, 'Courier New', monospace">estado_inscripcion</text>
+<text x="584.0" y="757.0" font-size="9" fill="#5d6673" font-weight="400" text-anchor="end" font-family="Consolas, 'Courier New', monospace">VARCHAR(50)</text>
+<line x1="330.0" y1="763.0" x2="591.0" y2="763.0" stroke="#dde3ea" stroke-width="1"/>
+<text x="374.0" y="776.0" font-size="10.5" fill="#1a1a1a" font-weight="400" font-family="Consolas, 'Courier New', monospace">rango_edad_referencial</text>
+<text x="584.0" y="776.0" font-size="9" fill="#5d6673" font-weight="400" text-anchor="end" font-family="Consolas, 'Courier New', monospace">VARCHAR(50)</text>
+<rect x="1024.0" y="680.0" width="214.0" height="83.0" rx="0" fill="#ffffff" stroke="#6c8ebf" stroke-width="1.2"/>
+<rect x="1024.0" y="680.0" width="214.0" height="26.0" rx="0" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1.2"/>
+<text x="1131.0" y="697.0" font-size="11.5" fill="#1a1a1a" font-weight="700" text-anchor="middle">dim_conectividad</text>
+<text x="1031.0" y="719.0" font-size="8.5" fill="#b85450" font-weight="700" font-family="Consolas, 'Courier New', monospace">PK</text>
+<text x="1068.0" y="719.0" font-size="10.5" fill="#1a1a1a" font-weight="700" font-family="Consolas, 'Courier New', monospace">id_conectividad</text>
+<text x="1231.0" y="719.0" font-size="9" fill="#5d6673" font-weight="400" text-anchor="end" font-family="Consolas, 'Courier New', monospace">INT</text>
+<line x1="1024.0" y1="725.0" x2="1238.0" y2="725.0" stroke="#dde3ea" stroke-width="1"/>
+<text x="1068.0" y="738.0" font-size="10.5" fill="#1a1a1a" font-weight="400" font-family="Consolas, 'Courier New', monospace">modo_registro</text>
+<text x="1231.0" y="738.0" font-size="9" fill="#5d6673" font-weight="400" text-anchor="end" font-family="Consolas, 'Courier New', monospace">VARCHAR(50)</text>
+<line x1="1024.0" y1="744.0" x2="1238.0" y2="744.0" stroke="#dde3ea" stroke-width="1"/>
+<text x="1068.0" y="757.0" font-size="10.5" fill="#1a1a1a" font-weight="400" font-family="Consolas, 'Courier New', monospace">protocolo_sync</text>
+<text x="1231.0" y="757.0" font-size="9" fill="#5d6673" font-weight="400" text-anchor="end" font-family="Consolas, 'Courier New', monospace">VARCHAR(50)</text>
+<path d="M 544.0 710.0 L 704.0 629.0" fill="none" stroke="#6c8ebf" stroke-width="1.2" stroke-linecap="butt" stroke-linejoin="miter"/>
+<line x1="553.0" y1="705.5" x2="553.0" y2="714.5" stroke="#6c8ebf" stroke-width="1.4"/>
+<line x1="704.0" y1="629.0" x2="694.0" y2="624.0" stroke="#6c8ebf" stroke-width="1.2"/>
+<line x1="704.0" y1="629.0" x2="694.0" y2="629.0" stroke="#6c8ebf" stroke-width="1.2"/>
+<line x1="704.0" y1="629.0" x2="694.0" y2="634.0" stroke="#6c8ebf" stroke-width="1.2"/>
+<path d="M 1024.0 710.0 L 816.0 629.0" fill="none" stroke="#6c8ebf" stroke-width="1.2" stroke-linecap="butt" stroke-linejoin="miter"/>
+<line x1="1015.0" y1="714.5" x2="1015.0" y2="705.5" stroke="#6c8ebf" stroke-width="1.4"/>
+<line x1="816.0" y1="629.0" x2="826.0" y2="634.0" stroke="#6c8ebf" stroke-width="1.2"/>
+<line x1="816.0" y1="629.0" x2="826.0" y2="629.0" stroke="#6c8ebf" stroke-width="1.2"/>
+<line x1="816.0" y1="629.0" x2="826.0" y2="624.0" stroke="#6c8ebf" stroke-width="1.2"/>
+<path d="M 70.0 112.0 H 358.0 L 370.0 124.0 V 238.0 H 70.0 Z" fill="#fff2cc" stroke="#d6b656" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter"/>
+<path d="M 358.0 112.0 V 124.0 H 370.0 Z" fill="#ffffff" stroke="#d6b656" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" opacity="0.85"/>
+<text x="79.0" y="133.0" font-size="11" fill="#1a1a1a" font-weight="700">Qué cambia respecto a la estrella</text>
+<text x="79.0" y="149.0" font-size="11" fill="#1a1a1a" font-weight="400">Cada jerarquía se separa en tablas:</text>
+<text x="79.0" y="165.0" font-size="11" fill="#1a1a1a" font-weight="400">territorio → comuna → región,</text>
+<text x="79.0" y="181.0" font-size="11" fill="#1a1a1a" font-weight="400">taller → proyecto → área temática,</text>
+<text x="79.0" y="197.0" font-size="11" fill="#1a1a1a" font-weight="400">tiempo → mes → semestre → año.</text>
+<text x="79.0" y="213.0" font-size="11" fill="#1a1a1a" font-weight="400">Se repite menos texto, pero cada</text>
+<text x="79.0" y="229.0" font-size="11" fill="#1a1a1a" font-weight="400">consulta necesita más uniones.</text>
+<path d="M 620.0 790.0 H 938.0 L 950.0 802.0 V 916.0 H 620.0 Z" fill="#d5e8d4" stroke="#82b366" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter"/>
+<path d="M 938.0 790.0 V 802.0 H 950.0 Z" fill="#ffffff" stroke="#82b366" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" opacity="0.85"/>
+<text x="629.0" y="811.0" font-size="11" fill="#1a1a1a" font-weight="700">Cuál conviene</text>
+<text x="629.0" y="827.0" font-size="11" fill="#1a1a1a" font-weight="400">Estrella: consultas más simples y rápidas,</text>
+<text x="629.0" y="843.0" font-size="11" fill="#1a1a1a" font-weight="400">con datos repetidos en las dimensiones.</text>
+<text x="629.0" y="859.0" font-size="11" fill="#1a1a1a" font-weight="400">Copo de nieve: menos repetición y mejor</text>
+<text x="629.0" y="875.0" font-size="11" fill="#1a1a1a" font-weight="400">mantenimiento, con más JOIN por consulta.</text>
+<text x="629.0" y="891.0" font-size="11" fill="#1a1a1a" font-weight="400">Para los informes de Vinculación con el</text>
+<text x="629.0" y="907.0" font-size="11" fill="#1a1a1a" font-weight="400">Medio basta con la estrella.</text>
+<rect x="70.0" y="790.0" width="210.8" height="84.0" rx="3" fill="#ffffff" stroke="#9aa5b1" stroke-width="1" stroke-dasharray="4 3"/>
+<text x="80.0" y="808.0" font-size="10.5" fill="#5d6673" font-weight="700">Leyenda</text>
+<rect x="80.0" y="818.0" width="18.0" height="11.0" rx="2" fill="#ffe6cc" stroke="#d79b00" stroke-width="1"/>
+<text x="104.0" y="827.5" font-size="10.5" fill="#1a1a1a" font-weight="400">Tabla de hechos</text>
+<rect x="80.0" y="835.0" width="18.0" height="11.0" rx="2" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1"/>
+<text x="104.0" y="844.5" font-size="10.5" fill="#1a1a1a" font-weight="400">Dimensión principal</text>
+<rect x="80.0" y="852.0" width="18.0" height="11.0" rx="2" fill="#e1d5e7" stroke="#9673a6" stroke-width="1"/>
+<text x="104.0" y="861.5" font-size="10.5" fill="#1a1a1a" font-weight="400">Subdimensión de la jerarquía</text>
+<text x="1024.0" y="806.0" font-size="11" fill="#5d6673" font-weight="400">Las flechas van de la tabla padre (1)</text>
+<text x="1024.0" y="824.0" font-size="11" fill="#5d6673" font-weight="400">a la tabla hija (N), igual que las</text>
+<text x="1024.0" y="842.0" font-size="11" fill="#5d6673" font-weight="400">claves foráneas del script SQL.</text>
+</svg>

@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mockups y Modelos de BD | SyncPass (Duoc UC / Ticdgm)</title>
+  
+  <link rel="stylesheet" href="css/estilos.css">
+  <style>
+    /* Los dibujos se generan con tools/generar_mockups.py y
+       tools/generar_diagramas_bd.py. Esta página solo los muestra. */
+    .mockup-toolbar {
+      background: #315447; color: #fff; padding: 16px 24px; margin-bottom: 20px;
+      border-radius: 8px; display: flex; flex-wrap: wrap; align-items: center;
+      justify-content: space-between; gap: 16px;
+    }
+    .mockup-toolbar h1 { color: #fff; font-size: 20px; margin: 0; }
+    .mockup-toolbar p { font-size: 13px; color: #d4e2d3; margin: 4px 0 0; }
+    .view-selectors { display: flex; gap: 10px; flex-wrap: wrap; }
+    .btn-tab {
+      background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.3);
+      color: #fff; padding: 9px 16px; border-radius: 20px; cursor: pointer;
+      font-weight: 500; font-size: 13px; transition: all .2s;
+    }
+    .btn-tab[aria-pressed="true"], .btn-tab:hover:enabled {
+      background: #a76943; border-color: #a76943; color: #20382b; font-weight: 700;
+    }
+    .btn-tab:disabled { opacity: .4; cursor: not-allowed; }
+    .grupo-vistas { margin-bottom: 14px; }
+    .grupo-vistas h2 {
+      font-size: 12px; text-transform: uppercase; letter-spacing: .06em;
+      color: #64748b; margin: 0 0 6px;
+    }
+    .page-nav { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 6px; }
+    .page-tab {
+      background: #f1f5f9; border: 1px solid #cbd5e1; padding: 9px 16px; border-radius: 6px;
+      cursor: pointer; font-size: 13px; font-weight: 600; color: #334155; white-space: nowrap;
+    }
+    .page-tab[aria-selected="true"] { background: #315740; color: #fff; border-color: #315740; }
+    .page-tab.bd { background: #f5f3ff; border-color: #7c3aed; color: #7c3aed; }
+    .page-tab.bd[aria-selected="true"] { background: #7c3aed; color: #fff; }
+
+    .nota-modo {
+      font-size: 13px; color: #475569; background: #f1f5f9; border-left: 4px solid #315740;
+      border-radius: 6px; padding: 10px 14px; margin: 18px 0;
+    }
+    .lamina {
+      border: 1px solid #e2e8f0; border-radius: 10px; background: #fff; padding: 12px;
+      overflow-x: auto; box-shadow: 0 6px 18px rgba(15, 23, 42, .06); margin-bottom: 16px;
+    }
+    .lamina img { display: block; width: 100%; min-width: 720px; height: auto; }
+    .pie-lamina { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-bottom: 36px; }
+    .pie-lamina .ayuda { font-size: 13px; color: #64748b; margin: 0; }
+    @media (max-width: 900px) {
+      .mockup-toolbar { flex-direction: column; align-items: flex-start; }
+      .mockup-toolbar h1 { font-size: 17px; }
+    }
+    @media (pointer: coarse) { .btn-tab, .page-tab { min-height: 48px; } }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="contenedor cabecera">
+      <a class="marca" href="https://web-react-nu-nine.vercel.app/">
+        <span style="color: #315447; font-size: 24px; font-weight: 900;">SyncPass</span>
+        <span style="font-size: 13px; color: #64748b; font-weight: normal;">| CITT Plaza Vespucio</span>
+      </a>
+      <nav aria-label="Navegación principal">
+        <a href="https://web-react-nu-nine.vercel.app/">Aplicación Web</a>
+        <a href="mockups.html" aria-current="page">Mockups &amp; BD</a>
+        <a href="https://web-react-nu-nine.vercel.app/login">Login</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="contenedor" style="margin-top: 24px;">
+    <div class="mockup-toolbar">
+      <div>
+        <h1>Mockups y modelos de datos · Caso SyncPass</h1>
+        <p>Acreditación QR, encuestas inmediatas y modo offline-first (DSY1105 / DSY1104)</p>
+      </div>
+      <div class="view-selectors" role="group" aria-label="Formato del dispositivo">
+        <button class="btn-tab" id="modo-web" aria-pressed="true" onclick="setModo('web')">Escritorio</button>
+        <button class="btn-tab" id="modo-tablet" aria-pressed="false" onclick="setModo('tablet')">Tablet</button>
+        <button class="btn-tab" id="modo-movil" aria-pressed="false" onclick="setModo('movil')">Móvil Android</button>
+      </div>
+    </div>
+
+    <div class="grupo-vistas">
+      <h2>Vistas del sistema</h2>
+      <div class="page-nav" id="nav-vistas" role="tablist" aria-label="Vistas del sistema"></div>
+    </div>
+    <div class="grupo-vistas">
+      <h2>Una vista por rol (grupos de Cognito)</h2>
+      <div class="page-nav" id="nav-roles" role="tablist" aria-label="Vistas por rol"></div>
+    </div>
+    <div class="grupo-vistas">
+      <h2>CRUD, base de datos e infraestructura</h2>
+      <div class="page-nav" id="nav-datos" role="tablist" aria-label="CRUD y modelos de datos"></div>
+    </div>
+
+    <p class="nota-modo" id="nota"></p>
+
+    <div class="lamina">
+      <img id="dibujo" src="img/mockups/panel-web.svg" alt="Mockup del panel de talleres, versión escritorio">
+    </div>
+    <div class="pie-lamina">
+      <a class="button is-link" id="abrir" href="img/mockups/panel-web.svg" target="_blank" rel="noopener">
+        Abrir el dibujo en una pestaña
+      </a>
+      <a class="button is-link is-outlined" id="doc" href="docs/MOCKUPS.md" target="_blank" rel="noopener">
+        Ver la documentación escrita
+      </a>
+      <p class="ayuda" id="pie"></p>
+    </div>
+  </main>
+
+  <footer>
+    <div class="contenedor">
+      <p><strong>SyncPass — Acreditación QR y Vinculación Comunitaria</strong></p>
+      <p>Duoc UC · Escuela de Informática y Telecomunicaciones · CITT Plaza Vespucio</p>
+    </div>
+  </footer>
+
+  <script>
+    var TODAS = 'web tablet movil'.split(' ');
+    var VISTAS = {
+      panel: { grupo: 'vistas', tab: '1. Panel de talleres', doc: 'docs/MOCKUPS.md',
+        texto: 'Listado de actividades en terreno con su quórum. Es la entrada al resto del sistema.' },
+      login: { grupo: 'vistas', tab: '2. Login', doc: 'docs/COGNITO.md',
+        texto: 'La web envía las credenciales a la API en EC2; la API autentica en Cognito y devuelve la sesión con el grupo.' },
+      escaner: { grupo: 'vistas', tab: '3. Escáner QR', doc: 'docs/MOCKUPS.md',
+        texto: 'Reemplazo de la planilla de papel. Objetivo del caso: menos de 5 segundos por persona.' },
+      encuesta: { grupo: 'vistas', tab: '4. Encuesta 1-5', doc: 'docs/MOCKUPS.md',
+        texto: 'Se responde en el recinto al cerrar el taller, no por correo días después.' },
+      quorum: { grupo: 'vistas', tab: '5. Quórum en vivo', doc: 'docs/MOCKUPS.md',
+        texto: 'Marcaciones con hora y estado de sincronización. La validación GPS queda para la tercera evaluación.' },
+      sync: { grupo: 'vistas', tab: '6. Sincronización', doc: 'docs/RESPONSIVE.md',
+        texto: 'Offline-first: primero se guarda local (is_synced = 0) y después se envía por lote.' },
+
+      'rol-admin': { grupo: 'roles', tab: 'Administrador', formatos: ['web', 'tablet'],
+        doc: 'docs/COGNITO.md',
+        texto: 'Equipo administrativo: usuarios, grupos del user pool y estado del sistema.' },
+      'rol-coordinador': { grupo: 'roles', tab: 'Coordinador(a)', formatos: ['web', 'tablet'],
+        doc: 'docs/COGNITO.md',
+        texto: 'Docente o coordinador(a) de proyecto: talleres del período, monitores y reportes.' },
+      'rol-monitor': { grupo: 'roles', tab: 'Monitor', doc: 'docs/COGNITO.md',
+        texto: 'Estudiante voluntario en terreno: acreditar, encuestar y revisar la cola local.' },
+      'rol-participante': { grupo: 'roles', tab: 'Participante', doc: 'docs/COGNITO.md',
+        texto: 'Beneficiario comunitario: su código QR, sus talleres y sus encuestas pendientes.' },
+
+      'crud-proyectos': { grupo: 'datos', tab: 'CRUD API · Proyectos', bd: 'img/mockups/crud-proyectos-web.svg',
+        doc: 'docs/DEMO_EC2_JAR_POSTMAN.md',
+        texto: 'Primer mantenedor: crear, listar, editar y eliminar proyectos comunitarios con sesión de coordinador o administrador.' },
+      'crud-talleres': { grupo: 'datos', tab: 'CRUD API · Talleres', formatos: ['web', 'tablet'],
+        doc: 'docs/DEMO_EC2_JAR_POSTMAN.md',
+        texto: 'Alta, lectura, edición y baja de talleres contra la API REST desplegada en EC2.' },
+      'crud-local': { grupo: 'datos', tab: 'CRUD local · Borradores', doc: 'docs/ARQUITECTURA_FULLSTACK_MOBILE.md',
+        texto: 'Las mismas cuatro operaciones sobre la base del dispositivo, sin conexión.' },
+      relacional: { grupo: 'datos', tab: 'BD · Relacional', bd: 'img/dibujo-modelo-relacional.svg',
+        doc: 'docs/MODELO_BASE_DATOS.md',
+        texto: 'Ocho tablas en tercera forma normal, con las claves foráneas y las banderas is_synced.' },
+      estrella: { grupo: 'datos', tab: 'BD · Estrella', bd: 'img/dibujo-modelo-estrella.svg',
+        doc: 'docs/MODELO_ESTRELLA_COPO_NIEVE.md',
+        texto: 'Una tabla de hechos al centro y cinco dimensiones directas para los informes.' },
+      copo: { grupo: 'datos', tab: 'BD · Copo de nieve', bd: 'img/dibujo-modelo-copo-nieve.svg',
+        doc: 'docs/MODELO_ESTRELLA_COPO_NIEVE.md',
+        texto: 'Las mismas dimensiones, divididas en sus jerarquías: territorio, tiempo y área temática.' },
+      local: { grupo: 'datos', tab: 'BD · Base local', bd: 'img/dibujo-base-local.svg',
+        doc: 'docs/ARQUITECTURA_FULLSTACK_MOBILE.md',
+        texto: 'Room/SQLite e IndexedDB: las tablas del dispositivo y la cola de sincronización.' },
+      ec2: { grupo: 'datos', tab: 'Despliegue en EC2', bd: 'img/dibujo-despliegue-ec2.svg',
+        doc: 'docs/DEMO_EC2_JAR_POSTMAN.md',
+        texto: 'Clientes, Cognito, la instancia EC2 con la API y la base de datos dentro de la VPC.' }
+    };
+    var NOTA_MODO = {
+      web: 'Escritorio: la vista a 1280 px o más, con el menú lateral y las grillas en tres columnas.',
+      tablet: 'Tablet: la misma página a 820 px. El menú lateral pasa a pestañas y las grillas bajan a dos columnas.',
+      movil: 'Móvil: la app Android nativa en Kotlin con Jetpack Compose. Una columna y botones de 48 dp.'
+    };
+
+    var modo = 'web';
+    var vista = 'panel';
+
+    function formatosDe(v) { return VISTAS[v].formatos || TODAS; }
+    function esBD(v) { return !!VISTAS[v].bd; }
+
+    function pintar() {
+      var info = VISTAS[vista];
+      var disponibles = formatosDe(vista);
+      if (!esBD(vista) && disponibles.indexOf(modo) === -1) { modo = disponibles[0]; }
+      var src = esBD(vista) ? info.bd : 'img/mockups/' + vista + '-' + modo + '.svg';
+      var img = document.getElementById('dibujo');
+      img.src = src;
+      img.alt = 'Dibujo de ' + info.tab + (esBD(vista) ? '' : ', versión ' + modo);
+      document.getElementById('abrir').href = src;
+      document.getElementById('doc').href = info.doc;
+      document.getElementById('pie').textContent = info.texto;
+      document.getElementById('nota').textContent = esBD(vista)
+        ? 'Los modelos y el despliegue no cambian con el dispositivo: el mismo esquema sirve a la web, a la tablet y a la app móvil.'
+        : NOTA_MODO[modo];
+      TODAS.forEach(function (m) {
+        var boton = document.getElementById('modo-' + m);
+        boton.setAttribute('aria-pressed', String(m === modo && !esBD(vista)));
+        boton.disabled = esBD(vista) || disponibles.indexOf(m) === -1;
+      });
+      document.querySelectorAll('.page-tab').forEach(function (tab) {
+        tab.setAttribute('aria-selected', String(tab.dataset.vista === vista));
+      });
+    }
+
+    function setModo(m) { modo = m; pintar(); }
+    function setVista(v) { vista = v; pintar(); }
+
+    Object.keys(VISTAS).forEach(function (clave) {
+      var info = VISTAS[clave];
+      var boton = document.createElement('button');
+      boton.className = 'page-tab' + (esBD(clave) ? ' bd' : '');
+      boton.setAttribute('role', 'tab');
+      boton.dataset.vista = clave;
+      boton.textContent = info.tab;
+      boton.addEventListener('click', function () { setVista(clave); });
+      document.getElementById('nav-' + info.grupo).appendChild(boton);
+    });
+
+    pintar();
+  </script>
+</body>
+</html>
+

@@ -1,0 +1,297 @@
+{
+  "info": {
+    "name": "SyncPass - EC2, Cognito y Supabase",
+    "description": "Demostracion completa a traves de API Gateway -> JAR Spring Boot en EC2 -> Cognito y Supabase. Postman nunca llama a Cognito directamente: registro, confirmacion y login son endpoints de la API. Definir nuevo_usuario, nuevo_correo, nuevo_apodo, nueva_clave y codigo_verificacion como variables locales (no guardarlas en el repositorio).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{access_token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "https://hluamat8vg.execute-api.us-east-1.amazonaws.com"
+    },
+    {
+      "key": "evento_id",
+      "value": "1"
+    },
+    {
+      "key": "access_token",
+      "value": ""
+    },
+    {
+      "key": "refresh_token",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "00A Registrar usuario (API -> Cognito)",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"username\":\"{{nuevo_usuario}}\",\"email\":\"{{nuevo_correo}}\",\"nickname\":\"{{nuevo_apodo}}\",\"password\":\"{{nueva_clave}}\"}"
+        },
+        "url": "{{base_url}}/api/auth/register"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Cuenta creada por la API', function () { pm.response.to.have.status(201); });"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "00B Confirmar codigo del correo (API -> Cognito)",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"username\":\"{{nuevo_usuario}}\",\"code\":\"{{codigo_verificacion}}\"}"
+        },
+        "url": "{{base_url}}/api/auth/confirm"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Cuenta confirmada', function () { pm.response.to.have.status(204); });"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "00C Iniciar sesion (API -> Cognito)",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"username\":\"{{nuevo_usuario}}\",\"password\":\"{{nueva_clave}}\"}"
+        },
+        "url": "{{base_url}}/api/auth/login"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Login correcto', function () { pm.response.to.have.status(200); });",
+              "const t=pm.response.json(); pm.collectionVariables.set('access_token', t.accessToken); pm.collectionVariables.set('refresh_token', t.refreshToken);"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "00D Renovar token (API -> Cognito)",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"refreshToken\":\"{{refresh_token}}\"}"
+        },
+        "url": "{{base_url}}/api/auth/refresh"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Token renovado', function () { pm.response.to.have.status(200); });",
+              "pm.collectionVariables.set('access_token', pm.response.json().accessToken);"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "01 Salud del JAR en EC2",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "GET",
+        "url": "{{base_url}}/actuator/health"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('JAR operativo', function () { pm.response.to.have.status(200); });",
+              "pm.test('Spring Boot UP', function () { pm.expect(pm.response.json().status).to.eql('UP'); });"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "02 Talleres publicos desde Supabase",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "GET",
+        "url": "{{base_url}}/api/eventos"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Respuesta desde la base', function () { pm.response.to.have.status(200); });",
+              "pm.test('Lista JSON', function () { pm.expect(pm.response.json()).to.be.an('array'); });"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "03 Ruta protegida sin token",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "GET",
+        "url": "{{base_url}}/api/me"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Requiere iniciar sesion', function () { pm.response.to.have.status(401); });"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "04 Mi perfil con Cognito",
+      "request": {
+        "method": "GET",
+        "url": "{{base_url}}/api/me"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Token de acceso aceptado', function () { pm.response.to.have.status(200); });",
+              "pm.test('Cognito entrega sub y roles', function () { const body=pm.response.json(); pm.expect(body.sub).to.be.a('string'); pm.expect(body.roles).to.be.an('array'); });"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "05 Crear taller como administrador",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Taller de prueba Postman\",\n  \"descripcion\": \"Registro de demostracion academica\",\n  \"area\": \"Tecnologia\",\n  \"unidadVecinal\": \"Unidad Vecinal 1\",\n  \"comuna\": \"Santiago\",\n  \"direccion\": \"Sala de pruebas\",\n  \"fechaHora\": \"2026-11-01T10:00:00\",\n  \"docenteLider\": \"Docente de prueba\",\n  \"cuposMaximos\": 25\n}"
+        },
+        "url": "{{base_url}}/api/eventos"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Creado en Supabase', function () { pm.response.to.have.status(201); });",
+              "if (pm.response.code === 201) pm.collectionVariables.set('evento_id', pm.response.json().id);"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "06 Leer taller creado",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "GET",
+        "url": "{{base_url}}/api/eventos/{{evento_id}}"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Taller persistido', function () { pm.response.to.have.status(200); });"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    }
+  ]
+}

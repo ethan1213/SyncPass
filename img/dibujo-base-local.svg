@@ -1,0 +1,140 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 760" width="1400" height="760" role="img" aria-label="Base de datos local del dispositivo" font-family="Helvetica, 'Helvetica Neue', Arial, sans-serif">
+<title>Base de datos local del dispositivo</title>
+<rect width="1400" height="760" fill="#ffffff"/>
+<text x="24.0" y="32.0" font-size="17" fill="#1a1a1a" font-weight="700">SyncPass · Base de datos local del dispositivo</text>
+<text x="24.0" y="52.0" font-size="11.5" fill="#5d6673" font-weight="400">Room/SQLite en Android e IndexedDB en el navegador: donde vive el CRUD sin conexión</text>
+<rect x="1322.1" y="16.0" width="53.9" height="24.0" rx="3" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1"/>
+<text x="1349.0" y="32.0" font-size="11" fill="#1a1a1a" font-weight="700" text-anchor="middle">Local</text>
+<rect x="60.0" y="110.0" width="290.0" height="209.0" rx="0" fill="#ffffff" stroke="#6c8ebf" stroke-width="1.2"/>
+<rect x="60.0" y="110.0" width="290.0" height="38.0" rx="0" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1.2"/>
+<text x="205.0" y="125.0" font-size="11.5" fill="#1a1a1a" font-weight="700" text-anchor="middle">borrador_encuesta</text>
+<text x="205.0" y="138.0" font-size="9" fill="#5d6673" font-weight="400" text-anchor="middle">sobre esta tabla trabaja el CRUD local</text>
+<text x="67.0" y="161.0" font-size="8.5" fill="#b85450" font-weight="700" font-family="Consolas, 'Courier New', monospace">PK</text>
+<text x="104.0" y="161.0" font-size="10.5" fill="#1a1a1a" font-weight="700" font-family="Consolas, 'Courier New', monospace">id_local</text>
+<text x="343.0" y="161.0" font-size="9" fill="#5d6673" font-weight="400" text-anchor="end" font-family="Consolas, 'Courier New', monospace">INTEGER</text>
+<line x1="60.0" y1="167.0" x2="350.0" y2="167.0" stroke="#dde3ea" stroke-width="1"/>
+<text x="104.0" y="180.0" font-size="10.5" fill="#1a1a1a" font-weight="400" font-family="Consolas, 'Courier New', monospace">id_evento</text>
+<text x="343.0" y="180.0" font-size="9" fill="#5d6673" font-weight="400" text-anchor="end" font-family="Consolas, 'Courier New', monospace">INTEGER</text>
+<line x1="60.0" y1="186.0" x2="350.0" y2="186.0" stroke="#dde3ea" stroke-width="1"/>
+<text x="104.0" y="199.0" font-size="10.5" fill="#1a1a1a" font-weight="400" font-family="Consolas, 'Courier New', monospace">id_participante</text>
+<text x="343.0" y="199.0" font-size="9" fill="#5d6673" font-weight="400" text-anchor="end" font-family="Consolas, 'Courier New', monospace">TEXT</text>
+<line x1="60.0" y1="205.0" x2="350.0" y2="205.0" stroke="#dde3ea" stroke-width="1"/>
+<text x="104.0" y="218.0" font-size="10.5" fill="#1a1a1a" font-weight="400" font-family="Consolas, 'Courier New', monospace">satisfaccion_estrellas</text>
+<text x="343.0" y="218.0" font-size="9" fill="#5d6673" font-weight="400" text-anchor="end" font-family="Consolas, 'Courier New', monospace">INTEGER</text>
+<line x1="60.0" y1="224.0" x2="350.0" y2="224.0" stroke="#dde3ea" stroke-width="1"/>
+<text x="104.0" y="237.0" font-size="10.5" fill="#1a1a1a" font-weight="400" font-family="Consolas, 'Courier New', monospace">utilidad_taller</text>
+<text x="343.0" y="237.0" font-size="9" fill="#5d6673" font-weight="400" text-anchor="end" font-family="Consolas, 'Courier New', monospace">TEXT</text>
+<line x1="60.0" y1="243.0" x2="350.0" y2="243.0" stroke="#dde3ea" stroke-width="1"/>
+<text x="104.0" y="256.0" font-size="10.5" fill="#1a1a1a" font-weight="400" font-family="Consolas, 'Courier New', monospace">comentario</text>
+<text x="343.0" y="256.0" font-size="9" fill="#5d6673" font-weight="400" text-anchor="end" font-family="Consolas, 'Courier New', monospace">TEXT</text>
+<line x1="60.0" y1="262.0" x2="350.0" y2="262.0" stroke="#dde3ea" stroke-width="1"/>
+<text x="104.0" y="275.0" font-size="10.5" fill="#1a1a1a" font-weight="400" font-family="Consolas, 'Courier New', monospace">estado</text>
+<text x="343.0" y="275.0" font-size="9" fill="#5d6673" font-weight="400" text-anchor="end" font-family="Consolas, 'Courier New', monospace">TEXT</text>
+<line x1="60.0" y1="281.0" x2="350.0" y2="281.0" stroke="#dde3ea" stroke-width="1"/>
+<text x="104.0" y="294.0" font-size="10.5" fill="#1a1a1a" font-weight="400" font-family="Consolas, 'Courier New', monospace">actualizado_en</text>
+<text x="343.0" y="294.0" font-size="9" fill="#5d6673" font-weight="400" text-anchor="end" font-family="Consolas, 'Courier New', monospace">TEXT</text>
+<line x1="60.0" y1="300.0" x2="350.0" y2="300.0" stroke="#dde3ea" stroke-width="1"/>
+<text x="104.0" y="313.0" font-size="10.5" fill="#1a1a1a" font-weight="400" font-family="Consolas, 'Courier New', monospace">is_synced</text>
+<text x="343.0" y="313.0" font-size="9" fill="#5d6673" font-weight="400" text-anchor="end" font-family="Consolas, 'Courier New', monospace">INTEGER</text>
+<rect x="430.0" y="110.0" width="290.0" height="171.0" rx="0" fill="#ffffff" stroke="#6c8ebf" stroke-width="1.2"/>
+<rect x="430.0" y="110.0" width="290.0" height="38.0" rx="0" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1.2"/>
+<text x="575.0" y="125.0" font-size="11.5" fill="#1a1a1a" font-weight="700" text-anchor="middle">marcacion_local</text>
+<text x="575.0" y="138.0" font-size="9" fill="#5d6673" font-weight="400" text-anchor="middle">lecturas de QR hechas sin señal</text>
+<text x="437.0" y="161.0" font-size="8.5" fill="#b85450" font-weight="700" font-family="Consolas, 'Courier New', monospace">PK</text>
+<text x="474.0" y="161.0" font-size="10.5" fill="#1a1a1a" font-weight="700" font-family="Consolas, 'Courier New', monospace">id_local</text>
+<text x="713.0" y="161.0" font-size="9" fill="#5d6673" font-weight="400" text-anchor="end" font-family="Consolas, 'Courier New', monospace">INTEGER</text>
+<line x1="430.0" y1="167.0" x2="720.0" y2="167.0" stroke="#dde3ea" stroke-width="1"/>
+<text x="474.0" y="180.0" font-size="10.5" fill="#1a1a1a" font-weight="400" font-family="Consolas, 'Courier New', monospace">id_evento</text>
+<text x="713.0" y="180.0" font-size="9" fill="#5d6673" font-weight="400" text-anchor="end" font-family="Consolas, 'Courier New', monospace">INTEGER</text>
+<line x1="430.0" y1="186.0" x2="720.0" y2="186.0" stroke="#dde3ea" stroke-width="1"/>
+<text x="474.0" y="199.0" font-size="10.5" fill="#1a1a1a" font-weight="400" font-family="Consolas, 'Courier New', monospace">id_participante</text>
+<text x="713.0" y="199.0" font-size="9" fill="#5d6673" font-weight="400" text-anchor="end" font-family="Consolas, 'Courier New', monospace">TEXT</text>
+<line x1="430.0" y1="205.0" x2="720.0" y2="205.0" stroke="#dde3ea" stroke-width="1"/>
+<text x="474.0" y="218.0" font-size="10.5" fill="#1a1a1a" font-weight="400" font-family="Consolas, 'Courier New', monospace">timestamp_marcacion</text>
+<text x="713.0" y="218.0" font-size="9" fill="#5d6673" font-weight="400" text-anchor="end" font-family="Consolas, 'Courier New', monospace">TEXT</text>
+<line x1="430.0" y1="224.0" x2="720.0" y2="224.0" stroke="#dde3ea" stroke-width="1"/>
+<text x="474.0" y="237.0" font-size="10.5" fill="#1a1a1a" font-weight="400" font-family="Consolas, 'Courier New', monospace">latitud</text>
+<text x="713.0" y="237.0" font-size="9" fill="#5d6673" font-weight="400" text-anchor="end" font-family="Consolas, 'Courier New', monospace">REAL</text>
+<line x1="430.0" y1="243.0" x2="720.0" y2="243.0" stroke="#dde3ea" stroke-width="1"/>
+<text x="474.0" y="256.0" font-size="10.5" fill="#1a1a1a" font-weight="400" font-family="Consolas, 'Courier New', monospace">longitud</text>
+<text x="713.0" y="256.0" font-size="9" fill="#5d6673" font-weight="400" text-anchor="end" font-family="Consolas, 'Courier New', monospace">REAL</text>
+<line x1="430.0" y1="262.0" x2="720.0" y2="262.0" stroke="#dde3ea" stroke-width="1"/>
+<text x="474.0" y="275.0" font-size="10.5" fill="#1a1a1a" font-weight="400" font-family="Consolas, 'Courier New', monospace">is_synced</text>
+<text x="713.0" y="275.0" font-size="9" fill="#5d6673" font-weight="400" text-anchor="end" font-family="Consolas, 'Courier New', monospace">INTEGER</text>
+<rect x="230.0" y="400.0" width="290.0" height="152.0" rx="0" fill="#ffffff" stroke="#d79b00" stroke-width="1.2"/>
+<rect x="230.0" y="400.0" width="290.0" height="38.0" rx="0" fill="#ffe6cc" stroke="#d79b00" stroke-width="1.2"/>
+<text x="375.0" y="415.0" font-size="11.5" fill="#1a1a1a" font-weight="700" text-anchor="middle">cola_sync</text>
+<text x="375.0" y="428.0" font-size="9" fill="#5d6673" font-weight="400" text-anchor="middle">qué falta enviar y cuántos intentos lleva</text>
+<text x="237.0" y="451.0" font-size="8.5" fill="#b85450" font-weight="700" font-family="Consolas, 'Courier New', monospace">PK</text>
+<text x="274.0" y="451.0" font-size="10.5" fill="#1a1a1a" font-weight="700" font-family="Consolas, 'Courier New', monospace">id_cola</text>
+<text x="513.0" y="451.0" font-size="9" fill="#5d6673" font-weight="400" text-anchor="end" font-family="Consolas, 'Courier New', monospace">INTEGER</text>
+<line x1="230.0" y1="457.0" x2="520.0" y2="457.0" stroke="#dde3ea" stroke-width="1"/>
+<text x="274.0" y="470.0" font-size="10.5" fill="#1a1a1a" font-weight="400" font-family="Consolas, 'Courier New', monospace">tabla_origen</text>
+<text x="513.0" y="470.0" font-size="9" fill="#5d6673" font-weight="400" text-anchor="end" font-family="Consolas, 'Courier New', monospace">TEXT</text>
+<line x1="230.0" y1="476.0" x2="520.0" y2="476.0" stroke="#dde3ea" stroke-width="1"/>
+<text x="274.0" y="489.0" font-size="10.5" fill="#1a1a1a" font-weight="400" font-family="Consolas, 'Courier New', monospace">id_local</text>
+<text x="513.0" y="489.0" font-size="9" fill="#5d6673" font-weight="400" text-anchor="end" font-family="Consolas, 'Courier New', monospace">INTEGER</text>
+<line x1="230.0" y1="495.0" x2="520.0" y2="495.0" stroke="#dde3ea" stroke-width="1"/>
+<text x="274.0" y="508.0" font-size="10.5" fill="#1a1a1a" font-weight="400" font-family="Consolas, 'Courier New', monospace">operacion</text>
+<text x="513.0" y="508.0" font-size="9" fill="#5d6673" font-weight="400" text-anchor="end" font-family="Consolas, 'Courier New', monospace">TEXT</text>
+<line x1="230.0" y1="514.0" x2="520.0" y2="514.0" stroke="#dde3ea" stroke-width="1"/>
+<text x="274.0" y="527.0" font-size="10.5" fill="#1a1a1a" font-weight="400" font-family="Consolas, 'Courier New', monospace">intentos</text>
+<text x="513.0" y="527.0" font-size="9" fill="#5d6673" font-weight="400" text-anchor="end" font-family="Consolas, 'Courier New', monospace">INTEGER</text>
+<line x1="230.0" y1="533.0" x2="520.0" y2="533.0" stroke="#dde3ea" stroke-width="1"/>
+<text x="274.0" y="546.0" font-size="10.5" fill="#1a1a1a" font-weight="400" font-family="Consolas, 'Courier New', monospace">ultimo_error</text>
+<text x="513.0" y="546.0" font-size="9" fill="#5d6673" font-weight="400" text-anchor="end" font-family="Consolas, 'Courier New', monospace">TEXT</text>
+<path d="M 205.0 319.0 L 205.0 366.0 L 300.0 366.0 L 300.0 400.0" fill="none" stroke="#6c8ebf" stroke-width="1.2" stroke-linecap="butt" stroke-linejoin="miter"/>
+<line x1="209.5" y1="328.0" x2="200.5" y2="328.0" stroke="#6c8ebf" stroke-width="1.4"/>
+<line x1="300.0" y1="400.0" x2="305.0" y2="390.0" stroke="#6c8ebf" stroke-width="1.2"/>
+<line x1="300.0" y1="400.0" x2="300.0" y2="390.0" stroke="#6c8ebf" stroke-width="1.2"/>
+<line x1="300.0" y1="400.0" x2="295.0" y2="390.0" stroke="#6c8ebf" stroke-width="1.2"/>
+<rect x="230.6" y="350.0" width="42.8" height="14.0" rx="2" fill="#ffffff" opacity="0.95"/>
+<text x="252.0" y="361.0" font-size="10" fill="#5d6673" font-weight="600" text-anchor="middle">encola</text>
+<path d="M 575.0 281.0 L 575.0 366.0 L 450.0 366.0 L 450.0 400.0" fill="none" stroke="#6c8ebf" stroke-width="1.2" stroke-linecap="butt" stroke-linejoin="miter"/>
+<line x1="579.5" y1="290.0" x2="570.5" y2="290.0" stroke="#6c8ebf" stroke-width="1.4"/>
+<line x1="450.0" y1="400.0" x2="455.0" y2="390.0" stroke="#6c8ebf" stroke-width="1.2"/>
+<line x1="450.0" y1="400.0" x2="450.0" y2="390.0" stroke="#6c8ebf" stroke-width="1.2"/>
+<line x1="450.0" y1="400.0" x2="445.0" y2="390.0" stroke="#6c8ebf" stroke-width="1.2"/>
+<rect x="490.6" y="350.0" width="42.8" height="14.0" rx="2" fill="#ffffff" opacity="0.95"/>
+<text x="512.0" y="361.0" font-size="10" fill="#5d6673" font-weight="600" text-anchor="middle">encola</text>
+<rect x="700.0" y="404.0" width="280.0" height="74.0" rx="3" fill="#d5e8d4" stroke="#82b366" stroke-width="1"/>
+<text x="840.0" y="438.0" font-size="11" fill="#1a1a1a" font-weight="700" text-anchor="middle">API REST en EC2</text>
+<text x="840.0" y="452.0" font-size="11" fill="#1a1a1a" font-weight="700" text-anchor="middle">POST /api/sync/lote</text>
+<path d="M 520.0 441.0 L 700.0 441.0" fill="none" stroke="#82b366" stroke-width="1.2" stroke-linecap="butt" stroke-linejoin="miter"/>
+<polygon points="700.00,441.00 691.00,444.50 691.00,437.50" fill="#82b366" stroke="#82b366" stroke-width="1"/>
+<rect x="509.3" y="420.2" width="201.4" height="15.0" rx="2" fill="#ffffff" opacity="0.95"/>
+<text x="610.0" y="429.0" font-size="10" fill="#5d6673" font-weight="600" text-anchor="middle">envío por lote al volver la señal</text>
+<path d="M 760.0 478.0 L 760.0 600.0 L 120.0 600.0 L 120.0 319.0" fill="none" stroke="#82b366" stroke-width="1.2" stroke-linecap="butt" stroke-linejoin="miter" stroke-dasharray="5 3"/>
+<polygon points="120.00,319.00 123.50,328.00 116.50,328.00" fill="#82b366" stroke="#82b366" stroke-width="1"/>
+<rect x="317.7" y="584.2" width="224.6" height="15.0" rx="2" fill="#ffffff" opacity="0.95"/>
+<text x="430.0" y="593.0" font-size="10" fill="#5d6673" font-weight="600" text-anchor="middle">respuesta del servidor: is_synced = 1</text>
+<path d="M 1010.0 110.0 H 1328.0 L 1340.0 122.0 V 204.0 H 1010.0 Z" fill="#fff2cc" stroke="#d6b656" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter"/>
+<path d="M 1328.0 110.0 V 122.0 H 1340.0 Z" fill="#ffffff" stroke="#d6b656" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" opacity="0.85"/>
+<text x="1019.0" y="131.0" font-size="11" fill="#1a1a1a" font-weight="700">El CRUD local</text>
+<text x="1019.0" y="147.0" font-size="11" fill="#1a1a1a" font-weight="400">Crear, leer, editar y borrar un borrador</text>
+<text x="1019.0" y="163.0" font-size="11" fill="#1a1a1a" font-weight="400">ocurre solo aquí: no hay red de por medio.</text>
+<text x="1019.0" y="179.0" font-size="11" fill="#1a1a1a" font-weight="400">El participante puede corregir su respuesta</text>
+<text x="1019.0" y="195.0" font-size="11" fill="#1a1a1a" font-weight="400">las veces que quiera antes del envío.</text>
+<path d="M 1010.0 260.0 H 1328.0 L 1340.0 272.0 V 354.0 H 1010.0 Z" fill="#d5e8d4" stroke="#82b366" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter"/>
+<path d="M 1328.0 260.0 V 272.0 H 1340.0 Z" fill="#ffffff" stroke="#82b366" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" opacity="0.85"/>
+<text x="1019.0" y="281.0" font-size="11" fill="#1a1a1a" font-weight="700">Qué pasa después del envío</text>
+<text x="1019.0" y="297.0" font-size="11" fill="#1a1a1a" font-weight="400">Un borrador enviado conserva su id_local</text>
+<text x="1019.0" y="313.0" font-size="11" fill="#1a1a1a" font-weight="400">y recibe el id del servidor en la respuesta.</text>
+<text x="1019.0" y="329.0" font-size="11" fill="#1a1a1a" font-weight="400">Si el envío falla, la fila sigue en cola_sync</text>
+<text x="1019.0" y="345.0" font-size="11" fill="#1a1a1a" font-weight="400">con un intento más y el último error.</text>
+<path d="M 1010.0 410.0 H 1328.0 L 1340.0 422.0 V 504.0 H 1010.0 Z" fill="#f5f5f5" stroke="#666666" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter"/>
+<path d="M 1328.0 410.0 V 422.0 H 1340.0 Z" fill="#ffffff" stroke="#666666" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" opacity="0.85"/>
+<text x="1019.0" y="431.0" font-size="11" fill="#1a1a1a" font-weight="700">A qué tabla del servidor corresponde</text>
+<text x="1019.0" y="447.0" font-size="11" fill="#1a1a1a" font-weight="400">borrador_encuesta → encuestas_satisfaccion</text>
+<text x="1019.0" y="463.0" font-size="11" fill="#1a1a1a" font-weight="400">marcacion_local → asistencia_marcaciones</text>
+<text x="1019.0" y="479.0" font-size="11" fill="#1a1a1a" font-weight="400">El id del dispositivo no viaja: el servidor</text>
+<text x="1019.0" y="495.0" font-size="11" fill="#1a1a1a" font-weight="400">crea el suyo y lo devuelve.</text>
+<rect x="60.0" y="640.0" width="222.1" height="84.0" rx="3" fill="#ffffff" stroke="#9aa5b1" stroke-width="1" stroke-dasharray="4 3"/>
+<text x="70.0" y="658.0" font-size="10.5" fill="#5d6673" font-weight="700">Leyenda</text>
+<rect x="70.0" y="668.0" width="18.0" height="11.0" rx="2" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1"/>
+<text x="94.0" y="677.5" font-size="10.5" fill="#1a1a1a" font-weight="400">Tabla de datos del dispositivo</text>
+<rect x="70.0" y="685.0" width="18.0" height="11.0" rx="2" fill="#ffe6cc" stroke="#d79b00" stroke-width="1"/>
+<text x="94.0" y="694.5" font-size="10.5" fill="#1a1a1a" font-weight="400">Control de envío</text>
+<rect x="70.0" y="702.0" width="18.0" height="11.0" rx="2" fill="#d5e8d4" stroke="#82b366" stroke-width="1"/>
+<text x="94.0" y="711.5" font-size="10.5" fill="#1a1a1a" font-weight="400">Servidor</text>
+</svg>

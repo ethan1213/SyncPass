@@ -1,0 +1,161 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1420 670" width="1420" height="670" role="img" aria-label="Rol 1 · Administrador (equipo administrativo) (web)" font-family="Helvetica, 'Helvetica Neue', Arial, sans-serif">
+<title>Rol 1 · Administrador (equipo administrativo) (web)</title>
+<rect width="1420" height="670" fill="#ffffff"/>
+<text x="24.0" y="32.0" font-size="17" fill="#1a1a1a" font-weight="700">Rol 1 · Administrador (equipo administrativo)</text>
+<text x="24.0" y="52.0" font-size="11.5" fill="#5d6673" font-weight="400">Versión escritorio · 1280 px o más · React + Vite</text>
+<rect x="1335.7" y="16.0" width="60.3" height="24.0" rx="3" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1"/>
+<text x="1365.9" y="32.0" font-size="11" fill="#1a1a1a" font-weight="700" text-anchor="middle">Mockup</text>
+<rect x="24.0" y="76.0" width="1034.0" height="538.0" rx="3" fill="#ffffff" stroke="#666666" stroke-width="1.4"/>
+<rect x="24.0" y="76.0" width="1034.0" height="30.0" rx="0" fill="#f0f2f5" stroke="#666666" stroke-width="1.4"/>
+<circle cx="40.00" cy="91.00" r="4.50" fill="#ffffff" stroke="#9aa5b1" stroke-width="1"/>
+<circle cx="54.00" cy="91.00" r="4.50" fill="#ffffff" stroke="#9aa5b1" stroke-width="1"/>
+<circle cx="68.00" cy="91.00" r="4.50" fill="#ffffff" stroke="#9aa5b1" stroke-width="1"/>
+<rect x="86.0" y="83.0" width="884.0" height="16.0" rx="2" fill="#ffffff" stroke="#9aa5b1" stroke-width="1"/>
+<text x="94.0" y="94.5" font-size="10" fill="#5d6673" font-weight="400" font-family="Consolas, 'Courier New', monospace">syncpass.duocuc.cl/admin</text>
+<rect x="984.4" y="83.0" width="63.6" height="16.0" rx="2" fill="#d5e8d4" stroke="#82b366" stroke-width="1"/>
+<text x="1016.2" y="94.4" font-size="9.5" fill="#1a1a1a" font-weight="700" text-anchor="middle">Conectado</text>
+<rect x="24.0" y="106.0" width="1034.0" height="46.0" rx="0" fill="#ffffff" stroke="#9aa5b1" stroke-width="1"/>
+<rect x="36.0" y="117.0" width="24.0" height="24.0" rx="3" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1"/>
+<text x="48.0" y="132.2" font-size="9" fill="#1a1a1a" font-weight="700" text-anchor="middle">QR</text>
+<text x="68.0" y="127.0" font-size="13" fill="#1a1a1a" font-weight="700">SyncPass</text>
+<text x="68.0" y="140.0" font-size="8.5" fill="#5d6673" font-weight="400">CITT Plaza Vespucio</text>
+<text x="204.0" y="134.0" font-size="10" fill="#5d6673" font-weight="400">Vinculación con el Medio · período 2026-2</text>
+<rect x="928.0" y="117.0" width="24.0" height="24.0" rx="3" fill="#ffffff" stroke="#c2cbd4" stroke-width="1"/>
+<text x="940.0" y="132.6" font-size="10" fill="#1a1a1a" font-weight="400" text-anchor="middle">?</text>
+<rect x="960.0" y="117.0" width="86.0" height="24.0" rx="12" fill="#f5f5f5" stroke="#666666" stroke-width="1"/>
+<text x="1003.0" y="132.4" font-size="9.5" fill="#1a1a1a" font-weight="400" text-anchor="middle">M. Vega</text>
+<line x1="24.0" y1="152.0" x2="1058.0" y2="152.0" stroke="#9aa5b1" stroke-width="1"/>
+<rect x="24.0" y="152.0" width="150.0" height="462.0" rx="0" fill="#fafbfc" stroke="#9aa5b1" stroke-width="1"/>
+<rect x="34.0" y="166.0" width="130.0" height="30.0" rx="3" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1"/>
+<text x="99.0" y="184.8" font-size="10.5" fill="#1a1a1a" font-weight="700" text-anchor="middle">Panel</text>
+<rect x="34.0" y="202.0" width="130.0" height="30.0" rx="3" fill="#ffffff" stroke="#c2cbd4" stroke-width="1"/>
+<text x="99.0" y="220.8" font-size="10.5" fill="#1a1a1a" font-weight="400" text-anchor="middle">Usuarios</text>
+<rect x="34.0" y="238.0" width="130.0" height="30.0" rx="3" fill="#ffffff" stroke="#c2cbd4" stroke-width="1"/>
+<text x="99.0" y="256.8" font-size="10.5" fill="#1a1a1a" font-weight="400" text-anchor="middle">Grupos</text>
+<rect x="34.0" y="274.0" width="130.0" height="30.0" rx="3" fill="#ffffff" stroke="#c2cbd4" stroke-width="1"/>
+<text x="99.0" y="292.8" font-size="10.5" fill="#1a1a1a" font-weight="400" text-anchor="middle">Auditoría</text>
+<rect x="34.0" y="310.0" width="130.0" height="30.0" rx="3" fill="#ffffff" stroke="#c2cbd4" stroke-width="1"/>
+<text x="99.0" y="328.8" font-size="10.5" fill="#1a1a1a" font-weight="400" text-anchor="middle">Reportes</text>
+<rect x="34.0" y="532.0" width="130.0" height="68.0" rx="3" fill="#f5f5f5" stroke="#666666" stroke-width="1"/>
+<text x="44.0" y="549.0" font-size="9.5" fill="#1a1a1a" font-weight="700">Estado del sistema</text>
+<text x="44.0" y="564.0" font-size="9" fill="#5d6673" font-weight="400">API 99,8 % · 3 errores</text>
+<text x="44.0" y="592.0" font-size="8.5" fill="#5d6673" font-weight="400">Último respaldo 03:00</text>
+<text x="192.0" y="180.0" font-size="14" fill="#1a1a1a" font-weight="700">Administración del sistema</text>
+<text x="192.0" y="196.0" font-size="10" fill="#5d6673" font-weight="400">Equipo administrativo · consolidación de registros e informes</text>
+<rect x="948.4" y="168.0" width="91.6" height="24.0" rx="3" fill="#f8cecc" stroke="#b85450" stroke-width="1"/>
+<text x="994.2" y="183.6" font-size="10" fill="#1a1a1a" font-weight="700" text-anchor="middle">Grupo: admin</text>
+<circle cx="1050.00" cy="180.00" r="11.00" fill="#ffe6cc" stroke="#d79b00" stroke-width="1.2"/>
+<text x="1050.0" y="184.0" font-size="12" fill="#1a1a1a" font-weight="700" text-anchor="middle">1</text>
+<rect x="192.0" y="216.0" width="203.0" height="66.0" rx="3" fill="#ffffff" stroke="#666666" stroke-width="1"/>
+<rect x="192.0" y="216.0" width="4.0" height="66.0" rx="0" fill="#6c8ebf"/>
+<text x="206.0" y="236.0" font-size="9.5" fill="#5d6673" font-weight="700">Usuarios activos</text>
+<text x="206.0" y="264.0" font-size="20" fill="#1a1a1a" font-weight="700">42</text>
+<rect x="407.0" y="216.0" width="203.0" height="66.0" rx="3" fill="#ffffff" stroke="#666666" stroke-width="1"/>
+<rect x="407.0" y="216.0" width="4.0" height="66.0" rx="0" fill="#9673a6"/>
+<text x="421.0" y="236.0" font-size="9.5" fill="#5d6673" font-weight="700">Grupos en Cognito</text>
+<text x="421.0" y="264.0" font-size="20" fill="#1a1a1a" font-weight="700">4</text>
+<rect x="622.0" y="216.0" width="203.0" height="66.0" rx="3" fill="#ffffff" stroke="#666666" stroke-width="1"/>
+<rect x="622.0" y="216.0" width="4.0" height="66.0" rx="0" fill="#d79b00"/>
+<text x="636.0" y="236.0" font-size="9.5" fill="#5d6673" font-weight="700">Errores de sync (24 h)</text>
+<text x="636.0" y="264.0" font-size="20" fill="#1a1a1a" font-weight="700">3</text>
+<rect x="837.0" y="216.0" width="203.0" height="66.0" rx="3" fill="#ffffff" stroke="#666666" stroke-width="1"/>
+<rect x="837.0" y="216.0" width="4.0" height="66.0" rx="0" fill="#82b366"/>
+<text x="851.0" y="236.0" font-size="9.5" fill="#5d6673" font-weight="700">Disponibilidad de la API</text>
+<text x="851.0" y="264.0" font-size="20" fill="#1a1a1a" font-weight="700">99,8 %</text>
+<text x="192.0" y="302.0" font-size="12" fill="#1a1a1a" font-weight="700">Usuarios y grupos</text>
+<rect x="567.8" y="286.0" width="150.0" height="24.0" rx="3" fill="#d5e8d4" stroke="#82b366" stroke-width="1"/>
+<text x="642.8" y="301.6" font-size="10" fill="#1a1a1a" font-weight="700" text-anchor="middle">+ Invitar usuario</text>
+<rect x="192.0" y="314.0" width="525.8" height="26.0" rx="0" fill="#eceff3" stroke="#9aa5b1" stroke-width="1"/>
+<text x="202.0" y="331.0" font-size="8.5" fill="#5d6673" font-weight="700">USUARIO</text>
+<text x="369.8" y="331.0" font-size="8.5" fill="#5d6673" font-weight="700">GRUPO DE COGNITO</text>
+<text x="504.0" y="331.0" font-size="8.5" fill="#5d6673" font-weight="700">ESTADO</text>
+<text x="604.7" y="331.0" font-size="8.5" fill="#5d6673" font-weight="700">ÚLTIMO ACCESO</text>
+<rect x="192.0" y="340.0" width="525.8" height="26.0" rx="0" fill="#fafbfc" stroke="#dde3ea" stroke-width="1"/>
+<text x="202.0" y="357.0" font-size="9.5" fill="#1a1a1a" font-weight="700" font-family="Consolas, 'Courier New', monospace">USR-004 · m.vega</text>
+<rect x="369.8" y="344.0" width="50.5" height="18.0" rx="9" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1"/>
+<text x="395.1" y="356.2" font-size="9" fill="#1a1a1a" font-weight="700" text-anchor="middle">monitor</text>
+<rect x="504.0" y="344.0" width="45.3" height="18.0" rx="9" fill="#d5e8d4" stroke="#82b366" stroke-width="1"/>
+<text x="526.7" y="356.2" font-size="9" fill="#1a1a1a" font-weight="700" text-anchor="middle">Activo</text>
+<text x="604.7" y="357.0" font-size="9.5" fill="#1a1a1a" font-weight="400">hoy 09:41</text>
+<rect x="192.0" y="366.0" width="525.8" height="26.0" rx="0" fill="#ffffff" stroke="#dde3ea" stroke-width="1"/>
+<text x="202.0" y="383.0" font-size="9.5" fill="#1a1a1a" font-weight="700" font-family="Consolas, 'Courier New', monospace">USR-002 · p.soto</text>
+<rect x="369.8" y="370.0" width="71.4" height="18.0" rx="9" fill="#ffe6cc" stroke="#d79b00" stroke-width="1"/>
+<text x="405.5" y="382.2" font-size="9" fill="#1a1a1a" font-weight="700" text-anchor="middle">coordinador</text>
+<rect x="504.0" y="370.0" width="45.3" height="18.0" rx="9" fill="#d5e8d4" stroke="#82b366" stroke-width="1"/>
+<text x="526.7" y="382.2" font-size="9" fill="#1a1a1a" font-weight="700" text-anchor="middle">Activo</text>
+<text x="604.7" y="383.0" font-size="9.5" fill="#1a1a1a" font-weight="400">hoy 08:12</text>
+<rect x="192.0" y="392.0" width="525.8" height="26.0" rx="0" fill="#fafbfc" stroke="#dde3ea" stroke-width="1"/>
+<text x="202.0" y="409.0" font-size="9.5" fill="#1a1a1a" font-weight="700" font-family="Consolas, 'Courier New', monospace">USR-011 · vecino.a</text>
+<rect x="369.8" y="396.0" width="76.6" height="18.0" rx="9" fill="#d5e8d4" stroke="#82b366" stroke-width="1"/>
+<text x="408.1" y="408.2" font-size="9" fill="#1a1a1a" font-weight="700" text-anchor="middle">participante</text>
+<rect x="504.0" y="396.0" width="45.3" height="18.0" rx="9" fill="#d5e8d4" stroke="#82b366" stroke-width="1"/>
+<text x="526.7" y="408.2" font-size="9" fill="#1a1a1a" font-weight="700" text-anchor="middle">Activo</text>
+<text x="604.7" y="409.0" font-size="9.5" fill="#1a1a1a" font-weight="400">ayer 19:05</text>
+<rect x="192.0" y="418.0" width="525.8" height="26.0" rx="0" fill="#ffffff" stroke="#dde3ea" stroke-width="1"/>
+<text x="202.0" y="435.0" font-size="9.5" fill="#1a1a1a" font-weight="700" font-family="Consolas, 'Courier New', monospace">USR-001 · admin.citt</text>
+<rect x="369.8" y="422.0" width="40.1" height="18.0" rx="9" fill="#f8cecc" stroke="#b85450" stroke-width="1"/>
+<text x="389.8" y="434.2" font-size="9" fill="#1a1a1a" font-weight="700" text-anchor="middle">admin</text>
+<rect x="504.0" y="422.0" width="45.3" height="18.0" rx="9" fill="#d5e8d4" stroke="#82b366" stroke-width="1"/>
+<text x="526.7" y="434.2" font-size="9" fill="#1a1a1a" font-weight="700" text-anchor="middle">Activo</text>
+<text x="604.7" y="435.0" font-size="9.5" fill="#1a1a1a" font-weight="400">hoy 10:02</text>
+<rect x="192.0" y="444.0" width="525.8" height="26.0" rx="0" fill="#fafbfc" stroke="#dde3ea" stroke-width="1"/>
+<text x="202.0" y="461.0" font-size="9.5" fill="#1a1a1a" font-weight="700" font-family="Consolas, 'Courier New', monospace">USR-009 · j.rivas</text>
+<rect x="369.8" y="448.0" width="50.5" height="18.0" rx="9" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1"/>
+<text x="395.1" y="460.2" font-size="9" fill="#1a1a1a" font-weight="700" text-anchor="middle">monitor</text>
+<rect x="504.0" y="448.0" width="66.2" height="18.0" rx="9" fill="#f8cecc" stroke="#b85450" stroke-width="1"/>
+<text x="537.1" y="460.2" font-size="9" fill="#1a1a1a" font-weight="700" text-anchor="middle">Suspendido</text>
+<text x="604.7" y="461.0" font-size="9.5" fill="#1a1a1a" font-weight="400">12 oct</text>
+<circle cx="182.00" cy="353.00" r="11.00" fill="#ffe6cc" stroke="#d79b00" stroke-width="1.2"/>
+<text x="182.0" y="357.0" font-size="12" fill="#1a1a1a" font-weight="700" text-anchor="middle">2</text>
+<text x="192.0" y="490.0" font-size="9.5" fill="#5d6673" font-weight="400">El grupo de Cognito define el menú y las acciones permitidas.</text>
+<rect x="735.8" y="314.0" width="304.2" height="142.0" rx="3" fill="#ffffff" stroke="#666666" stroke-width="1"/>
+<text x="749.8" y="336.0" font-size="11" fill="#1a1a1a" font-weight="700">Grupos del user pool</text>
+<rect x="749.8" y="348.0" width="45.5" height="19.0" rx="9" fill="#f8cecc" stroke="#b85450" stroke-width="1"/>
+<text x="772.5" y="360.9" font-size="9.5" fill="#1a1a1a" font-weight="700" text-anchor="middle">admin</text>
+<text x="805.3" y="362.0" font-size="9" fill="#5d6673" font-weight="400">Equipo administrativo</text>
+<rect x="749.8" y="372.0" width="78.6" height="19.0" rx="9" fill="#ffe6cc" stroke="#d79b00" stroke-width="1"/>
+<text x="789.1" y="384.9" font-size="9.5" fill="#1a1a1a" font-weight="700" text-anchor="middle">coordinador</text>
+<text x="838.4" y="386.0" font-size="9" fill="#5d6673" font-weight="400">Docente / Coordinador(a) de proyecto</text>
+<rect x="749.8" y="396.0" width="56.6" height="19.0" rx="9" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1"/>
+<text x="778.0" y="408.9" font-size="9.5" fill="#1a1a1a" font-weight="700" text-anchor="middle">monitor</text>
+<text x="816.3" y="410.0" font-size="9" fill="#5d6673" font-weight="400">Estudiante voluntario / Monitor</text>
+<rect x="749.8" y="420.0" width="84.1" height="19.0" rx="9" fill="#d5e8d4" stroke="#82b366" stroke-width="1"/>
+<text x="791.8" y="432.9" font-size="9.5" fill="#1a1a1a" font-weight="700" text-anchor="middle">participante</text>
+<text x="843.9" y="434.0" font-size="9" fill="#5d6673" font-weight="400">Beneficiario comunitario / Asistente</text>
+<circle cx="1050.00" cy="362.00" r="11.00" fill="#ffe6cc" stroke="#d79b00" stroke-width="1.2"/>
+<text x="1050.0" y="366.0" font-size="12" fill="#1a1a1a" font-weight="700" text-anchor="middle">3</text>
+<path d="M 735.8 472.0 H 1028.0 L 1040.0 484.0 V 566.0 H 735.8 Z" fill="#fff2cc" stroke="#d6b656" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter"/>
+<path d="M 1028.0 472.0 V 484.0 H 1040.0 Z" fill="#ffffff" stroke="#d6b656" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" opacity="0.85"/>
+<text x="744.8" y="493.0" font-size="11" fill="#1a1a1a" font-weight="700">De dónde salen los cuatro grupos</text>
+<text x="744.8" y="509.0" font-size="11" fill="#1a1a1a" font-weight="400">El caso describe tres perfiles (§3.1).</text>
+<text x="744.8" y="525.0" font-size="11" fill="#1a1a1a" font-weight="400">El cuarto sale de la etapa de</text>
+<text x="744.8" y="541.0" font-size="11" fill="#1a1a1a" font-weight="400">consolidación, donde trabaja el</text>
+<text x="744.8" y="557.0" font-size="11" fill="#1a1a1a" font-weight="400">equipo administrativo.</text>
+<text x="24.0" y="634.0" font-size="10" fill="#5d6673" font-weight="400">Escritorio · 1280 × 800 px</text>
+<text x="1082.0" y="100.0" font-size="12" fill="#5d6673" font-weight="700">Referencias del dibujo</text>
+<circle cx="1093.00" cy="125.00" r="10.00" fill="#ffe6cc" stroke="#d79b00" stroke-width="1.2"/>
+<text x="1093.0" y="129.0" font-size="12" fill="#1a1a1a" font-weight="700" text-anchor="middle">1</text>
+<text x="1110.0" y="123.0" font-size="10.5" fill="#1a1a1a" font-weight="700">Vista exclusiva del admin</text>
+<text x="1110.0" y="138.0" font-size="10" fill="#5d6673" font-weight="400">Los otros tres roles no ven</text>
+<text x="1110.0" y="151.0" font-size="10" fill="#5d6673" font-weight="400">este menú ni esta ruta.</text>
+<circle cx="1093.00" cy="179.00" r="10.00" fill="#ffe6cc" stroke="#d79b00" stroke-width="1.2"/>
+<text x="1093.0" y="183.0" font-size="12" fill="#1a1a1a" font-weight="700" text-anchor="middle">2</text>
+<text x="1110.0" y="177.0" font-size="10.5" fill="#1a1a1a" font-weight="700">Un grupo por usuario</text>
+<text x="1110.0" y="192.0" font-size="10" fill="#5d6673" font-weight="400">El token llega con cognito:groups</text>
+<text x="1110.0" y="205.0" font-size="10" fill="#5d6673" font-weight="400">y la app arma el menú con eso.</text>
+<circle cx="1093.00" cy="233.00" r="10.00" fill="#ffe6cc" stroke="#d79b00" stroke-width="1.2"/>
+<text x="1093.0" y="237.0" font-size="12" fill="#1a1a1a" font-weight="700" text-anchor="middle">3</text>
+<text x="1110.0" y="231.0" font-size="10.5" fill="#1a1a1a" font-weight="700">Cuatro grupos, cuatro vistas</text>
+<text x="1110.0" y="246.0" font-size="10" fill="#5d6673" font-weight="400">admin, coordinador, monitor</text>
+<text x="1110.0" y="259.0" font-size="10" fill="#5d6673" font-weight="400">y participante.</text>
+<rect x="1082.0" y="292.0" width="154.1" height="101.0" rx="3" fill="#ffffff" stroke="#9aa5b1" stroke-width="1" stroke-dasharray="4 3"/>
+<text x="1092.0" y="310.0" font-size="10.5" fill="#5d6673" font-weight="700">Leyenda</text>
+<rect x="1092.0" y="320.0" width="18.0" height="11.0" rx="2" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1"/>
+<text x="1116.0" y="329.5" font-size="10.5" fill="#1a1a1a" font-weight="400">Acción principal</text>
+<rect x="1092.0" y="337.0" width="18.0" height="11.0" rx="2" fill="#d5e8d4" stroke="#82b366" stroke-width="1"/>
+<text x="1116.0" y="346.5" font-size="10.5" fill="#1a1a1a" font-weight="400">Estado correcto</text>
+<rect x="1092.0" y="354.0" width="18.0" height="11.0" rx="2" fill="#ffe6cc" stroke="#d79b00" stroke-width="1"/>
+<text x="1116.0" y="363.5" font-size="10.5" fill="#1a1a1a" font-weight="400">Pendiente de envío</text>
+<rect x="1092.0" y="371.0" width="18.0" height="11.0" rx="2" fill="#f8cecc" stroke="#b85450" stroke-width="1"/>
+<text x="1116.0" y="380.5" font-size="10.5" fill="#1a1a1a" font-weight="400">Requiere revisión</text>
+</svg>

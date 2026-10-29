@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 790 674" width="790" height="674" role="img" aria-label="CRUD local · Borradores de encuesta (movil)" font-family="Helvetica, 'Helvetica Neue', Arial, sans-serif">
+<title>CRUD local · Borradores de encuesta (movil)</title>
+<rect width="790" height="674" fill="#ffffff"/>
+<text x="24.0" y="32.0" font-size="17" fill="#1a1a1a" font-weight="700">CRUD local · Borradores de encuesta</text>
+<text x="24.0" y="52.0" font-size="11.5" fill="#5d6673" font-weight="400">Versión móvil · app Android nativa en Kotlin con Jetpack Compose</text>
+<rect x="705.7" y="16.0" width="60.3" height="24.0" rx="3" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1"/>
+<text x="735.9" y="32.0" font-size="11" fill="#1a1a1a" font-weight="700" text-anchor="middle">Mockup</text>
+<rect x="24.0" y="80.0" width="390.0" height="534.0" rx="22" fill="#f0f2f5" stroke="#666666" stroke-width="1.4"/>
+<rect x="34.0" y="90.0" width="370.0" height="514.0" rx="12" fill="#ffffff" stroke="#9aa5b1" stroke-width="1"/>
+<rect x="34.0" y="90.0" width="370.0" height="20.0" rx="0" fill="#f7f8fa" stroke="#c2cbd4" stroke-width="1"/>
+<text x="42.0" y="104.0" font-size="9" fill="#5d6673" font-weight="700">09:41</text>
+<text x="396.0" y="104.0" font-size="9" fill="#b85450" font-weight="700" text-anchor="end">SIN SENAL  85%</text>
+<text x="219.0" y="630.0" font-size="10" fill="#5d6673" font-weight="400" text-anchor="middle">Android · ancho 390 dp (recorte de la pantalla)</text>
+<rect x="34.0" y="110.0" width="370.0" height="38.0" rx="0" fill="#647687" stroke="#314354" stroke-width="1"/>
+<text x="45.0" y="133.0" font-size="14" fill="#ffffff" font-weight="700">&lt;</text>
+<text x="60.0" y="128.0" font-size="11.5" fill="#ffffff" font-weight="700">Borradores</text>
+<text x="60.0" y="141.0" font-size="9" fill="#d7dee8" font-weight="400">3 encuestas en el equipo</text>
+<rect x="335.0" y="120.0" width="61.0" height="18.0" rx="9" fill="#f8cecc" stroke="#b85450" stroke-width="1"/>
+<text x="365.5" y="132.2" font-size="9" fill="#1a1a1a" font-weight="700" text-anchor="middle">SIN SEÑAL</text>
+<rect x="44.0" y="160.0" width="350.0" height="54.0" rx="3" fill="#fff2cc" stroke="#d6b656" stroke-width="1"/>
+<text x="56.0" y="180.0" font-size="10.5" fill="#1a1a1a" font-weight="700">Sin señal en el recinto</text>
+<text x="56.0" y="198.0" font-size="9" fill="#5d6673" font-weight="400">Se guardan en Room y se envían después</text>
+<circle cx="24.00" cy="187.00" r="11.00" fill="#ffe6cc" stroke="#d79b00" stroke-width="1.2"/>
+<text x="24.0" y="191.0" font-size="12" fill="#1a1a1a" font-weight="700" text-anchor="middle">1</text>
+<rect x="44.0" y="230.0" width="350.0" height="76.0" rx="3" fill="#ffffff" stroke="#666666" stroke-width="1"/>
+<text x="54.0" y="250.0" font-size="9.5" fill="#1a1a1a" font-weight="700" font-family="Consolas, 'Courier New', monospace">BOR-007</text>
+<rect x="330.2" y="240.0" width="55.8" height="18.0" rx="9" fill="#ffe6cc" stroke="#d79b00" stroke-width="1"/>
+<text x="358.1" y="252.2" font-size="9" fill="#1a1a1a" font-weight="700" text-anchor="middle">Borrador</text>
+<text x="54.0" y="266.0" font-size="9" fill="#5d6673" font-weight="400" font-family="Consolas, 'Courier New', monospace">PART-LF-0241</text>
+<polygon points="60.00,276.00 62.12,281.09 67.61,281.53 63.42,285.11 64.70,290.47 60.00,287.60 55.30,290.47 56.58,285.11 52.39,281.53 57.88,281.09" fill="#ffd966" stroke="#d6b656" stroke-width="1.2"/>
+<polygon points="82.00,276.00 84.12,281.09 89.61,281.53 85.42,285.11 86.70,290.47 82.00,287.60 77.30,290.47 78.58,285.11 74.39,281.53 79.88,281.09" fill="#ffd966" stroke="#d6b656" stroke-width="1.2"/>
+<polygon points="104.00,276.00 106.12,281.09 111.61,281.53 107.42,285.11 108.70,290.47 104.00,287.60 99.30,290.47 100.58,285.11 96.39,281.53 101.88,281.09" fill="#ffd966" stroke="#d6b656" stroke-width="1.2"/>
+<polygon points="126.00,276.00 128.12,281.09 133.61,281.53 129.42,285.11 130.70,290.47 126.00,287.60 121.30,290.47 122.58,285.11 118.39,281.53 123.88,281.09" fill="#ffd966" stroke="#d6b656" stroke-width="1.2"/>
+<polygon points="148.00,276.00 150.12,281.09 155.61,281.53 151.42,285.11 152.70,290.47 148.00,287.60 143.30,290.47 144.58,285.11 140.39,281.53 145.88,281.09" fill="#ffffff" stroke="#d6b656" stroke-width="1.2"/>
+<rect x="270.0" y="276.0" width="54.0" height="20.0" rx="3" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1"/>
+<text x="297.0" y="289.1" font-size="8.5" fill="#1a1a1a" font-weight="700" text-anchor="middle">Editar</text>
+<rect x="328.0" y="276.0" width="58.0" height="20.0" rx="3" fill="#f8cecc" stroke="#b85450" stroke-width="1"/>
+<text x="357.0" y="289.1" font-size="8.5" fill="#1a1a1a" font-weight="700" text-anchor="middle">Borrar</text>
+<rect x="44.0" y="316.0" width="350.0" height="76.0" rx="3" fill="#ffffff" stroke="#666666" stroke-width="1"/>
+<text x="54.0" y="336.0" font-size="9.5" fill="#1a1a1a" font-weight="700" font-family="Consolas, 'Courier New', monospace">BOR-006</text>
+<rect x="345.9" y="326.0" width="40.1" height="18.0" rx="9" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1"/>
+<text x="365.9" y="338.2" font-size="9" fill="#1a1a1a" font-weight="700" text-anchor="middle">Listo</text>
+<text x="54.0" y="352.0" font-size="9" fill="#5d6673" font-weight="400" font-family="Consolas, 'Courier New', monospace">PART-LF-0188</text>
+<polygon points="60.00,362.00 62.12,367.09 67.61,367.53 63.42,371.11 64.70,376.47 60.00,373.60 55.30,376.47 56.58,371.11 52.39,367.53 57.88,367.09" fill="#ffd966" stroke="#d6b656" stroke-width="1.2"/>
+<polygon points="82.00,362.00 84.12,367.09 89.61,367.53 85.42,371.11 86.70,376.47 82.00,373.60 77.30,376.47 78.58,371.11 74.39,367.53 79.88,367.09" fill="#ffd966" stroke="#d6b656" stroke-width="1.2"/>
+<polygon points="104.00,362.00 106.12,367.09 111.61,367.53 107.42,371.11 108.70,376.47 104.00,373.60 99.30,376.47 100.58,371.11 96.39,367.53 101.88,367.09" fill="#ffd966" stroke="#d6b656" stroke-width="1.2"/>
+<polygon points="126.00,362.00 128.12,367.09 133.61,367.53 129.42,371.11 130.70,376.47 126.00,373.60 121.30,376.47 122.58,371.11 118.39,367.53 123.88,367.09" fill="#ffd966" stroke="#d6b656" stroke-width="1.2"/>
+<polygon points="148.00,362.00 150.12,367.09 155.61,367.53 151.42,371.11 152.70,376.47 148.00,373.60 143.30,376.47 144.58,371.11 140.39,367.53 145.88,367.09" fill="#ffd966" stroke="#d6b656" stroke-width="1.2"/>
+<rect x="270.0" y="362.0" width="54.0" height="20.0" rx="3" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1"/>
+<text x="297.0" y="375.1" font-size="8.5" fill="#1a1a1a" font-weight="700" text-anchor="middle">Editar</text>
+<rect x="328.0" y="362.0" width="58.0" height="20.0" rx="3" fill="#f8cecc" stroke="#b85450" stroke-width="1"/>
+<text x="357.0" y="375.1" font-size="8.5" fill="#1a1a1a" font-weight="700" text-anchor="middle">Borrar</text>
+<rect x="44.0" y="402.0" width="350.0" height="76.0" rx="3" fill="#ffffff" stroke="#666666" stroke-width="1"/>
+<text x="54.0" y="422.0" font-size="9.5" fill="#1a1a1a" font-weight="700" font-family="Consolas, 'Courier New', monospace">BOR-005</text>
+<rect x="345.9" y="412.0" width="40.1" height="18.0" rx="9" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1"/>
+<text x="365.9" y="424.2" font-size="9" fill="#1a1a1a" font-weight="700" text-anchor="middle">Listo</text>
+<text x="54.0" y="438.0" font-size="9" fill="#5d6673" font-weight="400" font-family="Consolas, 'Courier New', monospace">PART-LF-0132</text>
+<polygon points="60.00,448.00 62.12,453.09 67.61,453.53 63.42,457.11 64.70,462.47 60.00,459.60 55.30,462.47 56.58,457.11 52.39,453.53 57.88,453.09" fill="#ffd966" stroke="#d6b656" stroke-width="1.2"/>
+<polygon points="82.00,448.00 84.12,453.09 89.61,453.53 85.42,457.11 86.70,462.47 82.00,459.60 77.30,462.47 78.58,457.11 74.39,453.53 79.88,453.09" fill="#ffd966" stroke="#d6b656" stroke-width="1.2"/>
+<polygon points="104.00,448.00 106.12,453.09 111.61,453.53 107.42,457.11 108.70,462.47 104.00,459.60 99.30,462.47 100.58,457.11 96.39,453.53 101.88,453.09" fill="#ffd966" stroke="#d6b656" stroke-width="1.2"/>
+<polygon points="126.00,448.00 128.12,453.09 133.61,453.53 129.42,457.11 130.70,462.47 126.00,459.60 121.30,462.47 122.58,457.11 118.39,453.53 123.88,453.09" fill="#ffffff" stroke="#d6b656" stroke-width="1.2"/>
+<polygon points="148.00,448.00 150.12,453.09 155.61,453.53 151.42,457.11 152.70,462.47 148.00,459.60 143.30,462.47 144.58,457.11 140.39,453.53 145.88,453.09" fill="#ffffff" stroke="#d6b656" stroke-width="1.2"/>
+<rect x="270.0" y="448.0" width="54.0" height="20.0" rx="3" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1"/>
+<text x="297.0" y="461.1" font-size="8.5" fill="#1a1a1a" font-weight="700" text-anchor="middle">Editar</text>
+<rect x="328.0" y="448.0" width="58.0" height="20.0" rx="3" fill="#f8cecc" stroke="#b85450" stroke-width="1"/>
+<text x="357.0" y="461.1" font-size="8.5" fill="#1a1a1a" font-weight="700" text-anchor="middle">Borrar</text>
+<circle cx="414.00" cy="276.00" r="11.00" fill="#ffe6cc" stroke="#d79b00" stroke-width="1.2"/>
+<text x="414.0" y="280.0" font-size="12" fill="#1a1a1a" font-weight="700" text-anchor="middle">2</text>
+<rect x="44.0" y="496.0" width="350.0" height="46.0" rx="3" fill="#d5e8d4" stroke="#82b366" stroke-width="1"/>
+<text x="219.0" y="522.8" font-size="10.5" fill="#1a1a1a" font-weight="700" text-anchor="middle">Enviar cuando haya señal</text>
+<circle cx="24.00" cy="519.00" r="11.00" fill="#ffe6cc" stroke="#d79b00" stroke-width="1.2"/>
+<text x="24.0" y="523.0" font-size="12" fill="#1a1a1a" font-weight="700" text-anchor="middle">3</text>
+<rect x="34.0" y="560.0" width="370.0" height="44.0" rx="0" fill="#f7f8fa" stroke="#9aa5b1" stroke-width="1"/>
+<text x="80.2" y="586.0" font-size="9.5" fill="#5d6673" font-weight="400" text-anchor="middle">Terreno</text>
+<line x1="126.5" y1="566.0" x2="126.5" y2="598.0" stroke="#dde3ea" stroke-width="1"/>
+<text x="172.8" y="586.0" font-size="9.5" fill="#5d6673" font-weight="400" text-anchor="middle">Acreditar</text>
+<line x1="219.0" y1="566.0" x2="219.0" y2="598.0" stroke="#dde3ea" stroke-width="1"/>
+<rect x="225.0" y="565.0" width="80.5" height="34.0" rx="3" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1"/>
+<text x="265.2" y="586.0" font-size="9.5" fill="#1a1a1a" font-weight="700" text-anchor="middle">Encuesta</text>
+<line x1="311.5" y1="566.0" x2="311.5" y2="598.0" stroke="#dde3ea" stroke-width="1"/>
+<text x="357.8" y="586.0" font-size="9.5" fill="#5d6673" font-weight="400" text-anchor="middle">Cola</text>
+<text x="452.0" y="104.0" font-size="12" fill="#5d6673" font-weight="700">Referencias del dibujo</text>
+<circle cx="463.00" cy="129.00" r="10.00" fill="#ffe6cc" stroke="#d79b00" stroke-width="1.2"/>
+<text x="463.0" y="133.0" font-size="12" fill="#1a1a1a" font-weight="700" text-anchor="middle">1</text>
+<text x="480.0" y="127.0" font-size="10.5" fill="#1a1a1a" font-weight="700">Todo ocurre en el teléfono</text>
+<text x="480.0" y="142.0" font-size="10" fill="#5d6673" font-weight="400">Room/SQLite. La API no</text>
+<text x="480.0" y="155.0" font-size="10" fill="#5d6673" font-weight="400">se entera todavía.</text>
+<circle cx="463.00" cy="183.00" r="10.00" fill="#ffe6cc" stroke="#d79b00" stroke-width="1.2"/>
+<text x="463.0" y="187.0" font-size="12" fill="#1a1a1a" font-weight="700" text-anchor="middle">2</text>
+<text x="480.0" y="181.0" font-size="10.5" fill="#1a1a1a" font-weight="700">Editar y borrar sin red</text>
+<text x="480.0" y="196.0" font-size="10" fill="#5d6673" font-weight="400">El monitor corrige errores</text>
+<text x="480.0" y="209.0" font-size="10" fill="#5d6673" font-weight="400">en el mismo recinto.</text>
+<circle cx="463.00" cy="237.00" r="10.00" fill="#ffe6cc" stroke="#d79b00" stroke-width="1.2"/>
+<text x="463.0" y="241.0" font-size="12" fill="#1a1a1a" font-weight="700" text-anchor="middle">3</text>
+<text x="480.0" y="235.0" font-size="10.5" fill="#1a1a1a" font-weight="700">El envío es manual o automático</text>
+<text x="480.0" y="250.0" font-size="10" fill="#5d6673" font-weight="400">Al volver la señal pasan a</text>
+<text x="480.0" y="263.0" font-size="10" fill="#5d6673" font-weight="400">la cola de sincronización.</text>
+<path d="M 452.0 296.0 H 760.0 L 772.0 308.0 V 390.0 H 452.0 Z" fill="#fff2cc" stroke="#d6b656" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter"/>
+<path d="M 760.0 296.0 V 308.0 H 772.0 Z" fill="#ffffff" stroke="#d6b656" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" opacity="0.85"/>
+<text x="461.0" y="317.0" font-size="11" fill="#1a1a1a" font-weight="700">Reglas de la versión móvil</text>
+<text x="461.0" y="333.0" font-size="11" fill="#1a1a1a" font-weight="400">Una sola columna, botones de</text>
+<text x="461.0" y="349.0" font-size="11" fill="#1a1a1a" font-weight="400">48 dp y todo alcanzable con el</text>
+<text x="461.0" y="365.0" font-size="11" fill="#1a1a1a" font-weight="400">pulgar: el monitor sostiene el</text>
+<text x="461.0" y="381.0" font-size="11" fill="#1a1a1a" font-weight="400">teléfono con una mano.</text>
+</svg>

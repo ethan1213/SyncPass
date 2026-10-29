@@ -1,0 +1,133 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1420 694" width="1420" height="694" role="img" aria-label="Vista 2 · Inicio de sesión con Amazon Cognito (web)" font-family="Helvetica, 'Helvetica Neue', Arial, sans-serif">
+<title>Vista 2 · Inicio de sesión con Amazon Cognito (web)</title>
+<rect width="1420" height="694" fill="#ffffff"/>
+<text x="24.0" y="32.0" font-size="17" fill="#1a1a1a" font-weight="700">Vista 2 · Inicio de sesión con Amazon Cognito</text>
+<text x="24.0" y="52.0" font-size="11.5" fill="#5d6673" font-weight="400">Versión escritorio · 1280 px o más · React + Vite</text>
+<rect x="1335.7" y="16.0" width="60.3" height="24.0" rx="3" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1"/>
+<text x="1365.9" y="32.0" font-size="11" fill="#1a1a1a" font-weight="700" text-anchor="middle">Mockup</text>
+<rect x="24.0" y="76.0" width="1034.0" height="562.0" rx="3" fill="#ffffff" stroke="#666666" stroke-width="1.4"/>
+<rect x="24.0" y="76.0" width="1034.0" height="30.0" rx="0" fill="#f0f2f5" stroke="#666666" stroke-width="1.4"/>
+<circle cx="40.00" cy="91.00" r="4.50" fill="#ffffff" stroke="#9aa5b1" stroke-width="1"/>
+<circle cx="54.00" cy="91.00" r="4.50" fill="#ffffff" stroke="#9aa5b1" stroke-width="1"/>
+<circle cx="68.00" cy="91.00" r="4.50" fill="#ffffff" stroke="#9aa5b1" stroke-width="1"/>
+<rect x="86.0" y="83.0" width="884.0" height="16.0" rx="2" fill="#ffffff" stroke="#9aa5b1" stroke-width="1"/>
+<text x="94.0" y="94.5" font-size="10" fill="#5d6673" font-weight="400" font-family="Consolas, 'Courier New', monospace">syncpass.duocuc.cl/login</text>
+<rect x="984.4" y="83.0" width="63.6" height="16.0" rx="2" fill="#d5e8d4" stroke="#82b366" stroke-width="1"/>
+<text x="1016.2" y="94.4" font-size="9.5" fill="#1a1a1a" font-weight="700" text-anchor="middle">Conectado</text>
+<rect x="24.0" y="106.0" width="1034.0" height="46.0" rx="0" fill="#ffffff" stroke="#9aa5b1" stroke-width="1"/>
+<rect x="36.0" y="117.0" width="24.0" height="24.0" rx="3" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1"/>
+<text x="48.0" y="132.2" font-size="9" fill="#1a1a1a" font-weight="700" text-anchor="middle">QR</text>
+<text x="68.0" y="127.0" font-size="13" fill="#1a1a1a" font-weight="700">SyncPass</text>
+<text x="68.0" y="140.0" font-size="8.5" fill="#5d6673" font-weight="400">CITT Plaza Vespucio</text>
+<text x="204.0" y="134.0" font-size="10" fill="#5d6673" font-weight="400">Vinculación con el Medio · período 2026-2</text>
+<rect x="928.0" y="117.0" width="24.0" height="24.0" rx="3" fill="#ffffff" stroke="#c2cbd4" stroke-width="1"/>
+<text x="940.0" y="132.6" font-size="10" fill="#1a1a1a" font-weight="400" text-anchor="middle">?</text>
+<rect x="960.0" y="117.0" width="86.0" height="24.0" rx="12" fill="#f5f5f5" stroke="#666666" stroke-width="1"/>
+<text x="1003.0" y="132.4" font-size="9.5" fill="#1a1a1a" font-weight="400" text-anchor="middle">M. Vega</text>
+<line x1="24.0" y1="152.0" x2="1058.0" y2="152.0" stroke="#9aa5b1" stroke-width="1"/>
+<rect x="24.0" y="152.0" width="150.0" height="486.0" rx="0" fill="#fafbfc" stroke="#9aa5b1" stroke-width="1"/>
+<rect x="34.0" y="166.0" width="130.0" height="30.0" rx="3" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1"/>
+<text x="99.0" y="184.8" font-size="10.5" fill="#1a1a1a" font-weight="700" text-anchor="middle">Panel</text>
+<rect x="34.0" y="202.0" width="130.0" height="30.0" rx="3" fill="#ffffff" stroke="#c2cbd4" stroke-width="1"/>
+<text x="99.0" y="220.8" font-size="10.5" fill="#1a1a1a" font-weight="400" text-anchor="middle">Acreditar</text>
+<rect x="34.0" y="238.0" width="130.0" height="30.0" rx="3" fill="#ffffff" stroke="#c2cbd4" stroke-width="1"/>
+<text x="99.0" y="256.8" font-size="10.5" fill="#1a1a1a" font-weight="400" text-anchor="middle">Encuestas</text>
+<rect x="34.0" y="274.0" width="130.0" height="30.0" rx="3" fill="#ffffff" stroke="#c2cbd4" stroke-width="1"/>
+<text x="99.0" y="292.8" font-size="10.5" fill="#1a1a1a" font-weight="400" text-anchor="middle">Quórum</text>
+<rect x="34.0" y="310.0" width="130.0" height="30.0" rx="3" fill="#ffffff" stroke="#c2cbd4" stroke-width="1"/>
+<text x="99.0" y="328.8" font-size="10.5" fill="#1a1a1a" font-weight="400" text-anchor="middle">Sincronizar</text>
+<rect x="34.0" y="346.0" width="130.0" height="30.0" rx="3" fill="#ffffff" stroke="#c2cbd4" stroke-width="1"/>
+<text x="99.0" y="364.8" font-size="10.5" fill="#1a1a1a" font-weight="400" text-anchor="middle">Reportes</text>
+<rect x="34.0" y="556.0" width="130.0" height="68.0" rx="3" fill="#fff2cc" stroke="#d6b656" stroke-width="1"/>
+<text x="44.0" y="573.0" font-size="9.5" fill="#1a1a1a" font-weight="700">Cola local</text>
+<text x="44.0" y="588.0" font-size="9" fill="#5d6673" font-weight="400">3 registros sin enviar</text>
+<rect x="44.0" y="595.0" width="110.0" height="7.0" rx="2" fill="#eceff3" stroke="#c2cbd4" stroke-width="1"/>
+<rect x="44.0" y="595.0" width="77.0" height="7.0" rx="2" fill="#d79b00"/>
+<text x="44.0" y="616.0" font-size="8.5" fill="#5d6673" font-weight="400">Último envío 09:12</text>
+<rect x="406.0" y="186.0" width="420.0" height="300.0" rx="3" fill="#ffffff" stroke="#666666" stroke-width="1"/>
+<rect x="598.0" y="206.0" width="36.0" height="36.0" rx="4" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1"/>
+<text x="616.0" y="228.0" font-size="11" fill="#1a1a1a" font-weight="700" text-anchor="middle">QR</text>
+<text x="616.0" y="264.0" font-size="15" fill="#1a1a1a" font-weight="700" text-anchor="middle">Entrar a SyncPass</text>
+<text x="616.0" y="282.0" font-size="10" fill="#5d6673" font-weight="400" text-anchor="middle">El acceso lo gestiona Amazon Cognito</text>
+<rect x="430.0" y="300.0" width="372.0" height="36.0" rx="3" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1"/>
+<text x="616.0" y="322.1" font-size="11.5" fill="#1a1a1a" font-weight="700" text-anchor="middle">Continuar con Cognito</text>
+<circle cx="396.00" cy="318.00" r="11.00" fill="#ffe6cc" stroke="#d79b00" stroke-width="1.2"/>
+<text x="396.0" y="322.0" font-size="12" fill="#1a1a1a" font-weight="700" text-anchor="middle">1</text>
+<line x1="430.0" y1="352.0" x2="802.0" y2="352.0" stroke="#dde3ea" stroke-width="1"/>
+<rect x="606.0" y="344.0" width="20.0" height="16.0" rx="0" fill="#ffffff"/>
+<text x="616.0" y="356.0" font-size="9.5" fill="#5d6673" font-weight="400" text-anchor="middle">o</text>
+<rect x="430.0" y="368.0" width="372.0" height="32.0" rx="3" fill="#ffffff" stroke="#6c8ebf" stroke-width="1"/>
+<text x="616.0" y="388.0" font-size="11" fill="#1a1a1a" font-weight="400" text-anchor="middle">Crear una cuenta de participante</text>
+<text x="430.0" y="422.0" font-size="9.5" fill="#5d6673" font-weight="700">Grupos del user pool que definen la vista:</text>
+<rect x="430.0" y="430.0" width="42.1" height="18.0" rx="9" fill="#f8cecc" stroke="#b85450" stroke-width="1"/>
+<text x="451.1" y="442.2" font-size="9" fill="#1a1a1a" font-weight="700" text-anchor="middle">admin</text>
+<text x="478.1" y="443.0" font-size="8.5" fill="#5d6673" font-weight="400">Equipo administrativo</text>
+<rect x="430.0" y="450.0" width="73.4" height="18.0" rx="9" fill="#ffe6cc" stroke="#d79b00" stroke-width="1"/>
+<text x="466.7" y="462.2" font-size="9" fill="#1a1a1a" font-weight="700" text-anchor="middle">coordinador</text>
+<text x="509.4" y="463.0" font-size="8.5" fill="#5d6673" font-weight="400">Docente / Coordinador(a) de proyecto</text>
+<rect x="616.0" y="430.0" width="52.5" height="18.0" rx="9" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1"/>
+<text x="642.3" y="442.2" font-size="9" fill="#1a1a1a" font-weight="700" text-anchor="middle">monitor</text>
+<text x="674.5" y="443.0" font-size="8.5" fill="#5d6673" font-weight="400">Estudiante voluntario / Monitor</text>
+<rect x="616.0" y="450.0" width="78.6" height="18.0" rx="9" fill="#d5e8d4" stroke="#82b366" stroke-width="1"/>
+<text x="655.3" y="462.2" font-size="9" fill="#1a1a1a" font-weight="700" text-anchor="middle">participante</text>
+<text x="700.6" y="463.0" font-size="8.5" fill="#5d6673" font-weight="400">Beneficiario comunitario / Asistente</text>
+<text x="430.0" y="476.0" font-size="9" fill="#5d6673" font-weight="400">Recuperar contraseña y MFA los resuelve Cognito.</text>
+<circle cx="836.00" cy="439.00" r="11.00" fill="#ffe6cc" stroke="#d79b00" stroke-width="1.2"/>
+<text x="836.0" y="443.0" font-size="12" fill="#1a1a1a" font-weight="700" text-anchor="middle">2</text>
+<text x="192.0" y="530.0" font-size="11" fill="#5d6673" font-weight="700">Flujo de autenticación (OAuth 2.0 con Amazon Cognito)</text>
+<rect x="192.0" y="544.0" width="133.5" height="48.0" rx="3" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1"/>
+<text x="258.8" y="565.1" font-size="10" fill="#1a1a1a" font-weight="400" text-anchor="middle">SyncPass</text>
+<text x="258.8" y="578.1" font-size="10" fill="#1a1a1a" font-weight="400" text-anchor="middle">redirige al login</text>
+<rect x="355.5" y="544.0" width="133.5" height="48.0" rx="3" fill="#e1d5e7" stroke="#9673a6" stroke-width="1"/>
+<text x="422.2" y="565.1" font-size="10" fill="#1a1a1a" font-weight="400" text-anchor="middle">Cognito</text>
+<text x="422.2" y="578.1" font-size="10" fill="#1a1a1a" font-weight="400" text-anchor="middle">Hosted UI del user pool</text>
+<path d="M 325.5 568.0 L 355.5 568.0" fill="none" stroke="#6c8ebf" stroke-width="1.2" stroke-linecap="butt" stroke-linejoin="miter"/>
+<polygon points="355.50,568.00 346.50,571.50 346.50,564.50" fill="#6c8ebf" stroke="#6c8ebf" stroke-width="1"/>
+<rect x="519.0" y="544.0" width="133.5" height="48.0" rx="3" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1"/>
+<text x="585.8" y="565.1" font-size="10" fill="#1a1a1a" font-weight="400" text-anchor="middle">Callback</text>
+<text x="585.8" y="578.1" font-size="10" fill="#1a1a1a" font-weight="400" text-anchor="middle">entrega los tokens JWT</text>
+<path d="M 489.0 568.0 L 519.0 568.0" fill="none" stroke="#6c8ebf" stroke-width="1.2" stroke-linecap="butt" stroke-linejoin="miter"/>
+<polygon points="519.00,568.00 510.00,571.50 510.00,564.50" fill="#6c8ebf" stroke="#6c8ebf" stroke-width="1"/>
+<rect x="682.5" y="544.0" width="133.5" height="48.0" rx="3" fill="#e1d5e7" stroke="#9673a6" stroke-width="1"/>
+<text x="749.2" y="565.1" font-size="10" fill="#1a1a1a" font-weight="400" text-anchor="middle">SyncPass</text>
+<text x="749.2" y="578.1" font-size="10" fill="#1a1a1a" font-weight="400" text-anchor="middle">lee cognito:groups</text>
+<path d="M 652.5 568.0 L 682.5 568.0" fill="none" stroke="#6c8ebf" stroke-width="1.2" stroke-linecap="butt" stroke-linejoin="miter"/>
+<polygon points="682.50,568.00 673.50,571.50 673.50,564.50" fill="#6c8ebf" stroke="#6c8ebf" stroke-width="1"/>
+<circle cx="340.50" cy="610.00" r="11.00" fill="#ffe6cc" stroke="#d79b00" stroke-width="1.2"/>
+<text x="340.5" y="614.0" font-size="12" fill="#1a1a1a" font-weight="700" text-anchor="middle">3</text>
+<path d="M 340.5 600.0 L 340.5 592.0" fill="none" stroke="#9aa5b1" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-dasharray="3 3"/>
+<path d="M 834.0 534.0 H 1028.0 L 1040.0 546.0 V 628.0 H 834.0 Z" fill="#fff2cc" stroke="#d6b656" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter"/>
+<path d="M 1028.0 534.0 V 546.0 H 1040.0 Z" fill="#ffffff" stroke="#d6b656" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" opacity="0.85"/>
+<text x="843.0" y="555.0" font-size="11" fill="#1a1a1a" font-weight="700">Restricción del caso</text>
+<text x="843.0" y="571.0" font-size="11" fill="#1a1a1a" font-weight="400">SyncPass no almacena claves.</text>
+<text x="843.0" y="587.0" font-size="11" fill="#1a1a1a" font-weight="400">Las cuentas viven en el user</text>
+<text x="843.0" y="603.0" font-size="11" fill="#1a1a1a" font-weight="400">pool y la app solo recibe</text>
+<text x="843.0" y="619.0" font-size="11" fill="#1a1a1a" font-weight="400">un token firmado.</text>
+<text x="24.0" y="658.0" font-size="10" fill="#5d6673" font-weight="400">Escritorio · 1280 × 800 px</text>
+<text x="1082.0" y="100.0" font-size="12" fill="#5d6673" font-weight="700">Referencias del dibujo</text>
+<circle cx="1093.00" cy="125.00" r="10.00" fill="#ffe6cc" stroke="#d79b00" stroke-width="1.2"/>
+<text x="1093.0" y="129.0" font-size="12" fill="#1a1a1a" font-weight="700" text-anchor="middle">1</text>
+<text x="1110.0" y="123.0" font-size="10.5" fill="#1a1a1a" font-weight="700">Un solo botón de acceso</text>
+<text x="1110.0" y="138.0" font-size="10" fill="#5d6673" font-weight="400">Abre la Hosted UI de Cognito.</text>
+<text x="1110.0" y="151.0" font-size="10" fill="#5d6673" font-weight="400">La app nunca pide la contraseña.</text>
+<circle cx="1093.00" cy="179.00" r="10.00" fill="#ffe6cc" stroke="#d79b00" stroke-width="1.2"/>
+<text x="1093.0" y="183.0" font-size="12" fill="#1a1a1a" font-weight="700" text-anchor="middle">2</text>
+<text x="1110.0" y="177.0" font-size="10.5" fill="#1a1a1a" font-weight="700">Cuatro grupos, cuatro vistas</text>
+<text x="1110.0" y="192.0" font-size="10" fill="#5d6673" font-weight="400">admin, coordinador, monitor y</text>
+<text x="1110.0" y="205.0" font-size="10" fill="#5d6673" font-weight="400">participante.</text>
+<circle cx="1093.00" cy="233.00" r="10.00" fill="#ffe6cc" stroke="#d79b00" stroke-width="1.2"/>
+<text x="1093.0" y="237.0" font-size="12" fill="#1a1a1a" font-weight="700" text-anchor="middle">3</text>
+<text x="1110.0" y="231.0" font-size="10.5" fill="#1a1a1a" font-weight="700">El rol llega en el token</text>
+<text x="1110.0" y="246.0" font-size="10" fill="#5d6673" font-weight="400">La app arma el menú con el</text>
+<text x="1110.0" y="259.0" font-size="10" fill="#5d6673" font-weight="400">claim cognito:groups.</text>
+<rect x="1082.0" y="292.0" width="154.1" height="101.0" rx="3" fill="#ffffff" stroke="#9aa5b1" stroke-width="1" stroke-dasharray="4 3"/>
+<text x="1092.0" y="310.0" font-size="10.5" fill="#5d6673" font-weight="700">Leyenda</text>
+<rect x="1092.0" y="320.0" width="18.0" height="11.0" rx="2" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1"/>
+<text x="1116.0" y="329.5" font-size="10.5" fill="#1a1a1a" font-weight="400">Acción principal</text>
+<rect x="1092.0" y="337.0" width="18.0" height="11.0" rx="2" fill="#d5e8d4" stroke="#82b366" stroke-width="1"/>
+<text x="1116.0" y="346.5" font-size="10.5" fill="#1a1a1a" font-weight="400">Estado correcto</text>
+<rect x="1092.0" y="354.0" width="18.0" height="11.0" rx="2" fill="#ffe6cc" stroke="#d79b00" stroke-width="1"/>
+<text x="1116.0" y="363.5" font-size="10.5" fill="#1a1a1a" font-weight="400">Pendiente de envío</text>
+<rect x="1092.0" y="371.0" width="18.0" height="11.0" rx="2" fill="#f8cecc" stroke="#b85450" stroke-width="1"/>
+<text x="1116.0" y="380.5" font-size="10.5" fill="#1a1a1a" font-weight="400">Requiere revisión</text>
+</svg>

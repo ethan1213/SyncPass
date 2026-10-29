@@ -1,0 +1,171 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1420 742" width="1420" height="742" role="img" aria-label="CRUD por API · Talleres (web)" font-family="Helvetica, 'Helvetica Neue', Arial, sans-serif">
+<title>CRUD por API · Talleres (web)</title>
+<rect width="1420" height="742" fill="#ffffff"/>
+<text x="24.0" y="32.0" font-size="17" fill="#1a1a1a" font-weight="700">CRUD por API · Talleres</text>
+<text x="24.0" y="52.0" font-size="11.5" fill="#5d6673" font-weight="400">Versión escritorio · 1280 px o más · React + Vite</text>
+<rect x="1335.7" y="16.0" width="60.3" height="24.0" rx="3" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1"/>
+<text x="1365.9" y="32.0" font-size="11" fill="#1a1a1a" font-weight="700" text-anchor="middle">Mockup</text>
+<rect x="24.0" y="76.0" width="1034.0" height="610.0" rx="3" fill="#ffffff" stroke="#666666" stroke-width="1.4"/>
+<rect x="24.0" y="76.0" width="1034.0" height="30.0" rx="0" fill="#f0f2f5" stroke="#666666" stroke-width="1.4"/>
+<circle cx="40.00" cy="91.00" r="4.50" fill="#ffffff" stroke="#9aa5b1" stroke-width="1"/>
+<circle cx="54.00" cy="91.00" r="4.50" fill="#ffffff" stroke="#9aa5b1" stroke-width="1"/>
+<circle cx="68.00" cy="91.00" r="4.50" fill="#ffffff" stroke="#9aa5b1" stroke-width="1"/>
+<rect x="86.0" y="83.0" width="884.0" height="16.0" rx="2" fill="#ffffff" stroke="#9aa5b1" stroke-width="1"/>
+<text x="94.0" y="94.5" font-size="10" fill="#5d6673" font-weight="400" font-family="Consolas, 'Courier New', monospace">syncpass.duocuc.cl/talleres</text>
+<rect x="984.4" y="83.0" width="63.6" height="16.0" rx="2" fill="#d5e8d4" stroke="#82b366" stroke-width="1"/>
+<text x="1016.2" y="94.4" font-size="9.5" fill="#1a1a1a" font-weight="700" text-anchor="middle">Conectado</text>
+<rect x="24.0" y="106.0" width="1034.0" height="46.0" rx="0" fill="#ffffff" stroke="#9aa5b1" stroke-width="1"/>
+<rect x="36.0" y="117.0" width="24.0" height="24.0" rx="3" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1"/>
+<text x="48.0" y="132.2" font-size="9" fill="#1a1a1a" font-weight="700" text-anchor="middle">QR</text>
+<text x="68.0" y="127.0" font-size="13" fill="#1a1a1a" font-weight="700">SyncPass</text>
+<text x="68.0" y="140.0" font-size="8.5" fill="#5d6673" font-weight="400">CITT Plaza Vespucio</text>
+<text x="204.0" y="134.0" font-size="10" fill="#5d6673" font-weight="400">Vinculación con el Medio · período 2026-2</text>
+<rect x="928.0" y="117.0" width="24.0" height="24.0" rx="3" fill="#ffffff" stroke="#c2cbd4" stroke-width="1"/>
+<text x="940.0" y="132.6" font-size="10" fill="#1a1a1a" font-weight="400" text-anchor="middle">?</text>
+<rect x="960.0" y="117.0" width="86.0" height="24.0" rx="12" fill="#f5f5f5" stroke="#666666" stroke-width="1"/>
+<text x="1003.0" y="132.4" font-size="9.5" fill="#1a1a1a" font-weight="400" text-anchor="middle">M. Vega</text>
+<line x1="24.0" y1="152.0" x2="1058.0" y2="152.0" stroke="#9aa5b1" stroke-width="1"/>
+<rect x="24.0" y="152.0" width="150.0" height="534.0" rx="0" fill="#fafbfc" stroke="#9aa5b1" stroke-width="1"/>
+<rect x="34.0" y="166.0" width="130.0" height="30.0" rx="3" fill="#ffffff" stroke="#c2cbd4" stroke-width="1"/>
+<text x="99.0" y="184.8" font-size="10.5" fill="#1a1a1a" font-weight="400" text-anchor="middle">Panel</text>
+<rect x="34.0" y="202.0" width="130.0" height="30.0" rx="3" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1"/>
+<text x="99.0" y="220.8" font-size="10.5" fill="#1a1a1a" font-weight="700" text-anchor="middle">Talleres</text>
+<rect x="34.0" y="238.0" width="130.0" height="30.0" rx="3" fill="#ffffff" stroke="#c2cbd4" stroke-width="1"/>
+<text x="99.0" y="256.8" font-size="10.5" fill="#1a1a1a" font-weight="400" text-anchor="middle">Monitores</text>
+<rect x="34.0" y="274.0" width="130.0" height="30.0" rx="3" fill="#ffffff" stroke="#c2cbd4" stroke-width="1"/>
+<text x="99.0" y="292.8" font-size="10.5" fill="#1a1a1a" font-weight="400" text-anchor="middle">Encuestas</text>
+<rect x="34.0" y="310.0" width="130.0" height="30.0" rx="3" fill="#ffffff" stroke="#c2cbd4" stroke-width="1"/>
+<text x="99.0" y="328.8" font-size="10.5" fill="#1a1a1a" font-weight="400" text-anchor="middle">Reportes</text>
+<rect x="34.0" y="604.0" width="130.0" height="68.0" rx="3" fill="#f5f5f5" stroke="#666666" stroke-width="1"/>
+<text x="44.0" y="621.0" font-size="9.5" fill="#1a1a1a" font-weight="700">Período 2026-2</text>
+<text x="44.0" y="636.0" font-size="9" fill="#5d6673" font-weight="400">6 talleres · 4 monitores</text>
+<text x="44.0" y="664.0" font-size="8.5" fill="#5d6673" font-weight="400">Cierre 20 de diciembre</text>
+<text x="192.0" y="180.0" font-size="14" fill="#1a1a1a" font-weight="700">Talleres · altas, cambios y bajas</text>
+<text x="192.0" y="196.0" font-size="10" fill="#5d6673" font-weight="400">CRUD de negocio contra la API REST desplegada en EC2</text>
+<rect x="913.6" y="168.0" width="126.4" height="24.0" rx="3" fill="#ffe6cc" stroke="#d79b00" stroke-width="1"/>
+<text x="976.8" y="183.6" font-size="10" fill="#1a1a1a" font-weight="700" text-anchor="middle">Grupo: coordinador</text>
+<rect x="538.9" y="214.0" width="128.0" height="28.0" rx="3" fill="#d5e8d4" stroke="#82b366" stroke-width="1"/>
+<text x="602.9" y="231.8" font-size="10.5" fill="#1a1a1a" font-weight="700" text-anchor="middle">+ Nuevo taller</text>
+<circle cx="518.88" cy="214.00" r="11.00" fill="#ffe6cc" stroke="#d79b00" stroke-width="1.2"/>
+<text x="518.9" y="218.0" font-size="12" fill="#1a1a1a" font-weight="700" text-anchor="middle">1</text>
+<rect x="192.0" y="252.0" width="474.9" height="26.0" rx="0" fill="#eceff3" stroke="#9aa5b1" stroke-width="1"/>
+<text x="202.0" y="269.0" font-size="8.5" fill="#5d6673" font-weight="700">ID</text>
+<text x="269.8" y="269.0" font-size="8.5" fill="#5d6673" font-weight="700">TALLER</text>
+<text x="439.4" y="269.0" font-size="8.5" fill="#5d6673" font-weight="700">FECHA</text>
+<text x="515.8" y="269.0" font-size="8.5" fill="#5d6673" font-weight="700">CUPOS</text>
+<text x="575.1" y="269.0" font-size="8.5" fill="#5d6673" font-weight="700">ACCIONES</text>
+<rect x="192.0" y="278.0" width="474.9" height="26.0" rx="0" fill="#fafbfc" stroke="#dde3ea" stroke-width="1"/>
+<text x="202.0" y="295.0" font-size="9.5" fill="#1a1a1a" font-weight="700" font-family="Consolas, 'Courier New', monospace">TAL-018</text>
+<text x="269.8" y="295.0" font-size="9.5" fill="#1a1a1a" font-weight="400">Alfabetización digital</text>
+<text x="439.4" y="295.0" font-size="9.5" fill="#1a1a1a" font-weight="400">18 oct</text>
+<text x="515.8" y="295.0" font-size="9.5" fill="#1a1a1a" font-weight="400">35</text>
+<text x="575.1" y="295.0" font-size="9.5" fill="#1a1a1a" font-weight="400"></text>
+<rect x="192.0" y="304.0" width="474.9" height="26.0" rx="0" fill="#ffffff" stroke="#dde3ea" stroke-width="1"/>
+<text x="202.0" y="321.0" font-size="9.5" fill="#1a1a1a" font-weight="700" font-family="Consolas, 'Courier New', monospace">TAL-019</text>
+<text x="269.8" y="321.0" font-size="9.5" fill="#1a1a1a" font-weight="400">Huerto comunitario</text>
+<text x="439.4" y="321.0" font-size="9.5" fill="#1a1a1a" font-weight="400">18 oct</text>
+<text x="515.8" y="321.0" font-size="9.5" fill="#1a1a1a" font-weight="400">30</text>
+<text x="575.1" y="321.0" font-size="9.5" fill="#1a1a1a" font-weight="400"></text>
+<rect x="192.0" y="330.0" width="474.9" height="26.0" rx="0" fill="#fafbfc" stroke="#dde3ea" stroke-width="1"/>
+<text x="202.0" y="347.0" font-size="9.5" fill="#1a1a1a" font-weight="700" font-family="Consolas, 'Courier New', monospace">TAL-020</text>
+<text x="269.8" y="347.0" font-size="9.5" fill="#1a1a1a" font-weight="400">Ciberseguridad vecinal</text>
+<text x="439.4" y="347.0" font-size="9.5" fill="#1a1a1a" font-weight="400">19 oct</text>
+<text x="515.8" y="347.0" font-size="9.5" fill="#1a1a1a" font-weight="400">25</text>
+<text x="575.1" y="347.0" font-size="9.5" fill="#1a1a1a" font-weight="400"></text>
+<rect x="573.1" y="282.0" width="46.0" height="18.0" rx="3" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1"/>
+<text x="596.1" y="294.1" font-size="8.5" fill="#1a1a1a" font-weight="700" text-anchor="middle">Editar</text>
+<rect x="623.1" y="282.0" width="50.0" height="18.0" rx="3" fill="#f8cecc" stroke="#b85450" stroke-width="1"/>
+<text x="648.1" y="294.1" font-size="8.5" fill="#1a1a1a" font-weight="700" text-anchor="middle">Eliminar</text>
+<rect x="573.1" y="308.0" width="46.0" height="18.0" rx="3" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1"/>
+<text x="596.1" y="320.1" font-size="8.5" fill="#1a1a1a" font-weight="700" text-anchor="middle">Editar</text>
+<rect x="623.1" y="308.0" width="50.0" height="18.0" rx="3" fill="#f8cecc" stroke="#b85450" stroke-width="1"/>
+<text x="648.1" y="320.1" font-size="8.5" fill="#1a1a1a" font-weight="700" text-anchor="middle">Eliminar</text>
+<rect x="573.1" y="334.0" width="46.0" height="18.0" rx="3" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1"/>
+<text x="596.1" y="346.1" font-size="8.5" fill="#1a1a1a" font-weight="700" text-anchor="middle">Editar</text>
+<rect x="623.1" y="334.0" width="50.0" height="18.0" rx="3" fill="#f8cecc" stroke="#b85450" stroke-width="1"/>
+<text x="648.1" y="346.1" font-size="8.5" fill="#1a1a1a" font-weight="700" text-anchor="middle">Eliminar</text>
+<circle cx="182.00" cy="291.00" r="11.00" fill="#ffe6cc" stroke="#d79b00" stroke-width="1.2"/>
+<text x="182.0" y="295.0" font-size="12" fill="#1a1a1a" font-weight="700" text-anchor="middle">2</text>
+<circle cx="182.00" cy="343.00" r="11.00" fill="#ffe6cc" stroke="#d79b00" stroke-width="1.2"/>
+<text x="182.0" y="347.0" font-size="12" fill="#1a1a1a" font-weight="700" text-anchor="middle">3</text>
+<text x="192.0" y="376.0" font-size="9.5" fill="#5d6673" font-weight="400">3 de 6 talleres · página 1</text>
+<rect x="684.9" y="214.0" width="355.1" height="318.0" rx="3" fill="#ffffff" stroke="#666666" stroke-width="1"/>
+<text x="698.9" y="238.0" font-size="11.5" fill="#1a1a1a" font-weight="700">Editar taller TAL-018</text>
+<text x="698.9" y="254.0" font-size="9" fill="#5d6673" font-weight="400">El mismo formulario sirve para crear</text>
+<text x="698.9" y="283.0" font-size="9.5" fill="#5d6673" font-weight="700">Nombre de la actividad</text>
+<rect x="698.9" y="288.0" width="327.1" height="30.0" rx="2" fill="#ffffff" stroke="#9aa5b1" stroke-width="1"/>
+<text x="706.9" y="306.5" font-size="10.5" fill="#1a1a1a" font-weight="400">Alfabetización digital</text>
+<text x="698.9" y="331.0" font-size="9.5" fill="#5d6673" font-weight="700">Recinto</text>
+<rect x="698.9" y="336.0" width="327.1" height="30.0" rx="2" fill="#ffffff" stroke="#9aa5b1" stroke-width="1"/>
+<text x="706.9" y="354.5" font-size="10.5" fill="#1a1a1a" font-weight="400">UV 12 Los Castaños</text>
+<text x="698.9" y="379.0" font-size="9.5" fill="#5d6673" font-weight="700">Fecha y hora</text>
+<rect x="698.9" y="384.0" width="327.1" height="30.0" rx="2" fill="#ffffff" stroke="#9aa5b1" stroke-width="1"/>
+<text x="706.9" y="402.5" font-size="10.5" fill="#1a1a1a" font-weight="400">18-10-2026 10:00</text>
+<text x="698.9" y="427.0" font-size="9.5" fill="#5d6673" font-weight="700">Cupos máximos</text>
+<rect x="698.9" y="432.0" width="327.1" height="30.0" rx="2" fill="#ffffff" stroke="#9aa5b1" stroke-width="1"/>
+<text x="706.9" y="450.5" font-size="10.5" fill="#1a1a1a" font-weight="400">35</text>
+<rect x="698.9" y="478.0" width="157.6" height="32.0" rx="3" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1"/>
+<text x="777.7" y="497.8" font-size="10.5" fill="#1a1a1a" font-weight="700" text-anchor="middle">Guardar</text>
+<rect x="868.4" y="478.0" width="157.6" height="32.0" rx="3" fill="#ffffff" stroke="#9aa5b1" stroke-width="1"/>
+<text x="947.2" y="497.8" font-size="10.5" fill="#1a1a1a" font-weight="400" text-anchor="middle">Cancelar</text>
+<circle cx="1050.00" cy="494.00" r="11.00" fill="#ffe6cc" stroke="#d79b00" stroke-width="1.2"/>
+<text x="1050.0" y="498.0" font-size="12" fill="#1a1a1a" font-weight="700" text-anchor="middle">4</text>
+<rect x="192.0" y="554.0" width="360.0" height="104.0" rx="3" fill="#f8cecc" stroke="#b85450" stroke-width="1"/>
+<text x="206.0" y="580.0" font-size="11.5" fill="#1a1a1a" font-weight="700">¿Eliminar TAL-020?</text>
+<text x="206.0" y="598.0" font-size="9.5" fill="#5d6673" font-weight="400">Se borra el taller y sus marcaciones.</text>
+<text x="206.0" y="612.0" font-size="9.5" fill="#5d6673" font-weight="400">No se puede deshacer.</text>
+<rect x="206.0" y="622.0" width="96.0" height="26.0" rx="3" fill="#f8cecc" stroke="#b85450" stroke-width="1"/>
+<text x="254.0" y="638.6" font-size="10" fill="#1a1a1a" font-weight="700" text-anchor="middle">Eliminar</text>
+<rect x="310.0" y="622.0" width="96.0" height="26.0" rx="3" fill="#ffffff" stroke="#9aa5b1" stroke-width="1"/>
+<text x="358.0" y="638.6" font-size="10" fill="#1a1a1a" font-weight="400" text-anchor="middle">Cancelar</text>
+<circle cx="182.00" cy="635.00" r="11.00" fill="#ffe6cc" stroke="#d79b00" stroke-width="1.2"/>
+<text x="182.0" y="639.0" font-size="12" fill="#1a1a1a" font-weight="700" text-anchor="middle">5</text>
+<rect x="570.0" y="554.0" width="470.0" height="104.0" rx="3" fill="#e1d5e7" stroke="#9673a6" stroke-width="1"/>
+<text x="584.0" y="576.0" font-size="10.5" fill="#1a1a1a" font-weight="700">Qué llama cada botón (API en EC2)</text>
+<text x="584.0" y="600.0" font-size="9.5" fill="#1a1a1a" font-weight="700">Listar</text>
+<text x="636.0" y="600.0" font-size="9.5" fill="#5d6673" font-weight="400" font-family="Consolas, 'Courier New', monospace">GET /api/talleres</text>
+<text x="584.0" y="620.0" font-size="9.5" fill="#1a1a1a" font-weight="700">Crear</text>
+<text x="636.0" y="620.0" font-size="9.5" fill="#5d6673" font-weight="400" font-family="Consolas, 'Courier New', monospace">POST /api/talleres</text>
+<text x="805.0" y="600.0" font-size="9.5" fill="#1a1a1a" font-weight="700">Editar</text>
+<text x="857.0" y="600.0" font-size="9.5" fill="#5d6673" font-weight="400" font-family="Consolas, 'Courier New', monospace">PUT /api/talleres/:id</text>
+<text x="805.0" y="620.0" font-size="9.5" fill="#1a1a1a" font-weight="700">Eliminar</text>
+<text x="857.0" y="620.0" font-size="9.5" fill="#5d6673" font-weight="400" font-family="Consolas, 'Courier New', monospace">DELETE /api/talleres/:id</text>
+<text x="584.0" y="646.0" font-size="9" fill="#5d6673" font-weight="400">Todas con el token de Cognito en la cabecera Authorization.</text>
+<text x="24.0" y="706.0" font-size="10" fill="#5d6673" font-weight="400">Escritorio · 1280 × 800 px</text>
+<text x="1082.0" y="100.0" font-size="12" fill="#5d6673" font-weight="700">Referencias del dibujo</text>
+<circle cx="1093.00" cy="125.00" r="10.00" fill="#ffe6cc" stroke="#d79b00" stroke-width="1.2"/>
+<text x="1093.0" y="129.0" font-size="12" fill="#1a1a1a" font-weight="700" text-anchor="middle">1</text>
+<text x="1110.0" y="123.0" font-size="10.5" fill="#1a1a1a" font-weight="700">C de crear</text>
+<text x="1110.0" y="138.0" font-size="10" fill="#5d6673" font-weight="400">Abre el formulario vacío y</text>
+<text x="1110.0" y="151.0" font-size="10" fill="#5d6673" font-weight="400">hace POST al guardar.</text>
+<circle cx="1093.00" cy="179.00" r="10.00" fill="#ffe6cc" stroke="#d79b00" stroke-width="1.2"/>
+<text x="1093.0" y="183.0" font-size="12" fill="#1a1a1a" font-weight="700" text-anchor="middle">2</text>
+<text x="1110.0" y="177.0" font-size="10.5" fill="#1a1a1a" font-weight="700">R de leer</text>
+<text x="1110.0" y="192.0" font-size="10" fill="#5d6673" font-weight="400">La tabla es un GET con</text>
+<text x="1110.0" y="205.0" font-size="10" fill="#5d6673" font-weight="400">paginado.</text>
+<circle cx="1093.00" cy="233.00" r="10.00" fill="#ffe6cc" stroke="#d79b00" stroke-width="1.2"/>
+<text x="1093.0" y="237.0" font-size="12" fill="#1a1a1a" font-weight="700" text-anchor="middle">3</text>
+<text x="1110.0" y="231.0" font-size="10.5" fill="#1a1a1a" font-weight="700">U de actualizar</text>
+<text x="1110.0" y="246.0" font-size="10" fill="#5d6673" font-weight="400">Editar carga la fila en el</text>
+<text x="1110.0" y="259.0" font-size="10" fill="#5d6673" font-weight="400">formulario y hace PUT.</text>
+<circle cx="1093.00" cy="287.00" r="10.00" fill="#ffe6cc" stroke="#d79b00" stroke-width="1.2"/>
+<text x="1093.0" y="291.0" font-size="12" fill="#1a1a1a" font-weight="700" text-anchor="middle">4</text>
+<text x="1110.0" y="285.0" font-size="10.5" fill="#1a1a1a" font-weight="700">Formulario único</text>
+<text x="1110.0" y="300.0" font-size="10" fill="#5d6673" font-weight="400">Crear y editar comparten</text>
+<text x="1110.0" y="313.0" font-size="10" fill="#5d6673" font-weight="400">campos y validaciones.</text>
+<circle cx="1093.00" cy="341.00" r="10.00" fill="#ffe6cc" stroke="#d79b00" stroke-width="1.2"/>
+<text x="1093.0" y="345.0" font-size="12" fill="#1a1a1a" font-weight="700" text-anchor="middle">5</text>
+<text x="1110.0" y="339.0" font-size="10.5" fill="#1a1a1a" font-weight="700">D de eliminar</text>
+<text x="1110.0" y="354.0" font-size="10" fill="#5d6673" font-weight="400">Siempre con confirmación</text>
+<text x="1110.0" y="367.0" font-size="10" fill="#5d6673" font-weight="400">porque arrastra marcaciones.</text>
+<rect x="1082.0" y="400.0" width="154.1" height="101.0" rx="3" fill="#ffffff" stroke="#9aa5b1" stroke-width="1" stroke-dasharray="4 3"/>
+<text x="1092.0" y="418.0" font-size="10.5" fill="#5d6673" font-weight="700">Leyenda</text>
+<rect x="1092.0" y="428.0" width="18.0" height="11.0" rx="2" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1"/>
+<text x="1116.0" y="437.5" font-size="10.5" fill="#1a1a1a" font-weight="400">Acción principal</text>
+<rect x="1092.0" y="445.0" width="18.0" height="11.0" rx="2" fill="#d5e8d4" stroke="#82b366" stroke-width="1"/>
+<text x="1116.0" y="454.5" font-size="10.5" fill="#1a1a1a" font-weight="400">Estado correcto</text>
+<rect x="1092.0" y="462.0" width="18.0" height="11.0" rx="2" fill="#ffe6cc" stroke="#d79b00" stroke-width="1"/>
+<text x="1116.0" y="471.5" font-size="10.5" fill="#1a1a1a" font-weight="400">Pendiente de envío</text>
+<rect x="1092.0" y="479.0" width="18.0" height="11.0" rx="2" fill="#f8cecc" stroke="#b85450" stroke-width="1"/>
+<text x="1116.0" y="488.5" font-size="10.5" fill="#1a1a1a" font-weight="400">Requiere revisión</text>
+</svg>

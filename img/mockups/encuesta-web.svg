@@ -1,0 +1,128 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1420 588" width="1420" height="588" role="img" aria-label="Vista 4 · Encuesta de satisfacción (web)" font-family="Helvetica, 'Helvetica Neue', Arial, sans-serif">
+<title>Vista 4 · Encuesta de satisfacción (web)</title>
+<rect width="1420" height="588" fill="#ffffff"/>
+<text x="24.0" y="32.0" font-size="17" fill="#1a1a1a" font-weight="700">Vista 4 · Encuesta de satisfacción</text>
+<text x="24.0" y="52.0" font-size="11.5" fill="#5d6673" font-weight="400">Versión escritorio · 1280 px o más · React + Vite</text>
+<rect x="1335.7" y="16.0" width="60.3" height="24.0" rx="3" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1"/>
+<text x="1365.9" y="32.0" font-size="11" fill="#1a1a1a" font-weight="700" text-anchor="middle">Mockup</text>
+<rect x="24.0" y="76.0" width="1034.0" height="456.0" rx="3" fill="#ffffff" stroke="#666666" stroke-width="1.4"/>
+<rect x="24.0" y="76.0" width="1034.0" height="30.0" rx="0" fill="#f0f2f5" stroke="#666666" stroke-width="1.4"/>
+<circle cx="40.00" cy="91.00" r="4.50" fill="#ffffff" stroke="#9aa5b1" stroke-width="1"/>
+<circle cx="54.00" cy="91.00" r="4.50" fill="#ffffff" stroke="#9aa5b1" stroke-width="1"/>
+<circle cx="68.00" cy="91.00" r="4.50" fill="#ffffff" stroke="#9aa5b1" stroke-width="1"/>
+<rect x="86.0" y="83.0" width="884.0" height="16.0" rx="2" fill="#ffffff" stroke="#9aa5b1" stroke-width="1"/>
+<text x="94.0" y="94.5" font-size="10" fill="#5d6673" font-weight="400" font-family="Consolas, 'Courier New', monospace">syncpass.duocuc.cl/encuestas</text>
+<rect x="984.4" y="83.0" width="63.6" height="16.0" rx="2" fill="#d5e8d4" stroke="#82b366" stroke-width="1"/>
+<text x="1016.2" y="94.4" font-size="9.5" fill="#1a1a1a" font-weight="700" text-anchor="middle">Conectado</text>
+<rect x="24.0" y="106.0" width="1034.0" height="46.0" rx="0" fill="#ffffff" stroke="#9aa5b1" stroke-width="1"/>
+<rect x="36.0" y="117.0" width="24.0" height="24.0" rx="3" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1"/>
+<text x="48.0" y="132.2" font-size="9" fill="#1a1a1a" font-weight="700" text-anchor="middle">QR</text>
+<text x="68.0" y="127.0" font-size="13" fill="#1a1a1a" font-weight="700">SyncPass</text>
+<text x="68.0" y="140.0" font-size="8.5" fill="#5d6673" font-weight="400">CITT Plaza Vespucio</text>
+<text x="204.0" y="134.0" font-size="10" fill="#5d6673" font-weight="400">Vinculación con el Medio · período 2026-2</text>
+<rect x="928.0" y="117.0" width="24.0" height="24.0" rx="3" fill="#ffffff" stroke="#c2cbd4" stroke-width="1"/>
+<text x="940.0" y="132.6" font-size="10" fill="#1a1a1a" font-weight="400" text-anchor="middle">?</text>
+<rect x="960.0" y="117.0" width="86.0" height="24.0" rx="12" fill="#f5f5f5" stroke="#666666" stroke-width="1"/>
+<text x="1003.0" y="132.4" font-size="9.5" fill="#1a1a1a" font-weight="400" text-anchor="middle">M. Vega</text>
+<line x1="24.0" y1="152.0" x2="1058.0" y2="152.0" stroke="#9aa5b1" stroke-width="1"/>
+<rect x="24.0" y="152.0" width="150.0" height="380.0" rx="0" fill="#fafbfc" stroke="#9aa5b1" stroke-width="1"/>
+<rect x="34.0" y="166.0" width="130.0" height="30.0" rx="3" fill="#ffffff" stroke="#c2cbd4" stroke-width="1"/>
+<text x="99.0" y="184.8" font-size="10.5" fill="#1a1a1a" font-weight="400" text-anchor="middle">Panel</text>
+<rect x="34.0" y="202.0" width="130.0" height="30.0" rx="3" fill="#ffffff" stroke="#c2cbd4" stroke-width="1"/>
+<text x="99.0" y="220.8" font-size="10.5" fill="#1a1a1a" font-weight="400" text-anchor="middle">Acreditar</text>
+<rect x="34.0" y="238.0" width="130.0" height="30.0" rx="3" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1"/>
+<text x="99.0" y="256.8" font-size="10.5" fill="#1a1a1a" font-weight="700" text-anchor="middle">Encuestas</text>
+<rect x="34.0" y="274.0" width="130.0" height="30.0" rx="3" fill="#ffffff" stroke="#c2cbd4" stroke-width="1"/>
+<text x="99.0" y="292.8" font-size="10.5" fill="#1a1a1a" font-weight="400" text-anchor="middle">Quórum</text>
+<rect x="34.0" y="310.0" width="130.0" height="30.0" rx="3" fill="#ffffff" stroke="#c2cbd4" stroke-width="1"/>
+<text x="99.0" y="328.8" font-size="10.5" fill="#1a1a1a" font-weight="400" text-anchor="middle">Sincronizar</text>
+<rect x="34.0" y="346.0" width="130.0" height="30.0" rx="3" fill="#ffffff" stroke="#c2cbd4" stroke-width="1"/>
+<text x="99.0" y="364.8" font-size="10.5" fill="#1a1a1a" font-weight="400" text-anchor="middle">Reportes</text>
+<rect x="34.0" y="450.0" width="130.0" height="68.0" rx="3" fill="#fff2cc" stroke="#d6b656" stroke-width="1"/>
+<text x="44.0" y="467.0" font-size="9.5" fill="#1a1a1a" font-weight="700">Cola local</text>
+<text x="44.0" y="482.0" font-size="9" fill="#5d6673" font-weight="400">3 registros sin enviar</text>
+<rect x="44.0" y="489.0" width="110.0" height="7.0" rx="2" fill="#eceff3" stroke="#c2cbd4" stroke-width="1"/>
+<rect x="44.0" y="489.0" width="77.0" height="7.0" rx="2" fill="#d79b00"/>
+<text x="44.0" y="510.0" font-size="8.5" fill="#5d6673" font-weight="400">Último envío 09:12</text>
+<text x="192.0" y="180.0" font-size="14" fill="#1a1a1a" font-weight="700">Encuesta de satisfacción en terreno</text>
+<text x="192.0" y="196.0" font-size="10" fill="#5d6673" font-weight="400">Se responde al cerrar el taller, en el mismo recinto</text>
+<rect x="192.0" y="214.0" width="491.8" height="304.0" rx="3" fill="#ffffff" stroke="#666666" stroke-width="1"/>
+<text x="208.0" y="240.0" font-size="11.5" fill="#1a1a1a" font-weight="700">1. ¿Cómo evalúas el taller?</text>
+<polygon points="232.00,260.00 236.76,271.45 249.12,272.44 239.70,280.50 242.58,292.56 232.00,286.10 221.42,292.56 224.30,280.50 214.88,272.44 227.24,271.45" fill="#ffd966" stroke="#d6b656" stroke-width="1.2"/>
+<text x="232.0" y="308.0" font-size="9" fill="#5d6673" font-weight="400" text-anchor="middle">1</text>
+<polygon points="278.00,260.00 282.76,271.45 295.12,272.44 285.70,280.50 288.58,292.56 278.00,286.10 267.42,292.56 270.30,280.50 260.88,272.44 273.24,271.45" fill="#ffd966" stroke="#d6b656" stroke-width="1.2"/>
+<text x="278.0" y="308.0" font-size="9" fill="#5d6673" font-weight="400" text-anchor="middle">2</text>
+<polygon points="324.00,260.00 328.76,271.45 341.12,272.44 331.70,280.50 334.58,292.56 324.00,286.10 313.42,292.56 316.30,280.50 306.88,272.44 319.24,271.45" fill="#ffd966" stroke="#d6b656" stroke-width="1.2"/>
+<text x="324.0" y="308.0" font-size="9" fill="#5d6673" font-weight="400" text-anchor="middle">3</text>
+<polygon points="370.00,260.00 374.76,271.45 387.12,272.44 377.70,280.50 380.58,292.56 370.00,286.10 359.42,292.56 362.30,280.50 352.88,272.44 365.24,271.45" fill="#ffd966" stroke="#d6b656" stroke-width="1.2"/>
+<text x="370.0" y="308.0" font-size="9" fill="#5d6673" font-weight="400" text-anchor="middle">4</text>
+<polygon points="416.00,260.00 420.76,271.45 433.12,272.44 423.70,280.50 426.58,292.56 416.00,286.10 405.42,292.56 408.30,280.50 398.88,272.44 411.24,271.45" fill="#ffffff" stroke="#d6b656" stroke-width="1.2"/>
+<text x="416.0" y="308.0" font-size="9" fill="#5d6673" font-weight="400" text-anchor="middle">5</text>
+<text x="458.0" y="284.0" font-size="10" fill="#5d6673" font-weight="400">4 de 5 · escala Likert</text>
+<circle cx="182.00" cy="278.00" r="11.00" fill="#ffe6cc" stroke="#d79b00" stroke-width="1.2"/>
+<text x="182.0" y="282.0" font-size="12" fill="#1a1a1a" font-weight="700" text-anchor="middle">1</text>
+<line x1="208.0" y1="322.0" x2="667.8" y2="322.0" stroke="#dde3ea" stroke-width="1"/>
+<text x="208.0" y="346.0" font-size="11.5" fill="#1a1a1a" font-weight="700">2. ¿Te sirve para tu vida diaria?</text>
+<rect x="208.0" y="358.0" width="47.5" height="24.0" rx="12" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1"/>
+<text x="231.8" y="373.4" font-size="9.5" fill="#1a1a1a" font-weight="700" text-anchor="middle">Mucho</text>
+<rect x="263.6" y="358.0" width="64.1" height="24.0" rx="12" fill="#ffffff" stroke="#c2cbd4" stroke-width="1"/>
+<text x="295.6" y="373.4" font-size="9.5" fill="#1a1a1a" font-weight="700" text-anchor="middle">Bastante</text>
+<rect x="335.6" y="358.0" width="42.0" height="24.0" rx="12" fill="#ffffff" stroke="#c2cbd4" stroke-width="1"/>
+<text x="356.6" y="373.4" font-size="9.5" fill="#1a1a1a" font-weight="700" text-anchor="middle">Algo</text>
+<rect x="385.7" y="358.0" width="42.0" height="24.0" rx="12" fill="#ffffff" stroke="#c2cbd4" stroke-width="1"/>
+<text x="406.7" y="373.4" font-size="9.5" fill="#1a1a1a" font-weight="700" text-anchor="middle">Poco</text>
+<rect x="435.7" y="358.0" width="42.0" height="24.0" rx="12" fill="#ffffff" stroke="#c2cbd4" stroke-width="1"/>
+<text x="456.7" y="373.4" font-size="9.5" fill="#1a1a1a" font-weight="700" text-anchor="middle">Nada</text>
+<circle cx="182.00" cy="370.00" r="11.00" fill="#ffe6cc" stroke="#d79b00" stroke-width="1.2"/>
+<text x="182.0" y="374.0" font-size="12" fill="#1a1a1a" font-weight="700" text-anchor="middle">2</text>
+<text x="208.0" y="410.0" font-size="11.5" fill="#1a1a1a" font-weight="700">3. Comentario (opcional)</text>
+<rect x="208.0" y="420.0" width="459.8" height="56.0" rx="2" fill="#ffffff" stroke="#9aa5b1" stroke-width="1"/>
+<text x="216.0" y="451.5" font-size="10.5" fill="#1a1a1a" font-weight="400">Las clases fueron claras y pude practicar…</text>
+<rect x="208.0" y="486.0" width="459.8" height="30.0" rx="3" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1"/>
+<text x="437.9" y="505.0" font-size="11" fill="#1a1a1a" font-weight="700" text-anchor="middle">Guardar respuesta</text>
+<text x="667.8" y="412.0" font-size="9" fill="#5d6673" font-weight="400" text-anchor="end">30 segundos por persona</text>
+<rect x="701.8" y="214.0" width="338.2" height="154.0" rx="3" fill="#ffffff" stroke="#666666" stroke-width="1"/>
+<text x="715.8" y="238.0" font-size="11" fill="#1a1a1a" font-weight="700">Avance de la encuesta</text>
+<text x="715.8" y="266.0" font-size="16" fill="#1a1a1a" font-weight="700">27 de 35 asistentes</text>
+<rect x="715.8" y="276.0" width="310.2" height="9.0" rx="2" fill="#eceff3" stroke="#c2cbd4" stroke-width="1"/>
+<rect x="715.8" y="276.0" width="239.3" height="9.0" rx="2" fill="#6c8ebf"/>
+<text x="715.8" y="302.0" font-size="9.5" fill="#5d6673" font-weight="400">77 % de respuesta en terreno</text>
+<line x1="715.8" y1="314.0" x2="1026.0" y2="314.0" stroke="#dde3ea" stroke-width="1"/>
+<text x="715.8" y="334.0" font-size="9.5" fill="#5d6673" font-weight="400">Histórico por correo: 15 %</text>
+<text x="715.8" y="354.0" font-size="9.5" fill="#82b366" font-weight="700">Meta del caso: sobre 65 %</text>
+<circle cx="1050.00" cy="276.00" r="11.00" fill="#ffe6cc" stroke="#d79b00" stroke-width="1.2"/>
+<text x="1050.0" y="280.0" font-size="12" fill="#1a1a1a" font-weight="700" text-anchor="middle">3</text>
+<path d="M 701.8 388.0 H 1028.0 L 1040.0 400.0 V 466.0 H 701.8 Z" fill="#fff2cc" stroke="#d6b656" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter"/>
+<path d="M 1028.0 388.0 V 400.0 H 1040.0 Z" fill="#ffffff" stroke="#d6b656" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" opacity="0.85"/>
+<text x="710.8" y="409.0" font-size="11" fill="#1a1a1a" font-weight="700">Modo sin conexión</text>
+<text x="710.8" y="425.0" font-size="11" fill="#1a1a1a" font-weight="400">La respuesta también queda en</text>
+<text x="710.8" y="441.0" font-size="11" fill="#1a1a1a" font-weight="400">la base local si el recinto</text>
+<text x="710.8" y="457.0" font-size="11" fill="#1a1a1a" font-weight="400">no tiene señal.</text>
+<text x="24.0" y="552.0" font-size="10" fill="#5d6673" font-weight="400">Escritorio · 1280 × 800 px</text>
+<text x="1082.0" y="100.0" font-size="12" fill="#5d6673" font-weight="700">Referencias del dibujo</text>
+<circle cx="1093.00" cy="125.00" r="10.00" fill="#ffe6cc" stroke="#d79b00" stroke-width="1.2"/>
+<text x="1093.0" y="129.0" font-size="12" fill="#1a1a1a" font-weight="700" text-anchor="middle">1</text>
+<text x="1110.0" y="123.0" font-size="10.5" fill="#1a1a1a" font-weight="700">Cinco estrellas</text>
+<text x="1110.0" y="138.0" font-size="10" fill="#5d6673" font-weight="400">Área táctil de 48 dp: se responde</text>
+<text x="1110.0" y="151.0" font-size="10" fill="#5d6673" font-weight="400">de pie, sin teclado.</text>
+<circle cx="1093.00" cy="179.00" r="10.00" fill="#ffe6cc" stroke="#d79b00" stroke-width="1.2"/>
+<text x="1093.0" y="183.0" font-size="12" fill="#1a1a1a" font-weight="700" text-anchor="middle">2</text>
+<text x="1110.0" y="177.0" font-size="10.5" fill="#1a1a1a" font-weight="700">Pregunta de utilidad</text>
+<text x="1110.0" y="192.0" font-size="10" fill="#5d6673" font-weight="400">Opción única. Alimenta el</text>
+<text x="1110.0" y="205.0" font-size="10" fill="#5d6673" font-weight="400">indicador de impacto comunitario.</text>
+<circle cx="1093.00" cy="233.00" r="10.00" fill="#ffe6cc" stroke="#d79b00" stroke-width="1.2"/>
+<text x="1093.0" y="237.0" font-size="12" fill="#1a1a1a" font-weight="700" text-anchor="middle">3</text>
+<text x="1110.0" y="231.0" font-size="10.5" fill="#1a1a1a" font-weight="700">Avance en vivo</text>
+<text x="1110.0" y="246.0" font-size="10" fill="#5d6673" font-weight="400">El monitor ve cuánta gente</text>
+<text x="1110.0" y="259.0" font-size="10" fill="#5d6673" font-weight="400">falta por responder.</text>
+<rect x="1082.0" y="292.0" width="154.1" height="101.0" rx="3" fill="#ffffff" stroke="#9aa5b1" stroke-width="1" stroke-dasharray="4 3"/>
+<text x="1092.0" y="310.0" font-size="10.5" fill="#5d6673" font-weight="700">Leyenda</text>
+<rect x="1092.0" y="320.0" width="18.0" height="11.0" rx="2" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1"/>
+<text x="1116.0" y="329.5" font-size="10.5" fill="#1a1a1a" font-weight="400">Acción principal</text>
+<rect x="1092.0" y="337.0" width="18.0" height="11.0" rx="2" fill="#d5e8d4" stroke="#82b366" stroke-width="1"/>
+<text x="1116.0" y="346.5" font-size="10.5" fill="#1a1a1a" font-weight="400">Estado correcto</text>
+<rect x="1092.0" y="354.0" width="18.0" height="11.0" rx="2" fill="#ffe6cc" stroke="#d79b00" stroke-width="1"/>
+<text x="1116.0" y="363.5" font-size="10.5" fill="#1a1a1a" font-weight="400">Pendiente de envío</text>
+<rect x="1092.0" y="371.0" width="18.0" height="11.0" rx="2" fill="#f8cecc" stroke="#b85450" stroke-width="1"/>
+<text x="1116.0" y="380.5" font-size="10.5" fill="#1a1a1a" font-weight="400">Requiere revisión</text>
+</svg>

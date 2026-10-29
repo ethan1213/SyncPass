@@ -1,0 +1,99 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 790 764" width="790" height="764" role="img" aria-label="Vista 1 · Panel de talleres (movil)" font-family="Helvetica, 'Helvetica Neue', Arial, sans-serif">
+<title>Vista 1 · Panel de talleres (movil)</title>
+<rect width="790" height="764" fill="#ffffff"/>
+<text x="24.0" y="32.0" font-size="17" fill="#1a1a1a" font-weight="700">Vista 1 · Panel de talleres</text>
+<text x="24.0" y="52.0" font-size="11.5" fill="#5d6673" font-weight="400">Versión móvil · app Android nativa en Kotlin con Jetpack Compose</text>
+<rect x="705.7" y="16.0" width="60.3" height="24.0" rx="3" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1"/>
+<text x="735.9" y="32.0" font-size="11" fill="#1a1a1a" font-weight="700" text-anchor="middle">Mockup</text>
+<rect x="24.0" y="80.0" width="390.0" height="624.0" rx="22" fill="#f0f2f5" stroke="#666666" stroke-width="1.4"/>
+<rect x="34.0" y="90.0" width="370.0" height="604.0" rx="12" fill="#ffffff" stroke="#9aa5b1" stroke-width="1"/>
+<rect x="34.0" y="90.0" width="370.0" height="20.0" rx="0" fill="#f7f8fa" stroke="#c2cbd4" stroke-width="1"/>
+<text x="42.0" y="104.0" font-size="9" fill="#5d6673" font-weight="700">09:41</text>
+<text x="396.0" y="104.0" font-size="9" fill="#b85450" font-weight="700" text-anchor="end">SIN SENAL  85%</text>
+<text x="219.0" y="720.0" font-size="10" fill="#5d6673" font-weight="400" text-anchor="middle">Android · ancho 390 dp (recorte de la pantalla)</text>
+<rect x="34.0" y="110.0" width="370.0" height="38.0" rx="0" fill="#647687" stroke="#314354" stroke-width="1"/>
+<text x="44.0" y="128.0" font-size="11.5" fill="#ffffff" font-weight="700">SyncPass</text>
+<text x="44.0" y="141.0" font-size="9" fill="#d7dee8" font-weight="400">Monitor M. Vega</text>
+<rect x="335.0" y="120.0" width="61.0" height="18.0" rx="9" fill="#f8cecc" stroke="#b85450" stroke-width="1"/>
+<text x="365.5" y="132.2" font-size="9" fill="#1a1a1a" font-weight="700" text-anchor="middle">SIN SEÑAL</text>
+<rect x="44.0" y="158.0" width="350.0" height="72.0" rx="3" fill="#fff2cc" stroke="#d6b656" stroke-width="1"/>
+<text x="54.0" y="176.0" font-size="9.5" fill="#5d6673" font-weight="700">Taller de hoy</text>
+<text x="54.0" y="194.0" font-size="11.5" fill="#1a1a1a" font-weight="700">Alfabetización digital</text>
+<text x="54.0" y="208.0" font-size="9" fill="#5d6673" font-weight="400">UV 12 Los Castaños · 10:00</text>
+<text x="384.0" y="194.0" font-size="12" fill="#1a1a1a" font-weight="700" text-anchor="end">24/35</text>
+<rect x="54.0" y="216.0" width="330.0" height="7.0" rx="2" fill="#eceff3" stroke="#c2cbd4" stroke-width="1"/>
+<rect x="54.0" y="216.0" width="226.3" height="7.0" rx="2" fill="#6c8ebf"/>
+<circle cx="414.00" cy="166.00" r="11.00" fill="#ffe6cc" stroke="#d79b00" stroke-width="1.2"/>
+<text x="414.0" y="170.0" font-size="12" fill="#1a1a1a" font-weight="700" text-anchor="middle">1</text>
+<rect x="44.0" y="242.0" width="350.0" height="54.0" rx="3" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1"/>
+<text x="219.0" y="266.0" font-size="11" fill="#1a1a1a" font-weight="700" text-anchor="middle">Escanear código QR</text>
+<text x="219.0" y="280.0" font-size="11" fill="#1a1a1a" font-weight="700" text-anchor="middle">acreditación en menos de 5 s</text>
+<circle cx="24.00" cy="269.00" r="11.00" fill="#ffe6cc" stroke="#d79b00" stroke-width="1.2"/>
+<text x="24.0" y="273.0" font-size="12" fill="#1a1a1a" font-weight="700" text-anchor="middle">2</text>
+<rect x="44.0" y="306.0" width="171.0" height="44.0" rx="3" fill="#ffffff" stroke="#666666" stroke-width="1"/>
+<text x="129.5" y="325.2" font-size="9.5" fill="#1a1a1a" font-weight="400" text-anchor="middle">Encuesta</text>
+<text x="129.5" y="337.7" font-size="9.5" fill="#1a1a1a" font-weight="400" text-anchor="middle">1 a 5 estrellas</text>
+<rect x="223.0" y="306.0" width="171.0" height="44.0" rx="3" fill="#ffe6cc" stroke="#d79b00" stroke-width="1"/>
+<text x="308.5" y="325.2" font-size="9.5" fill="#1a1a1a" font-weight="400" text-anchor="middle">Cola local</text>
+<text x="308.5" y="337.7" font-size="9.5" fill="#1a1a1a" font-weight="400" text-anchor="middle">3 pendientes</text>
+<text x="48.0" y="376.0" font-size="10.5" fill="#1a1a1a" font-weight="700">Mis talleres asignados</text>
+<rect x="44.0" y="386.0" width="350.0" height="50.0" rx="3" fill="#ffffff" stroke="#666666" stroke-width="1"/>
+<rect x="52.0" y="394.0" width="34.0" height="34.0" rx="0" fill="#fafbfc" stroke="#9aa5b1" stroke-width="1"/>
+<line x1="52.0" y1="394.0" x2="86.0" y2="428.0" stroke="#c2cbd4" stroke-width="1"/>
+<line x1="86.0" y1="394.0" x2="52.0" y2="428.0" stroke="#c2cbd4" stroke-width="1"/>
+<text x="94.0" y="408.0" font-size="10" fill="#1a1a1a" font-weight="700">Alfabetización digital</text>
+<text x="94.0" y="422.0" font-size="9" fill="#5d6673" font-weight="400">hoy 10:00 · 24/35</text>
+<text x="386.0" y="416.0" font-size="13" fill="#5d6673" font-weight="700" text-anchor="end">›</text>
+<rect x="44.0" y="444.0" width="350.0" height="50.0" rx="3" fill="#ffffff" stroke="#666666" stroke-width="1"/>
+<rect x="52.0" y="452.0" width="34.0" height="34.0" rx="0" fill="#fafbfc" stroke="#9aa5b1" stroke-width="1"/>
+<line x1="52.0" y1="452.0" x2="86.0" y2="486.0" stroke="#c2cbd4" stroke-width="1"/>
+<line x1="86.0" y1="452.0" x2="52.0" y2="486.0" stroke="#c2cbd4" stroke-width="1"/>
+<text x="94.0" y="466.0" font-size="10" fill="#1a1a1a" font-weight="700">Huerto comunitario</text>
+<text x="94.0" y="480.0" font-size="9" fill="#5d6673" font-weight="400">hoy 15:30 · 11/30</text>
+<text x="386.0" y="474.0" font-size="13" fill="#5d6673" font-weight="700" text-anchor="end">›</text>
+<rect x="44.0" y="502.0" width="350.0" height="50.0" rx="3" fill="#ffffff" stroke="#666666" stroke-width="1"/>
+<rect x="52.0" y="510.0" width="34.0" height="34.0" rx="0" fill="#fafbfc" stroke="#9aa5b1" stroke-width="1"/>
+<line x1="52.0" y1="510.0" x2="86.0" y2="544.0" stroke="#c2cbd4" stroke-width="1"/>
+<line x1="86.0" y1="510.0" x2="52.0" y2="544.0" stroke="#c2cbd4" stroke-width="1"/>
+<text x="94.0" y="524.0" font-size="10" fill="#1a1a1a" font-weight="700">Ciberseguridad vecinal</text>
+<text x="94.0" y="538.0" font-size="9" fill="#5d6673" font-weight="400">dom 11:00 · 0/25</text>
+<text x="386.0" y="532.0" font-size="13" fill="#5d6673" font-weight="700" text-anchor="end">›</text>
+<circle cx="24.00" cy="527.00" r="11.00" fill="#ffe6cc" stroke="#d79b00" stroke-width="1.2"/>
+<text x="24.0" y="531.0" font-size="12" fill="#1a1a1a" font-weight="700" text-anchor="middle">3</text>
+<rect x="44.0" y="570.0" width="350.0" height="62.0" rx="3" fill="#ffffff" stroke="#666666" stroke-width="1"/>
+<text x="54.0" y="590.0" font-size="10" fill="#1a1a1a" font-weight="700">Resumen de la jornada</text>
+<text x="54.0" y="608.0" font-size="9.5" fill="#5d6673" font-weight="400">38 acreditaciones · 29 encuestas</text>
+<text x="54.0" y="622.0" font-size="9.5" fill="#5d6673" font-weight="400">3 registros esperando señal</text>
+<rect x="34.0" y="650.0" width="370.0" height="44.0" rx="0" fill="#f7f8fa" stroke="#9aa5b1" stroke-width="1"/>
+<rect x="40.0" y="655.0" width="80.5" height="34.0" rx="3" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1"/>
+<text x="80.2" y="676.0" font-size="9.5" fill="#1a1a1a" font-weight="700" text-anchor="middle">Inicio</text>
+<line x1="126.5" y1="656.0" x2="126.5" y2="688.0" stroke="#dde3ea" stroke-width="1"/>
+<text x="172.8" y="676.0" font-size="9.5" fill="#5d6673" font-weight="400" text-anchor="middle">Acreditar</text>
+<line x1="219.0" y1="656.0" x2="219.0" y2="688.0" stroke="#dde3ea" stroke-width="1"/>
+<text x="265.2" y="676.0" font-size="9.5" fill="#5d6673" font-weight="400" text-anchor="middle">Encuesta</text>
+<line x1="311.5" y1="656.0" x2="311.5" y2="688.0" stroke="#dde3ea" stroke-width="1"/>
+<text x="357.8" y="676.0" font-size="9.5" fill="#5d6673" font-weight="400" text-anchor="middle">Sync</text>
+<text x="452.0" y="104.0" font-size="12" fill="#5d6673" font-weight="700">Referencias del dibujo</text>
+<circle cx="463.00" cy="129.00" r="10.00" fill="#ffe6cc" stroke="#d79b00" stroke-width="1.2"/>
+<text x="463.0" y="133.0" font-size="12" fill="#1a1a1a" font-weight="700" text-anchor="middle">1</text>
+<text x="480.0" y="127.0" font-size="10.5" fill="#1a1a1a" font-weight="700">Estado de la conexión</text>
+<text x="480.0" y="142.0" font-size="10" fill="#5d6673" font-weight="400">Siempre visible: avisa que se</text>
+<text x="480.0" y="155.0" font-size="10" fill="#5d6673" font-weight="400">está trabajando sin señal.</text>
+<circle cx="463.00" cy="183.00" r="10.00" fill="#ffe6cc" stroke="#d79b00" stroke-width="1.2"/>
+<text x="463.0" y="187.0" font-size="12" fill="#1a1a1a" font-weight="700" text-anchor="middle">2</text>
+<text x="480.0" y="181.0" font-size="10.5" fill="#1a1a1a" font-weight="700">Botón principal grande</text>
+<text x="480.0" y="196.0" font-size="10" fill="#5d6673" font-weight="400">48 dp de alto, al alcance del</text>
+<text x="480.0" y="209.0" font-size="10" fill="#5d6673" font-weight="400">pulgar para usar con una mano.</text>
+<circle cx="463.00" cy="237.00" r="10.00" fill="#ffe6cc" stroke="#d79b00" stroke-width="1.2"/>
+<text x="463.0" y="241.0" font-size="12" fill="#1a1a1a" font-weight="700" text-anchor="middle">3</text>
+<text x="480.0" y="235.0" font-size="10.5" fill="#1a1a1a" font-weight="700">Lista en una columna</text>
+<text x="480.0" y="250.0" font-size="10" fill="#5d6673" font-weight="400">Una tarjeta por taller, sin</text>
+<text x="480.0" y="263.0" font-size="10" fill="#5d6673" font-weight="400">tablas que se desborden.</text>
+<path d="M 452.0 296.0 H 760.0 L 772.0 308.0 V 390.0 H 452.0 Z" fill="#fff2cc" stroke="#d6b656" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter"/>
+<path d="M 760.0 296.0 V 308.0 H 772.0 Z" fill="#ffffff" stroke="#d6b656" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" opacity="0.85"/>
+<text x="461.0" y="317.0" font-size="11" fill="#1a1a1a" font-weight="700">Reglas de la versión móvil</text>
+<text x="461.0" y="333.0" font-size="11" fill="#1a1a1a" font-weight="400">Una sola columna, botones de</text>
+<text x="461.0" y="349.0" font-size="11" fill="#1a1a1a" font-weight="400">48 dp y todo alcanzable con el</text>
+<text x="461.0" y="365.0" font-size="11" fill="#1a1a1a" font-weight="400">pulgar: el monitor sostiene el</text>
+<text x="461.0" y="381.0" font-size="11" fill="#1a1a1a" font-weight="400">teléfono con una mano.</text>
+</svg>

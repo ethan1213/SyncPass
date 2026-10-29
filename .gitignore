@@ -1,0 +1,39 @@
+tmp/
+__pycache__/
+.DS_Store
+Thumbs.db
+
+# Dependencias y builds (web-react)
+node_modules/
+dist/
+.vite/
+*.local
+
+# Variables de entorno locales (nunca se suben; ver docs/COGNITO.md)
+.env
+.env.local
+.env.*.local
+
+# Android / Gradle (mobile-kotlin)
+.gradle/
+build/
+local.properties
+*.apk
+*.iml
+.idea/
+captures/
+
+# Trabajo privado
+.private/
+
+# Backend y despliegue
+target/
+.vercel/
+*.pem
+*.key
+
+# Material local del curso y artefactos de despliegue generados
+a terminar.txt
+docs/caso.pdf
+deploy/ec2-user-data.generated.sh
+

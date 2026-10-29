@@ -1,0 +1,122 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1420 552" width="1420" height="552" role="img" aria-label="Rol 3 · Estudiante voluntario / Monitor (web)" font-family="Helvetica, 'Helvetica Neue', Arial, sans-serif">
+<title>Rol 3 · Estudiante voluntario / Monitor (web)</title>
+<rect width="1420" height="552" fill="#ffffff"/>
+<text x="24.0" y="32.0" font-size="17" fill="#1a1a1a" font-weight="700">Rol 3 · Estudiante voluntario / Monitor</text>
+<text x="24.0" y="52.0" font-size="11.5" fill="#5d6673" font-weight="400">Versión escritorio · 1280 px o más · React + Vite</text>
+<rect x="1335.7" y="16.0" width="60.3" height="24.0" rx="3" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1"/>
+<text x="1365.9" y="32.0" font-size="11" fill="#1a1a1a" font-weight="700" text-anchor="middle">Mockup</text>
+<rect x="24.0" y="76.0" width="1034.0" height="420.0" rx="3" fill="#ffffff" stroke="#666666" stroke-width="1.4"/>
+<rect x="24.0" y="76.0" width="1034.0" height="30.0" rx="0" fill="#f0f2f5" stroke="#666666" stroke-width="1.4"/>
+<circle cx="40.00" cy="91.00" r="4.50" fill="#ffffff" stroke="#9aa5b1" stroke-width="1"/>
+<circle cx="54.00" cy="91.00" r="4.50" fill="#ffffff" stroke="#9aa5b1" stroke-width="1"/>
+<circle cx="68.00" cy="91.00" r="4.50" fill="#ffffff" stroke="#9aa5b1" stroke-width="1"/>
+<rect x="86.0" y="83.0" width="884.0" height="16.0" rx="2" fill="#ffffff" stroke="#9aa5b1" stroke-width="1"/>
+<text x="94.0" y="94.5" font-size="10" fill="#5d6673" font-weight="400" font-family="Consolas, 'Courier New', monospace">syncpass.duocuc.cl/terreno</text>
+<rect x="984.4" y="83.0" width="63.6" height="16.0" rx="2" fill="#d5e8d4" stroke="#82b366" stroke-width="1"/>
+<text x="1016.2" y="94.4" font-size="9.5" fill="#1a1a1a" font-weight="700" text-anchor="middle">Conectado</text>
+<rect x="24.0" y="106.0" width="1034.0" height="46.0" rx="0" fill="#ffffff" stroke="#9aa5b1" stroke-width="1"/>
+<rect x="36.0" y="117.0" width="24.0" height="24.0" rx="3" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1"/>
+<text x="48.0" y="132.2" font-size="9" fill="#1a1a1a" font-weight="700" text-anchor="middle">QR</text>
+<text x="68.0" y="127.0" font-size="13" fill="#1a1a1a" font-weight="700">SyncPass</text>
+<text x="68.0" y="140.0" font-size="8.5" fill="#5d6673" font-weight="400">CITT Plaza Vespucio</text>
+<text x="204.0" y="134.0" font-size="10" fill="#5d6673" font-weight="400">Vinculación con el Medio · período 2026-2</text>
+<rect x="928.0" y="117.0" width="24.0" height="24.0" rx="3" fill="#ffffff" stroke="#c2cbd4" stroke-width="1"/>
+<text x="940.0" y="132.6" font-size="10" fill="#1a1a1a" font-weight="400" text-anchor="middle">?</text>
+<rect x="960.0" y="117.0" width="86.0" height="24.0" rx="12" fill="#f5f5f5" stroke="#666666" stroke-width="1"/>
+<text x="1003.0" y="132.4" font-size="9.5" fill="#1a1a1a" font-weight="400" text-anchor="middle">M. Vega</text>
+<line x1="24.0" y1="152.0" x2="1058.0" y2="152.0" stroke="#9aa5b1" stroke-width="1"/>
+<rect x="24.0" y="152.0" width="150.0" height="344.0" rx="0" fill="#fafbfc" stroke="#9aa5b1" stroke-width="1"/>
+<rect x="34.0" y="166.0" width="130.0" height="30.0" rx="3" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1"/>
+<text x="99.0" y="184.8" font-size="10.5" fill="#1a1a1a" font-weight="700" text-anchor="middle">Terreno</text>
+<rect x="34.0" y="202.0" width="130.0" height="30.0" rx="3" fill="#ffffff" stroke="#c2cbd4" stroke-width="1"/>
+<text x="99.0" y="220.8" font-size="10.5" fill="#1a1a1a" font-weight="400" text-anchor="middle">Acreditar</text>
+<rect x="34.0" y="238.0" width="130.0" height="30.0" rx="3" fill="#ffffff" stroke="#c2cbd4" stroke-width="1"/>
+<text x="99.0" y="256.8" font-size="10.5" fill="#1a1a1a" font-weight="400" text-anchor="middle">Encuestas</text>
+<rect x="34.0" y="274.0" width="130.0" height="30.0" rx="3" fill="#ffffff" stroke="#c2cbd4" stroke-width="1"/>
+<text x="99.0" y="292.8" font-size="10.5" fill="#1a1a1a" font-weight="400" text-anchor="middle">Cola local</text>
+<rect x="34.0" y="414.0" width="130.0" height="68.0" rx="3" fill="#fff2cc" stroke="#d6b656" stroke-width="1"/>
+<text x="44.0" y="431.0" font-size="9.5" fill="#1a1a1a" font-weight="700">Cola local</text>
+<text x="44.0" y="446.0" font-size="9" fill="#5d6673" font-weight="400">3 registros sin enviar</text>
+<rect x="44.0" y="453.0" width="110.0" height="7.0" rx="2" fill="#eceff3" stroke="#c2cbd4" stroke-width="1"/>
+<rect x="44.0" y="453.0" width="77.0" height="7.0" rx="2" fill="#d79b00"/>
+<text x="44.0" y="474.0" font-size="8.5" fill="#5d6673" font-weight="400">Último envío 09:12</text>
+<text x="192.0" y="180.0" font-size="14" fill="#1a1a1a" font-weight="700">Terreno · acreditación del taller</text>
+<text x="192.0" y="196.0" font-size="10" fill="#5d6673" font-weight="400">Estudiante voluntario / Monitor · UV 12 Los Castaños · hoy 10:00</text>
+<rect x="936.8" y="168.0" width="103.2" height="24.0" rx="3" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1"/>
+<text x="988.4" y="183.6" font-size="10" fill="#1a1a1a" font-weight="700" text-anchor="middle">Grupo: monitor</text>
+<circle cx="1050.00" cy="180.00" r="11.00" fill="#ffe6cc" stroke="#d79b00" stroke-width="1.2"/>
+<text x="1050.0" y="184.0" font-size="12" fill="#1a1a1a" font-weight="700" text-anchor="middle">1</text>
+<rect x="192.0" y="216.0" width="390.1" height="118.0" rx="3" fill="#ffffff" stroke="#666666" stroke-width="1"/>
+<text x="208.0" y="240.0" font-size="10" fill="#5d6673" font-weight="700">Taller en curso</text>
+<text x="208.0" y="264.0" font-size="18" fill="#1a1a1a" font-weight="700">24 / 35 acreditados</text>
+<rect x="208.0" y="276.0" width="358.1" height="9.0" rx="2" fill="#eceff3" stroke="#c2cbd4" stroke-width="1"/>
+<rect x="208.0" y="276.0" width="245.5" height="9.0" rx="2" fill="#6c8ebf"/>
+<text x="208.0" y="304.0" font-size="9.5" fill="#5d6673" font-weight="400">Comenzó 10:00 · quedan 12 cupos</text>
+<rect x="208.0" y="312.0" width="150.0" height="0.0" rx="0" fill="#ffffff" stroke="#666666" stroke-width="0"/>
+<rect x="600.1" y="216.0" width="439.9" height="56.0" rx="3" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1"/>
+<text x="820.0" y="248.3" font-size="12" fill="#1a1a1a" font-weight="700" text-anchor="middle">Abrir escáner QR</text>
+<circle cx="1050.00" cy="244.00" r="11.00" fill="#ffe6cc" stroke="#d79b00" stroke-width="1.2"/>
+<text x="1050.0" y="248.0" font-size="12" fill="#1a1a1a" font-weight="700" text-anchor="middle">2</text>
+<rect x="600.1" y="282.0" width="214.0" height="44.0" rx="3" fill="#ffffff" stroke="#666666" stroke-width="1"/>
+<text x="707.1" y="301.1" font-size="10" fill="#1a1a1a" font-weight="400" text-anchor="middle">Encuesta</text>
+<text x="707.1" y="314.1" font-size="10" fill="#1a1a1a" font-weight="400" text-anchor="middle">al cierre</text>
+<rect x="826.0" y="282.0" width="214.0" height="44.0" rx="3" fill="#ffe6cc" stroke="#d79b00" stroke-width="1"/>
+<text x="933.0" y="301.1" font-size="10" fill="#1a1a1a" font-weight="400" text-anchor="middle">Cola local</text>
+<text x="933.0" y="314.1" font-size="10" fill="#1a1a1a" font-weight="400" text-anchor="middle">3 pendientes</text>
+<text x="192.0" y="346.0" font-size="12" fill="#1a1a1a" font-weight="700">Últimas acreditaciones</text>
+<rect x="192.0" y="358.0" width="848.0" height="26.0" rx="0" fill="#eceff3" stroke="#9aa5b1" stroke-width="1"/>
+<text x="202.0" y="375.0" font-size="8.5" fill="#5d6673" font-weight="700">PARTICIPANTE</text>
+<text x="497.0" y="375.0" font-size="8.5" fill="#5d6673" font-weight="700">HORA</text>
+<text x="662.9" y="375.0" font-size="8.5" fill="#5d6673" font-weight="700">VALIDACIÓN</text>
+<text x="865.7" y="375.0" font-size="8.5" fill="#5d6673" font-weight="700">ESTADO</text>
+<rect x="192.0" y="384.0" width="848.0" height="26.0" rx="0" fill="#fafbfc" stroke="#dde3ea" stroke-width="1"/>
+<text x="202.0" y="401.0" font-size="9.5" fill="#1a1a1a" font-weight="700" font-family="Consolas, 'Courier New', monospace">PART-LF-0241</text>
+<text x="497.0" y="401.0" font-size="9.5" fill="#1a1a1a" font-weight="400">10:04:18</text>
+<rect x="662.9" y="388.0" width="66.2" height="18.0" rx="9" fill="#d5e8d4" stroke="#82b366" stroke-width="1"/>
+<text x="696.0" y="400.2" font-size="9" fill="#1a1a1a" font-weight="700" text-anchor="middle">GPS válido</text>
+<rect x="865.7" y="388.0" width="40.1" height="18.0" rx="9" fill="#ffe6cc" stroke="#d79b00" stroke-width="1"/>
+<text x="885.7" y="400.2" font-size="9" fill="#1a1a1a" font-weight="700" text-anchor="middle">Local</text>
+<rect x="192.0" y="410.0" width="848.0" height="26.0" rx="0" fill="#ffffff" stroke="#dde3ea" stroke-width="1"/>
+<text x="202.0" y="427.0" font-size="9.5" fill="#1a1a1a" font-weight="700" font-family="Consolas, 'Courier New', monospace">PART-LF-0188</text>
+<text x="497.0" y="427.0" font-size="9.5" fill="#1a1a1a" font-weight="400">10:03:02</text>
+<rect x="662.9" y="414.0" width="66.2" height="18.0" rx="9" fill="#d5e8d4" stroke="#82b366" stroke-width="1"/>
+<text x="696.0" y="426.2" font-size="9" fill="#1a1a1a" font-weight="700" text-anchor="middle">GPS válido</text>
+<rect x="865.7" y="414.0" width="50.5" height="18.0" rx="9" fill="#d5e8d4" stroke="#82b366" stroke-width="1"/>
+<text x="890.9" y="426.2" font-size="9" fill="#1a1a1a" font-weight="700" text-anchor="middle">Enviado</text>
+<rect x="192.0" y="436.0" width="848.0" height="26.0" rx="0" fill="#fafbfc" stroke="#dde3ea" stroke-width="1"/>
+<text x="202.0" y="453.0" font-size="9.5" fill="#1a1a1a" font-weight="700" font-family="Consolas, 'Courier New', monospace">PART-LF-0132</text>
+<text x="497.0" y="453.0" font-size="9.5" fill="#1a1a1a" font-weight="400">10:02:15</text>
+<rect x="662.9" y="440.0" width="66.2" height="18.0" rx="9" fill="#d5e8d4" stroke="#82b366" stroke-width="1"/>
+<text x="696.0" y="452.2" font-size="9" fill="#1a1a1a" font-weight="700" text-anchor="middle">GPS válido</text>
+<rect x="865.7" y="440.0" width="50.5" height="18.0" rx="9" fill="#d5e8d4" stroke="#82b366" stroke-width="1"/>
+<text x="890.9" y="452.2" font-size="9" fill="#1a1a1a" font-weight="700" text-anchor="middle">Enviado</text>
+<circle cx="1050.00" cy="397.00" r="11.00" fill="#ffe6cc" stroke="#d79b00" stroke-width="1.2"/>
+<text x="1050.0" y="401.0" font-size="12" fill="#1a1a1a" font-weight="700" text-anchor="middle">3</text>
+<text x="24.0" y="516.0" font-size="10" fill="#5d6673" font-weight="400">Escritorio · 1280 × 800 px</text>
+<text x="1082.0" y="100.0" font-size="12" fill="#5d6673" font-weight="700">Referencias del dibujo</text>
+<circle cx="1093.00" cy="125.00" r="10.00" fill="#ffe6cc" stroke="#d79b00" stroke-width="1.2"/>
+<text x="1093.0" y="129.0" font-size="12" fill="#1a1a1a" font-weight="700" text-anchor="middle">1</text>
+<text x="1110.0" y="123.0" font-size="10.5" fill="#1a1a1a" font-weight="700">Vista exclusiva del monitor</text>
+<text x="1110.0" y="138.0" font-size="10" fill="#5d6673" font-weight="400">Solo su taller del día.</text>
+<text x="1110.0" y="151.0" font-size="10" fill="#5d6673" font-weight="400">No ve la administración.</text>
+<circle cx="1093.00" cy="179.00" r="10.00" fill="#ffe6cc" stroke="#d79b00" stroke-width="1.2"/>
+<text x="1093.0" y="183.0" font-size="12" fill="#1a1a1a" font-weight="700" text-anchor="middle">2</text>
+<text x="1110.0" y="177.0" font-size="10.5" fill="#1a1a1a" font-weight="700">Acción única y grande</text>
+<text x="1110.0" y="192.0" font-size="10" fill="#5d6673" font-weight="400">Todo el rol gira en torno a</text>
+<text x="1110.0" y="205.0" font-size="10" fill="#5d6673" font-weight="400">acreditar rápido.</text>
+<circle cx="1093.00" cy="233.00" r="10.00" fill="#ffe6cc" stroke="#d79b00" stroke-width="1.2"/>
+<text x="1093.0" y="237.0" font-size="12" fill="#1a1a1a" font-weight="700" text-anchor="middle">3</text>
+<text x="1110.0" y="231.0" font-size="10.5" fill="#1a1a1a" font-weight="700">Lo local se ve distinto</text>
+<text x="1110.0" y="246.0" font-size="10" fill="#5d6673" font-weight="400">El monitor sabe qué falta</text>
+<text x="1110.0" y="259.0" font-size="10" fill="#5d6673" font-weight="400">por sincronizar.</text>
+<rect x="1082.0" y="292.0" width="154.1" height="101.0" rx="3" fill="#ffffff" stroke="#9aa5b1" stroke-width="1" stroke-dasharray="4 3"/>
+<text x="1092.0" y="310.0" font-size="10.5" fill="#5d6673" font-weight="700">Leyenda</text>
+<rect x="1092.0" y="320.0" width="18.0" height="11.0" rx="2" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1"/>
+<text x="1116.0" y="329.5" font-size="10.5" fill="#1a1a1a" font-weight="400">Acción principal</text>
+<rect x="1092.0" y="337.0" width="18.0" height="11.0" rx="2" fill="#d5e8d4" stroke="#82b366" stroke-width="1"/>
+<text x="1116.0" y="346.5" font-size="10.5" fill="#1a1a1a" font-weight="400">Estado correcto</text>
+<rect x="1092.0" y="354.0" width="18.0" height="11.0" rx="2" fill="#ffe6cc" stroke="#d79b00" stroke-width="1"/>
+<text x="1116.0" y="363.5" font-size="10.5" fill="#1a1a1a" font-weight="400">Pendiente de envío</text>
+<rect x="1092.0" y="371.0" width="18.0" height="11.0" rx="2" fill="#f8cecc" stroke="#b85450" stroke-width="1"/>
+<text x="1116.0" y="380.5" font-size="10.5" fill="#1a1a1a" font-weight="400">Requiere revisión</text>
+</svg>
