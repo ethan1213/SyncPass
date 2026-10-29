@@ -26,7 +26,7 @@ La API configurada es `https://hluamat8vg.execute-api.us-east-1.amazonaws.com/` 
 ## Estado comprobado y límites
 
 - Compilación `assembleDebug` y firma APK verificadas localmente el 23-10-2026.
-- La API y la ruta web del QR respondieron HTTP 200. No se ejecutó una prueba de login/cámara en un teléfono o emulador porque no había uno conectado.
+- La API y la ruta web del QR respondieron HTTP 200. Hubo una comprobación manual del retorno de login en un teléfono durante el desarrollo; la lectura de cámara y la sincronización completa deben repetirse en la versión que se presente.
 - La sincronización automática funciona al recuperar red con la app abierta; aún no hay `WorkManager` para ejecutarla si el proceso está cerrado. La pantalla principal usa ViewModel/StateFlow; escáner y encuesta todavía gestionan el estado de formulario en Compose. La app no implementa validación GPS. Por eso no se afirma cumplir todos los criterios del caso móvil.
 - La sesión OAuth se mantiene en memoria y se pierde al cerrar el proceso; hay que iniciar sesión otra vez para sincronizar una cola pendiente. Los registros locales permanecen en Room.
 

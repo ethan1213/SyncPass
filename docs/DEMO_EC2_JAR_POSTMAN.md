@@ -60,8 +60,10 @@ El archivo queda con permisos `640` (root:syncpass). **Nunca se sube al reposito
 
 ### Si cambió la IP pública
 
-Actualizar la integración de API Gateway para que apunte al nuevo
-`https://api.<IP-con-guiones>.nip.io` (lo imprime el script al terminar).
+La instalación actual habilita `syncpass-gateway-sync` para actualizar Caddy y API Gateway
+al iniciar EC2. La IP y el resultado se consultan con
+`sudo journalctl -u syncpass-gateway-sync -n 30 --no-pager`.
+Si el servicio todavía no está instalado, ver [`OPERACION_LAB.md`](OPERACION_LAB.md).
 
 ### Comandos útiles
 

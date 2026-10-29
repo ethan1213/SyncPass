@@ -24,6 +24,7 @@ fi
 echo "==> Código fuente ($BRANCH)"
 mkdir -p "$APP"
 if [ -d "$APP/source/.git" ]; then
+  git -C "$APP/source" remote set-url origin "$REPO"
   git -C "$APP/source" fetch --depth 1 origin "$BRANCH"
   git -C "$APP/source" checkout -B "$BRANCH" FETCH_HEAD
 else
@@ -157,10 +158,37 @@ echo "==> Esperando a Spring Boot"
 for i in $(seq 1 60); do
   if curl -fsS http://127.0.0.1:8080/actuator/health 2>/dev/null | grep -q UP; then
     echo "SYNCPASS_API_UP=https://$API_DOMAIN (origen de la integración de API Gateway)"
-    exit 0
+    break
   fi
   sleep 3
 done
-echo "!! La API no respondió. Revisa: journalctl -u syncpass-api -n 100"
-exit 1
+if ! curl -fsS http://127.0.0.1:8080/actuator/health 2>/dev/null | grep -q UP; then
+  echo "!! La API no respondió. Revisa: journalctl -u syncpass-api -n 100" >&2
+  exit 1
+fi
+
+echo "==> Reparacion automatica de IP al iniciar el laboratorio"
+install -m 755 "$APP/source/deploy/fix-ip.sh" /usr/local/sbin/syncpass-fix-ip
+cat > /etc/systemd/system/syncpass-gateway-sync.service <<'EOF'
+[Unit]
+Description=Actualizar dominio e integracion API Gateway de SyncPass tras iniciar EC2
+After=network-online.target syncpass-api.service caddy.service
+Wants=network-online.target syncpass-api.service caddy.service
+StartLimitIntervalSec=0
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/sbin/syncpass-fix-ip
+RemainAfterExit=yes
+Restart=on-failure
+RestartSec=20s
+
+[Install]
+WantedBy=multi-user.target
+EOF
+systemctl daemon-reload
+systemctl enable syncpass-gateway-sync.service
+systemctl restart syncpass-gateway-sync.service
+systemctl is-active --quiet syncpass-gateway-sync.service
+echo "IP actual y estado: journalctl -u syncpass-gateway-sync -n 30 --no-pager"
 

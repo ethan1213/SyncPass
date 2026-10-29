@@ -14,6 +14,7 @@ Esta carpeta documenta exclusivamente la solución SyncPass. El punto de entrada
 | [MODELO_BASE_DATOS.md](MODELO_BASE_DATOS.md) | Modelo transaccional. |
 | [MODELO_ESTRELLA_COPO_NIEVE.md](MODELO_ESTRELLA_COPO_NIEVE.md) | Modelos analíticos. |
 | [RAMAS.md](RAMAS.md) | Ramas para Ethan, Jorge y funcionalidades de SyncPass. |
+| [OPERACION_LAB.md](OPERACION_LAB.md) | Arranque de EC2, recuperación automática de IP y diagnóstico. |
 
 
 
