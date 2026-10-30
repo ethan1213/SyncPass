@@ -6801,18 +6801,22 @@
   var paneles = ['mockups', 'roles', 'crud', 'relacional', 'estrella', 'copo', 'infra'];
 
   function mostrar(id) {
+    if (!paneles.includes(id)) id = 'mockups';
     paneles.forEach(function (p) {
       document.getElementById(p).hidden = (p !== id);
     });
     tabs.forEach(function (t) {
       t.setAttribute('aria-selected', String(t.dataset.panel === id));
     });
+    if (location.hash !== '#' + id) history.replaceState(null, '', '#' + id);
     window.scrollTo(0, 0);
   }
 
   tabs.forEach(function (t) {
     t.addEventListener('click', function () { mostrar(t.dataset.panel); });
   });
+  window.addEventListener('hashchange', function () { mostrar(location.hash.slice(1)); });
+  if (location.hash) mostrar(location.hash.slice(1));
 </script>
 
 <script>
