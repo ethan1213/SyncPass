@@ -7,6 +7,7 @@ SyncPass registra talleres comunitarios, asistencia y encuestas para actividades
 ## Enlaces de la demostración
 
 - [Web publicada en Vercel](https://web-react-nu-nine.vercel.app/)
+- [Descargar APK Android de prueba](https://web-react-nu-nine.vercel.app/descargas/SyncPass-Android.apk) desde el teléfono, o usar el botón de la portada. Android puede solicitar permiso para instalar aplicaciones desde el navegador o Descargas.
 - [Estado de la API en API Gateway](https://hluamat8vg.execute-api.us-east-1.amazonaws.com/actuator/health)
 - [Mockups y modelos en un solo archivo](SyncPass-Mockups-y-BD.html) y [visor de mockups](mockups.html)
 - [Guion de exposición](docs/DEMO_VIERNES_30.md) y [requisitos](docs/REQUISITOS_SYNCPASS.md)
@@ -83,6 +84,6 @@ La entrada web es `main.tsx`; la sesión, los roles, la configuración, el clien
 - Ejecutar `npm run coverage` en `web-react/` produce un informe Vitest. El alcance medido son la sesión, los roles, la configuración, el cliente HTTP, IndexedDB, el parser QR, el aviso de geocerca y los dos mantenedores: 33 pruebas, 97,24% de líneas y 87,07% de ramas en esos nueve módulos. **No es la cobertura de toda la aplicación**. El backend tiene 15 pruebas de controladores y geocerca; para la evaluación que exija 80% global aún faltan pruebas de otras páginas.
 - Los resultados concretos de la integración web, API Gateway, Cognito, EC2 y Android están en [Verificación del despliegue](docs/VERIFICACION_DESPLIEGUE.md).
 - `main` contiene la versión integrada. Las ramas `developer/ethan`, `developer/jorge` y `feature/*` son puntos de partida para cambios revisados mediante pull request. Ver [convención de ramas](docs/RAMAS.md).
-- No subir `.env`, contraseñas, claves de AWS, tokens ni APK de depuración. El repositorio contiene archivos de ejemplo sin secretos.
+- No subir `.env`, contraseñas, claves de AWS ni tokens. El APK de demostración publicado en `web-react/public/descargas/` contiene solo la configuración pública necesaria para acceder a API Gateway y no credenciales privadas; se recompila al cambiar la app Android.
 
 El caso y los modelos completos están en [la documentación](docs/README.md). Para presentar el proyecto, mostrar primero los mockups, luego la arquitectura y después las dos aplicaciones.

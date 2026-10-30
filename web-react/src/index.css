@@ -1327,3 +1327,4 @@ footer strong {
 .maintainer-card { border-left:4px solid var(--secondary);margin-bottom:16px; }
 .maintainer-card h3 { margin:.2em 0; }
 
+.apk-ayuda { max-width: 42rem; margin-top: 1rem; font-size: .9rem; }

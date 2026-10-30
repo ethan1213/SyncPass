@@ -17,6 +17,7 @@ coverage/
 
 # Android / Gradle (mobile-kotlin)
 .gradle/
+.kotlin/
 build/
 local.properties
 *.apk

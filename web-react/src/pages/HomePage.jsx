@@ -15,6 +15,10 @@ export default function HomePage({ talleres, onSelectTaller }) {
           <Link className="btn btn-primary" href="#talleres">
             Ver talleres
           </Link>
+          <a className="btn btn-secondary" href="/descargas/SyncPass-Android.apk" download="SyncPass-Android.apk" style={{ marginLeft: '0.75rem' }}>
+            Descargar app Android
+          </a>
+          <p className="apk-ayuda">Abre esta página en tu teléfono Android, descarga el APK e instálalo desde Descargas. Es una versión de prueba.</p>
         </section>
 
         <section className="beneficios" aria-labelledby="titulo-beneficios">
