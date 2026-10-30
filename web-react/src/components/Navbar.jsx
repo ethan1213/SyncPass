@@ -32,10 +32,11 @@ export default function Navbar({ offlineCount = 0, isOfflineMode }) {
   return (
     <header>
       <div className="contenedor cabecera">
-        <Link href="/" className="marca">
+          <Link href="/" className="marca">
           <img src="/img/logo-header.svg" alt="SyncPass" className="marca-logo logo-claro" />
           <img src="/img/logo-header-dark.svg" alt="" aria-hidden="true" className="marca-logo logo-oscuro" />
           <span className="marca-producto">SyncPass</span>
+          <span style={{ marginLeft: '0.5rem', fontSize: '0.75rem', opacity: 0.7 }}>· Ethan &amp; Jorge Leal</span>
         </Link>
 
         <div className="cabecera-acciones">

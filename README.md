@@ -2,6 +2,8 @@
 
 SyncPass registra talleres comunitarios, asistencia y encuestas para actividades de Vinculación con el Medio de Duoc UC. La solución tiene una web de administración y consulta, una app Android para trabajo en terreno, una API Java y almacenamiento local para conservar pendientes cuando se pierde la conexión.
 
+**Integrantes:** Ethan y Jorge Leal.
+
 ## Enlaces de la demostración
 
 - [Web publicada en Vercel](https://web-react-nu-nine.vercel.app/)
