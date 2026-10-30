@@ -19,7 +19,26 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 class ApiTest {
  @Autowired MockMvc mvc; @Autowired ObjectMapper json; @Autowired JdbcTemplate db;
- @BeforeEach void reset(){db.update("DELETE FROM registros");db.update("DELETE FROM talleres");}
+ @BeforeEach void reset(){db.update("DELETE FROM registros");db.update("DELETE FROM talleres");db.update("DELETE FROM proyectos_comunitarios");}
+ String proyecto(){return "{\"title\":\"Proyecto demo\",\"descripcion\":\"Trabajo territorial\",\"area\":\"Tecnología\",\"unidadVecinal\":\"UV Demo\",\"fechaInicio\":\"2026-10-30\",\"fechaTermino\":\"2026-11-30\",\"estado\":\"activo\"}";}
+ @Test void projectCrudRequiresRoleAndValidDates()throws Exception{
+  mvc.perform(get("/api/proyectos")).andExpect(status().isUnauthorized());
+  mvc.perform(post("/api/proyectos").with(jwt().authorities(new SimpleGrantedAuthority("ROLE_participante"))).contentType(MediaType.APPLICATION_JSON).content(proyecto())).andExpect(status().isForbidden());
+  var staff=jwt().authorities(new SimpleGrantedAuthority("ROLE_coordinador"));
+  var invalid=(com.fasterxml.jackson.databind.node.ObjectNode)json.readTree(proyecto());invalid.put("fechaTermino","2026-10-01");
+  mvc.perform(post("/api/proyectos").with(staff).contentType(MediaType.APPLICATION_JSON).content(invalid.toString())).andExpect(status().isBadRequest());
+  var created=mvc.perform(post("/api/proyectos").with(staff).contentType(MediaType.APPLICATION_JSON).content(proyecto())).andExpect(status().isCreated()).andReturn();
+  var row=(com.fasterxml.jackson.databind.node.ObjectNode)json.readTree(created.getResponse().getContentAsString());long id=row.get("id").asLong();
+  row.put("title","Proyecto editado");
+  mvc.perform(put("/api/proyectos/"+id).with(staff).contentType(MediaType.APPLICATION_JSON).content(row.toString())).andExpect(status().isOk()).andExpect(jsonPath("version").value(1));
+  mvc.perform(put("/api/proyectos/"+id).with(staff).contentType(MediaType.APPLICATION_JSON).content(row.toString())).andExpect(status().isConflict());
+  mvc.perform(delete("/api/proyectos/"+id).with(staff)).andExpect(status().isNoContent());
+  mvc.perform(get("/api/proyectos/"+id).with(staff)).andExpect(status().isNotFound());
+ }
+ @Test void incompleteGeofenceIsRejected()throws Exception{
+  var row=(com.fasterxml.jackson.databind.node.ObjectNode)json.readTree(taller());row.put("latitud",-33.45);
+  mvc.perform(post("/api/eventos").with(jwt().authorities(new SimpleGrantedAuthority("ROLE_admin"))).contentType(MediaType.APPLICATION_JSON).content(row.toString())).andExpect(status().isBadRequest());
+ }
  String taller(){return "{\"title\":\"Taller ficticio\",\"descripcion\":\"Prueba académica\",\"area\":\"Tecnología\",\"unidadVecinal\":\"UV Demo\",\"comuna\":\"Comuna Demo\",\"direccion\":\"Recinto ficticio\",\"fechaHora\":\"2026-10-20T10:00\",\"docenteLider\":\"Coordinador Demo\",\"cuposMaximos\":20}";}
  long create()throws Exception{var body=mvc.perform(post("/api/eventos").with(jwt().authorities(new SimpleGrantedAuthority("ROLE_coordinador"))).contentType(MediaType.APPLICATION_JSON).content(taller())).andExpect(status().isCreated()).andReturn().getResponse().getContentAsString();return json.readTree(body).get("id").asLong();}
  @Test void publicReadButMutationsNeedRole()throws Exception{

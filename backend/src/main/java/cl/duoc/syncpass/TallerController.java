@@ -15,13 +15,19 @@ public class TallerController {
  @GetMapping public List<Taller> all() { return repository.findAll().stream().map(this::counted).toList(); }
  @GetMapping("/{id}") public Taller get(@PathVariable Long id) { return counted(repository.findById(id).orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND))); }
  @PostMapping @ResponseStatus(HttpStatus.CREATED) @PreAuthorize("hasAnyRole('admin','coordinador')")
- public Taller create(@Valid @RequestBody Taller input) { input.id=null; input.version=null; return repository.saveAndFlush(input); }
+ public Taller create(@Valid @RequestBody Taller input) { validateLocation(input); input.id=null; input.version=null; return repository.saveAndFlush(input); }
  @PutMapping("/{id}") @PreAuthorize("hasAnyRole('admin','coordinador')")
  public Taller update(@PathVariable Long id,@Valid @RequestBody Taller input) {
+   validateLocation(input);
    Taller old=get(id);
    if(!Objects.equals(old.version,input.version)) throw new ResponseStatusException(HttpStatus.CONFLICT,"El taller cambió; recarga antes de editar");
    input.id=id; return repository.saveAndFlush(input);
  }
  @DeleteMapping("/{id}") @ResponseStatus(HttpStatus.NO_CONTENT) @PreAuthorize("hasAnyRole('admin','coordinador')")
  public void delete(@PathVariable Long id) { repository.delete(get(id)); repository.flush(); }
+ private void validateLocation(Taller input) {
+  int provided=(input.latitud!=null?1:0)+(input.longitud!=null?1:0)+(input.radioMetros!=null?1:0);
+  if(provided!=0 && provided!=3)
+   throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Completa latitud, longitud y radio de la geocerca");
+ }
 }

@@ -53,6 +53,14 @@ describe('mantenedor de proyectos', () => {
 });
 
 describe('mantenedor de talleres', () => {
+  it('no envía una geocerca incompleta', async () => {
+    api.mockResolvedValue([]);
+    render(React.createElement(TalleresAdminPage, { talleres: [], onRefresh: vi.fn() }));
+    fireEvent.change(screen.getByLabelText('Latitud'), { target: { value: '-33.45' } });
+    fireEvent.submit(screen.getByRole('button', { name: 'Guardar' }).closest('form')!);
+    expect(await screen.findByText('Completa latitud, longitud y radio, o deja los tres vacíos.')).toBeTruthy();
+    expect(api.mock.calls.some(([path, options]) => path === '/api/eventos' && options?.method === 'POST')).toBe(false);
+  });
   it('envía geocerca con números al crear un taller', async () => {
     api.mockResolvedValue([]);
     const onRefresh = vi.fn(async () => {});

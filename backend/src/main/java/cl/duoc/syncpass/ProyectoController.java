@@ -1,6 +1,8 @@
 package cl.duoc.syncpass;
 
 import java.util.*;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -18,13 +20,23 @@ public class ProyectoController {
  }
  @PostMapping @ResponseStatus(HttpStatus.CREATED)
  public Proyecto create(@Valid @RequestBody Proyecto input) {
+  validateDates(input);
   input.id=null;input.version=null;return repository.saveAndFlush(input);
  }
  @PutMapping("/{id}") public Proyecto update(@PathVariable Long id,@Valid @RequestBody Proyecto input) {
+  validateDates(input);
   var old=get(id);
   if(!Objects.equals(old.version,input.version)) throw new ResponseStatusException(HttpStatus.CONFLICT,"El proyecto cambió; recarga antes de editar");
   input.id=id;return repository.saveAndFlush(input);
  }
  @DeleteMapping("/{id}") @ResponseStatus(HttpStatus.NO_CONTENT)
  public void delete(@PathVariable Long id) { repository.delete(get(id));repository.flush(); }
+ private void validateDates(Proyecto input) {
+  try {
+   if(LocalDate.parse(input.fechaTermino).isBefore(LocalDate.parse(input.fechaInicio)))
+    throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"La fecha de término debe ser posterior al inicio");
+  } catch(DateTimeParseException ex) {
+   throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Usa fechas ISO válidas (AAAA-MM-DD)");
+  }
+ }
 }
