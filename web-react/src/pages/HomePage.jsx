@@ -8,20 +8,16 @@ export default function HomePage({ talleres, onSelectTaller }) {
         <section className="bienvenida" aria-labelledby="titulo-inicio">
           <p className="eyebrow">CITT Plaza Vespucio · Vinculación con el medio</p>
           <h1 id="titulo-inicio">En terreno.<br />Sin papel.</h1>
-          <p>
-            SyncPass reúne talleres, acreditación y encuestas en un solo flujo.
-            Los registros se guardan en el dispositivo cuando falta señal y se envían después.
-          </p>
-          <Link className="btn btn-primary" href="#talleres">
-            Ver talleres
-          </Link>
-          <a className="btn btn-secondary" href="/descargas/SyncPass-Android.apk" download="SyncPass-Android.apk" style={{ marginLeft: '0.75rem' }}>
-            Descargar app Android
-          </a>
-          <a className="btn btn-secondary" href="/mockups.html" style={{ marginLeft: '0.75rem' }}>
-            Ver mockups y modelos
-          </a>
-          <p className="apk-ayuda">Abre esta página en tu teléfono Android, descarga el APK e instálalo desde Descargas. Es una versión de prueba.</p>
+          <p>Organiza actividades comunitarias, acredita asistentes y recoge su opinión desde la web o el teléfono. Si se pierde la señal, los registros pendientes quedan guardados para enviarlos después.</p>
+          <div className="inicio-acciones">
+            <a className="btn btn-primary" href="#talleres">Explorar talleres</a>
+            <Link className="btn btn-secondary" href="/mi-panel">Ir a mi panel</Link>
+          </div>
+          <div className="inicio-enlaces">
+            <a href="/descargas/SyncPass-Android.apk" download="SyncPass-Android.apk">Descargar app Android de prueba</a>
+            <a href="/mockups.html">Ver mockups y modelo de datos</a>
+          </div>
+          <p className="apk-ayuda">En Android, abre el archivo descargado desde Descargas para instalar la app.</p>
         </section>
 
         <section className="beneficios" aria-labelledby="titulo-beneficios">
@@ -55,6 +51,7 @@ export default function HomePage({ talleres, onSelectTaller }) {
           <h2 id="titulo-talleres">Talleres en terreno</h2>
           <p>Actividades comunitarias en curso y su quórum de inscripción.</p>
 
+          {!talleres.length && <div className="panel inicio-vacio"><h3>Aún no hay talleres publicados</h3><p>Vuelve más tarde para revisar las próximas actividades comunitarias.</p></div>}
           <div className="proyectos-grid">
             {talleres.map((taller) => (
               <article key={taller.id} className="tarjeta-proyecto">

@@ -78,7 +78,7 @@ fun HomeScreen(
                 title = {
                     Column {
                         Text(
-                            text = "SyncPass Móvil",
+                            text = "SyncPass",
                             fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.primary,
                             fontSize = 20.sp
@@ -94,14 +94,14 @@ fun HomeScreen(
                     // Estado de conexion siempre visible: en terreno el monitor
                     // necesita saber si esta acumulando registros locales.
                     Surface(
-                        color = MaterialTheme.colorScheme.errorContainer,
+                        color = if (state.offline) MaterialTheme.colorScheme.errorContainer else MaterialTheme.colorScheme.primaryContainer,
                         shape = RoundedCornerShape(12.dp),
                         modifier = Modifier.padding(end = 8.dp)
                     ) {
                         Text(
                             text = if (state.offline) "Catálogo local" else "API conectada",
                             fontSize = 11.sp,
-                            color = MaterialTheme.colorScheme.onErrorContainer,
+                            color = if (state.offline) MaterialTheme.colorScheme.onErrorContainer else MaterialTheme.colorScheme.onPrimaryContainer,
                             fontWeight = FontWeight.Bold,
                             modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
                         )
@@ -113,7 +113,7 @@ fun HomeScreen(
                             minHeight = AREA_TACTIL_MINIMA
                         )
                     ) {
-                        Text("👤", fontSize = 18.sp)
+                        Text("Cuenta", fontSize = 12.sp, fontWeight = FontWeight.SemiBold)
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
@@ -134,9 +134,17 @@ fun HomeScreen(
             // La tarjeta de accion y el titulo ocupan siempre el ancho completo.
             item(span = { GridItemSpan(maxLineSpan) }) {
                 Column {
+                    Text("VINCULACIÓN CON EL MEDIO", color = MaterialTheme.colorScheme.secondary,
+                        fontSize = 11.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.sp)
+                    Text("Actividades en tu territorio", style = MaterialTheme.typography.headlineMedium,
+                        fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onBackground)
+                    Text("Acredita asistencia, responde encuestas y conserva tus registros incluso sin señal.",
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.padding(bottom = 16.dp))
                     if (owner == null) Button(onClick = onNavigateToLogin) { Text("Iniciar sesión o registrarse") }
                     else {
-                        Text("Perfil: ${AuthSession.roles.joinToString().ifBlank { "sin asignar" }}")
+                        Text("Tu perfil: ${AuthSession.roles.joinToString().ifBlank { "sin asignar" }}",
+                            color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.SemiBold)
                         if (message.isNotEmpty()) Text(message)
                         val qr = remember(owner) { makeQr("SP1:$owner") }
                         qr?.let { Image(it, contentDescription = "Mi QR de acreditación", modifier = Modifier.size(220.dp)) }
@@ -155,7 +163,7 @@ fun HomeScreen(
 
             item(span = { GridItemSpan(maxLineSpan) }) {
                 Text(
-                    text = "Talleres asignados en terreno",
+                    text = "Talleres comunitarios",
                     fontSize = 17.sp,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.onBackground
@@ -192,20 +200,20 @@ private fun TarjetaAccesoEscaner(onNavigateToScanner: () -> Unit) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(top = 8.dp),
-        shape = RoundedCornerShape(12.dp),
+        shape = RoundedCornerShape(18.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.primaryContainer
         )
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
-                text = "Acreditación rápida en terreno",
+                text = "Acreditación en terreno",
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onPrimaryContainer
             )
             Text(
-                text = "Operatividad garantizada en zonas sin cobertura móvil.",
+                text = "Escanea el QR de cada participante. Los registros pendientes se sincronizan al recuperar conexión.",
                 fontSize = 13.sp,
                 color = MaterialTheme.colorScheme.onPrimaryContainer,
                 modifier = Modifier.padding(vertical = 4.dp)
@@ -218,7 +226,7 @@ private fun TarjetaAccesoEscaner(onNavigateToScanner: () -> Unit) {
                     .padding(top = 8.dp),
                 shape = RoundedCornerShape(8.dp)
             ) {
-                Text("📷 ABRIR ESCÁNER QR (< 5 seg)", fontWeight = FontWeight.Bold)
+                Text("Abrir escáner QR", fontWeight = FontWeight.Bold)
             }
         }
     }
@@ -235,9 +243,9 @@ private fun TarjetaTaller(
         modifier = Modifier
             .fillMaxWidth()
             .clickable { if (canScan) onAcreditar() },
-        shape = RoundedCornerShape(10.dp),
+        shape = RoundedCornerShape(18.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -303,7 +311,7 @@ private fun TarjetaTaller(
                         .weight(1f)
                         .heightIn(min = AREA_TACTIL_MINIMA)
                 ) {
-                    Text("⭐ Encuesta", fontSize = 12.sp)
+                    Text("Encuesta", fontSize = 12.sp)
                 }
             }
         }

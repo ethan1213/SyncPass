@@ -28,10 +28,24 @@ class AuthTest {
    .andExpect(status().isBadRequest()).andExpect(jsonPath("code").value("VALIDATION"));
   verifyNoInteractions(cognito);
  }
+ @SuppressWarnings("unchecked") @Test void confirmedAccountStartsAsParticipant()throws Exception{
+  mvc.perform(post("/api/auth/confirm").contentType(MediaType.APPLICATION_JSON).content("{\"username\":\"demo\",\"code\":\"123456\"}"))
+   .andExpect(status().isNoContent());
+  verify(cognito).confirmSignUp(any(Consumer.class));
+  verify(cognito).adminAddUserToGroup(any(Consumer.class));
+ }
  @SuppressWarnings("unchecked") @Test void loginReturnsCognitoTokens()throws Exception{
   when(cognito.initiateAuth(any(Consumer.class))).thenReturn(InitiateAuthResponse.builder().authenticationResult(AuthenticationResultType.builder().accessToken("a").idToken("i").refreshToken("r").expiresIn(3600).build()).build());
+  when(cognito.adminListGroupsForUser(any(Consumer.class))).thenReturn(AdminListGroupsForUserResponse.builder().groups(GroupType.builder().groupName("admin").build()).build());
   mvc.perform(post("/api/auth/login").contentType(MediaType.APPLICATION_JSON).content(login))
    .andExpect(status().isOk()).andExpect(jsonPath("accessToken").value("a")).andExpect(jsonPath("refreshToken").value("r")).andExpect(jsonPath("expiresIn").value(3600));
+ }
+ @SuppressWarnings("unchecked") @Test void loginAssignsParticipantWhenUserHasNoGroup()throws Exception{
+  when(cognito.initiateAuth(any(Consumer.class))).thenReturn(InitiateAuthResponse.builder().authenticationResult(AuthenticationResultType.builder().accessToken("a").idToken("i").refreshToken("r").expiresIn(3600).build()).build());
+  when(cognito.adminListGroupsForUser(any(Consumer.class))).thenReturn(AdminListGroupsForUserResponse.builder().build());
+  mvc.perform(post("/api/auth/login").contentType(MediaType.APPLICATION_JSON).content(login)).andExpect(status().isOk());
+  verify(cognito).adminAddUserToGroup(any(Consumer.class));
+  verify(cognito,times(2)).initiateAuth(any(Consumer.class));
  }
  @SuppressWarnings("unchecked") @Test void wrongPasswordAndUnknownUserLookTheSame()throws Exception{
   when(cognito.initiateAuth(any(Consumer.class))).thenThrow(NotAuthorizedException.builder().message("Incorrect").build()).thenThrow(UserNotFoundException.builder().message("nope").build());

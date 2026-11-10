@@ -11,6 +11,7 @@ SyncPass registra talleres comunitarios, asistencia y encuestas para actividades
 - [Estado de la API en API Gateway](https://hluamat8vg.execute-api.us-east-1.amazonaws.com/actuator/health)
 - [Mockups y modelos en un solo archivo](SyncPass-Mockups-y-BD.html) y [visor de mockups](mockups.html)
 - [Guion de exposición](docs/DEMO_VIERNES_30.md) y [requisitos](docs/REQUISITOS_SYNCPASS.md)
+- [Informe técnico y plan de cierre](docs/INFORME_TECNICO_Y_PLAN.md)
 
 La web de Vercel puede abrir aunque el laboratorio esté detenido. Las operaciones que usan la API requieren que EC2 esté encendida; el [procedimiento de arranque](docs/OPERACION_LAB.md) explica cómo comprobarlo y obtener su IP.
 
