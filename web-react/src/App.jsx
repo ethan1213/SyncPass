@@ -55,7 +55,7 @@ export default function App(){
  return <div className="layout-app"><a className="salto-contenido" href="#contenido">Saltar al contenido principal</a><Navbar offlineCount={unsyncedItems.length} isOfflineMode={isOfflineMode}/>
  <div id="contenido" className="layout-cuerpo">{error&&!['/login','/registro'].includes(window.location.pathname)&&<p className="contenedor alert alert-warning" role="status">{error}</p>}
  {isLoading?<p className="contenedor">Verificando sesión…</p>:<Switch>
- <Route path="/"><HomePage talleres={talleres} onSelectTaller={t=>navigate('/taller/'+t.id)}/></Route>
+ <Route path="/"><HomePage talleres={talleres} onRefresh={refresh} onSelectTaller={t=>navigate('/taller/'+t.id)}/></Route>
  <Route path="/taller/:id">{params=><TallerDetailPage taller={talleres.find(t=>String(t.id)===params.id)}/>}</Route>
  <Route path="/mi-panel">{protect(<RoleDashboard/>)}</Route>
  <Route path="/mi-qr">{protect(<MyQrPage/>)}</Route>

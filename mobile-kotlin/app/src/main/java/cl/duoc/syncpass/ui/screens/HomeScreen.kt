@@ -99,7 +99,11 @@ fun HomeScreen(
                         modifier = Modifier.padding(end = 8.dp)
                     ) {
                         Text(
-                            text = if (state.offline) "Catálogo local" else "API conectada",
+                            text = when {
+                                state.loading -> "Actualizando…"
+                                state.offline -> "Catálogo local"
+                                else -> "API conectada"
+                            },
                             fontSize = 11.sp,
                             color = if (state.offline) MaterialTheme.colorScheme.onErrorContainer else MaterialTheme.colorScheme.onPrimaryContainer,
                             fontWeight = FontWeight.Bold,
@@ -133,41 +137,83 @@ fun HomeScreen(
         ) {
             // La tarjeta de accion y el titulo ocupan siempre el ancho completo.
             item(span = { GridItemSpan(maxLineSpan) }) {
-                Column {
-                    Text("VINCULACIÓN CON EL MEDIO", color = MaterialTheme.colorScheme.secondary,
-                        fontSize = 11.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.sp)
-                    Text("Actividades en tu territorio", style = MaterialTheme.typography.headlineMedium,
-                        fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onBackground)
-                    Text("Acredita asistencia, responde encuestas y conserva tus registros incluso sin señal.",
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.padding(bottom = 16.dp))
-                    if (owner == null) Button(onClick = onNavigateToLogin) { Text("Iniciar sesión o registrarse") }
-                    else {
-                        Text("Tu perfil: ${AuthSession.roles.joinToString().ifBlank { "sin asignar" }}",
-                            color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.SemiBold)
-                        if (message.isNotEmpty()) Text(message)
-                        val qr = remember(owner) { makeQr("SP1:$owner") }
-                        qr?.let { Image(it, contentDescription = "Mi QR de acreditación", modifier = Modifier.size(220.dp)) }
-                        Text("$pending registro(s) pendiente(s) de sincronización")
-                        Button(onClick = {
-                            val token = AuthSession.accessToken
-                            if (token != null) {
-                                vm.sync(owner, token)
+                Surface(
+                    color = MaterialTheme.colorScheme.primaryContainer,
+                    shape = RoundedCornerShape(4.dp),
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Column(Modifier.padding(22.dp)) {
+                        Text("CITT PLAZA VESPUCIO · VINCULACIÓN CON EL MEDIO",
+                            color = MaterialTheme.colorScheme.secondary,
+                            fontSize = 11.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.sp)
+                        Spacer(Modifier.height(8.dp))
+                        Text("En terreno. Sin papel.", style = MaterialTheme.typography.headlineMedium,
+                            fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onPrimaryContainer)
+                        Spacer(Modifier.height(8.dp))
+                        Text("Explora talleres, acredita asistentes y responde encuestas. Los registros pendientes se envían cuando vuelve la señal.",
+                            color = MaterialTheme.colorScheme.onPrimaryContainer)
+                        Spacer(Modifier.height(16.dp))
+                        Button(onClick = { vm.refreshCatalog() }, enabled = !state.loading,
+                            modifier = Modifier.fillMaxWidth().heightIn(min = AREA_TACTIL_MINIMA)) {
+                            Text(if (state.loading) "Actualizando talleres…" else "Actualizar talleres")
+                        }
+                        if (owner == null) {
+                            OutlinedButton(onClick = onNavigateToLogin,
+                                modifier = Modifier.fillMaxWidth().heightIn(min = AREA_TACTIL_MINIMA)) {
+                                Text("Iniciar sesión o registrarse")
                             }
-                        }, enabled = pending > 0) { Text("Sincronizar ahora") }
+                        }
                     }
-                    if (AuthSession.roles.any { it in listOf("admin","coordinador","monitor") })
-                        TarjetaAccesoEscaner { talleres.firstOrNull()?.let { onNavigateToScanner(it.id.toLong()) } }
                 }
             }
 
+            if (owner != null) item(span = { GridItemSpan(maxLineSpan) }) {
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+                ) {
+                    Column(Modifier.padding(20.dp)) {
+                        Text("Mi acreditación", style = MaterialTheme.typography.titleLarge,
+                            fontWeight = FontWeight.Bold)
+                        Text("Perfil: ${AuthSession.roles.joinToString().ifBlank { "sin asignar" }}",
+                            color = MaterialTheme.colorScheme.onSurfaceVariant)
+                        val qr = remember(owner) { makeQr("SP1:$owner") }
+                        qr?.let { Image(it, contentDescription = "Mi QR de acreditación", modifier = Modifier.size(180.dp)) }
+                        Text("$pending registro(s) pendiente(s) de sincronización")
+                        if (message.isNotEmpty()) Text(message, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                        OutlinedButton(onClick = {
+                            AuthSession.accessToken?.let { vm.sync(owner, it) }
+                        }, enabled = pending > 0,
+                            modifier = Modifier.fillMaxWidth().heightIn(min = AREA_TACTIL_MINIMA)) {
+                            Text("Sincronizar ahora")
+                        }
+                    }
+                }
+            }
+
+            if (AuthSession.roles.any { it in listOf("admin","coordinador","monitor") } && talleres.isNotEmpty())
+                item(span = { GridItemSpan(maxLineSpan) }) {
+                    TarjetaAccesoEscaner { onNavigateToScanner(talleres.first().id.toLong()) }
+                }
+
             item(span = { GridItemSpan(maxLineSpan) }) {
-                Text(
-                    text = "Talleres comunitarios",
-                    fontSize = 17.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onBackground
-                )
+                Column {
+                    Text("Talleres comunitarios", fontSize = 20.sp,
+                        fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onBackground)
+                    Text("Actividades disponibles y cupos registrados.",
+                        color = MaterialTheme.colorScheme.onSurfaceVariant)
+                }
+            }
+
+            if (talleres.isEmpty() && !state.loading) item(span = { GridItemSpan(maxLineSpan) }) {
+                Card(modifier = Modifier.fillMaxWidth()) {
+                    Column(Modifier.padding(20.dp)) {
+                        Text(if (state.offline) "Sin talleres guardados" else "Aún no hay talleres publicados",
+                            fontWeight = FontWeight.Bold)
+                        Text(if (state.offline) "Conéctate y pulsa Actualizar talleres para descargar el catálogo."
+                            else "Vuelve más tarde para revisar las próximas actividades comunitarias.")
+                    }
+                }
             }
 
             items(talleres) { taller ->
@@ -284,7 +330,7 @@ private fun TarjetaTaller(
             // Barra de quorum: indicador visual inmediato para el coordinador.
             LinearProgressIndicator(
                 progress = {
-                    (taller.inscritos.toFloat() / taller.cuposMaximos.toFloat())
+                    (taller.inscritos.toFloat() / taller.cuposMaximos.coerceAtLeast(1).toFloat())
                         .coerceIn(0f, 1f)
                 },
                 modifier = Modifier

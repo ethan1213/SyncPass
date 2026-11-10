@@ -12,6 +12,7 @@ SyncPass registra talleres comunitarios, asistencia y encuestas para actividades
 - [Mockups y modelos en un solo archivo](SyncPass-Mockups-y-BD.html) y [visor de mockups](mockups.html)
 - [Guion de exposición](docs/DEMO_VIERNES_30.md) y [requisitos](docs/REQUISITOS_SYNCPASS.md)
 - [Informe técnico y plan de cierre](docs/INFORME_TECNICO_Y_PLAN.md)
+- [Plan de verificación de comunicación web, API y móvil](docs/PLAN_VERIFICACION_COMUNICACION.md)
 
 La web de Vercel puede abrir aunque el laboratorio esté detenido. Las operaciones que usan la API requieren que EC2 esté encendida; el [procedimiento de arranque](docs/OPERACION_LAB.md) explica cómo comprobarlo y obtener su IP.
 

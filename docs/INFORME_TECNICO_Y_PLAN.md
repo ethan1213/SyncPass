@@ -89,6 +89,8 @@ Para exponerlo: **vista → ViewModel → repositorio → fuente de datos** desc
 
 Primer ajuste local: la portada web presenta dos acciones principales, deja la descarga y los mockups como enlaces secundarios y explica el estado sin talleres. El rediseño de los flujos internos sigue pendiente de validación con el cliente.
 
+Segundo ajuste local: web y Android ofrecen **Actualizar talleres** para pedir nuevamente el catálogo compartido; Android muestra carga, conexión o catálogo local, separa el QR del encabezado y presenta un estado vacío. El APK compilado se copia al enlace de descarga de la web. La integración remota no se considera cerrada mientras Gateway responda 503.
+
 ### Fase E: innovación útil al caso
 
 Empezar por **resumen de taller a partir de notas aprobadas**. Permite generar acuerdos, temas y preguntas frecuentes sin grabar personas. Luego evaluar audio/transcripción y preguntas sobre el contenido del taller, con consentimiento, control de acceso, corrección humana y un límite de costo. Una respuesta debe indicar qué nota o tramo de transcripción la respalda; si no existe evidencia, debe decir que no sabe. No mezclar el prototipo con el CRUD obligatorio hasta que este esté cerrado.

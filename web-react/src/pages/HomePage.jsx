@@ -1,7 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'wouter';
 
-export default function HomePage({ talleres, onSelectTaller }) {
+export default function HomePage({ talleres, onRefresh, onSelectTaller }) {
+  const [refreshing, setRefreshing] = useState(false);
+  const [refreshError, setRefreshError] = useState('');
+  async function refreshTalleres() {
+    setRefreshing(true);
+    setRefreshError('');
+    try { await onRefresh(); }
+    catch { setRefreshError('No se pudo actualizar. Inténtalo de nuevo cuando vuelva la conexión.'); }
+    finally { setRefreshing(false); }
+  }
   return (
     <>
       <main className="contenedor">
@@ -48,8 +57,17 @@ export default function HomePage({ talleres, onSelectTaller }) {
         </section>
 
         <section id="talleres" aria-labelledby="titulo-talleres">
-          <h2 id="titulo-talleres">Talleres en terreno</h2>
-          <p>Actividades comunitarias en curso y su quórum de inscripción.</p>
+          <div className="catalogo-cabecera">
+            <div>
+              <h2 id="titulo-talleres">Talleres en terreno</h2>
+              <p>Actividades comunitarias en curso y su quórum de inscripción.</p>
+            </div>
+            <button className="btn btn-secondary" type="button" onClick={refreshTalleres} disabled={refreshing}>
+              {refreshing ? 'Actualizando…' : 'Actualizar talleres'}
+            </button>
+          </div>
+
+          {refreshError && <p className="alert alert-warning" role="status">{refreshError}</p>}
 
           {!talleres.length && <div className="panel inicio-vacio"><h3>Aún no hay talleres publicados</h3><p>Vuelve más tarde para revisar las próximas actividades comunitarias.</p></div>}
           <div className="proyectos-grid">
