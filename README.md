@@ -2,7 +2,7 @@
 
 SyncPass registra talleres comunitarios, asistencia y encuestas para actividades de Vinculación con el Medio de Duoc UC. La solución tiene una web de administración y consulta, una app Android para trabajo en terreno, una API Java y almacenamiento local para conservar pendientes cuando se pierde la conexión.
 
-**Integrantes:** Ethan y Jorge Leal.
+**Responsable:** Ethan Astorga.
 
 ## Enlaces de la demostración
 
@@ -85,7 +85,7 @@ La entrada web es `main.tsx`; la sesión, los roles, la configuración, el clien
 - La publicación web se hace en Vercel desde `web-react/`. La API está en EC2 tras API Gateway. Cuando el laboratorio se reinicia, [la recuperación de IP](docs/OPERACION_LAB.md) actualiza Caddy y Gateway automáticamente una vez instalado el servicio.
 - Ejecutar `npm run coverage` en `web-react/` produce un informe Vitest. El alcance medido son la sesión, los roles, la configuración, el cliente HTTP, IndexedDB, el parser QR, el aviso de geocerca y los dos mantenedores: 33 pruebas, 97,24% de líneas y 87,07% de ramas en esos nueve módulos. **No es la cobertura de toda la aplicación**. El backend tiene 15 pruebas de controladores y geocerca; para la evaluación que exija 80% global aún faltan pruebas de otras páginas.
 - Los resultados concretos de la integración web, API Gateway, Cognito, EC2 y Android están en [Verificación del despliegue](docs/VERIFICACION_DESPLIEGUE.md).
-- `main` contiene la versión integrada. Las ramas `developer/ethan`, `developer/jorge` y `feature/*` son puntos de partida para cambios revisados mediante pull request. Ver [convención de ramas](docs/RAMAS.md).
+- `main` contiene la versión integrada. `developer/ethan` y `feature/*` permiten preparar cambios revisados mediante pull request. Ver [convención de ramas](docs/RAMAS.md).
 - No subir `.env`, contraseñas, claves de AWS ni tokens. El APK de demostración publicado en `web-react/public/descargas/` contiene solo la configuración pública necesaria para acceder a API Gateway y no credenciales privadas; se recompila al cambiar la app Android.
 
 El caso y los modelos completos están en [la documentación](docs/README.md). Para presentar el proyecto, mostrar primero los mockups, luego la arquitectura y después las dos aplicaciones.

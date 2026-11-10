@@ -5,10 +5,10 @@ import { listLocal, saveLocal, removeLocal, cacheCatalog, cachedCatalog } from '
 describe('persistencia local por usuario', () => {
   it('crea, consulta y elimina un borrador sin tocar el de otra cuenta', async () => {
     await saveLocal('drafts', { id: 'uno', owner: 'ethan', text: 'primero' });
-    await saveLocal('drafts', { id: 'dos', owner: 'jorge', text: 'segundo' });
+    await saveLocal('drafts', { id: 'dos', owner: 'otro-usuario', text: 'segundo' });
     expect(await listLocal('drafts', 'ethan')).toEqual([{ id: 'uno', owner: 'ethan', text: 'primero' }]);
     await removeLocal('drafts', 'dos', 'ethan');
-    expect(await listLocal('drafts', 'jorge')).toHaveLength(1);
+    expect(await listLocal('drafts', 'otro-usuario')).toHaveLength(1);
     await removeLocal('drafts', 'uno', 'ethan');
     expect(await listLocal('drafts', 'ethan')).toEqual([]);
   });
