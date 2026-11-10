@@ -19,23 +19,38 @@ public class AuthController {
  public record UsernameRequest(@NotBlank String username) {}
  public record LoginRequest(@NotBlank String username,@NotBlank String password) {}
  public record RefreshRequest(@NotBlank String refreshToken) {}
- private final CognitoIdentityProviderClient cognito; private final String clientId;
- AuthController(CognitoIdentityProviderClient cognito,@Value("${syncpass.client-id}") String clientId){this.cognito=cognito;this.clientId=clientId;}
+ private final CognitoIdentityProviderClient cognito; private final String clientId; private final String poolId;
+ AuthController(CognitoIdentityProviderClient cognito,@Value("${syncpass.client-id}") String clientId,@Value("${syncpass.issuer}") String issuer){
+   this.cognito=cognito;this.clientId=clientId;this.poolId=issuer.substring(issuer.lastIndexOf('/')+1);
+ }
 
  @PostMapping("/register") @ResponseStatus(HttpStatus.CREATED)
  public Map<String,Object> register(@Valid @RequestBody RegisterRequest r) {
    var res=cognito.signUp(b->b.clientId(clientId).username(r.username()).password(r.password())
      .userAttributes(AttributeType.builder().name("email").value(r.email()).build(),AttributeType.builder().name("nickname").value(r.nickname()).build()));
+   if(res.userConfirmed()) assignParticipant(r.username());
    var delivery=res.codeDeliveryDetails();
    return Map.of("userConfirmed",res.userConfirmed(),"destination",delivery==null?"":delivery.destination());
  }
  @PostMapping("/confirm") @ResponseStatus(HttpStatus.NO_CONTENT)
- public void confirm(@Valid @RequestBody ConfirmRequest r) { cognito.confirmSignUp(b->b.clientId(clientId).username(r.username()).confirmationCode(r.code())); }
+ public void confirm(@Valid @RequestBody ConfirmRequest r) {
+   cognito.confirmSignUp(b->b.clientId(clientId).username(r.username()).confirmationCode(r.code()));
+   assignParticipant(r.username());
+ }
+ private void assignParticipant(String username) {
+   cognito.adminAddUserToGroup(b->b.userPoolId(poolId).username(username).groupName("participante"));
+ }
  @PostMapping("/resend") @ResponseStatus(HttpStatus.NO_CONTENT)
  public void resend(@Valid @RequestBody UsernameRequest r) { cognito.resendConfirmationCode(b->b.clientId(clientId).username(r.username())); }
  @PostMapping("/login")
  public Map<String,Object> login(@Valid @RequestBody LoginRequest r) {
-   return tokens(cognito.initiateAuth(b->b.clientId(clientId).authFlow(AuthFlowType.USER_PASSWORD_AUTH).authParameters(Map.of("USERNAME",r.username(),"PASSWORD",r.password()))),null);
+   var result=cognito.initiateAuth(b->b.clientId(clientId).authFlow(AuthFlowType.USER_PASSWORD_AUTH).authParameters(Map.of("USERNAME",r.username(),"PASSWORD",r.password())));
+   var membership=cognito.adminListGroupsForUser(b->b.userPoolId(poolId).username(r.username()));
+   if(membership.groups().isEmpty()) {
+     assignParticipant(r.username());
+     result=cognito.initiateAuth(b->b.clientId(clientId).authFlow(AuthFlowType.USER_PASSWORD_AUTH).authParameters(Map.of("USERNAME",r.username(),"PASSWORD",r.password())));
+   }
+   return tokens(result,null);
  }
  @PostMapping("/refresh")
  public Map<String,Object> refresh(@Valid @RequestBody RefreshRequest r) {

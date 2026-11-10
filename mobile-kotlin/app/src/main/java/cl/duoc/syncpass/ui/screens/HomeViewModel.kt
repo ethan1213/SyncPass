@@ -13,7 +13,8 @@ data class HomeUiState(
     val talleres: List<TallerDto> = emptyList(),
     val pending: Int = 0,
     val message: String = "",
-    val offline: Boolean = false
+    val offline: Boolean = false,
+    val loading: Boolean = true
 )
 
 class HomeViewModel(private val repository: SyncPassRepository) : ViewModel() {
@@ -30,11 +31,12 @@ class HomeViewModel(private val repository: SyncPassRepository) : ViewModel() {
     }
 
     fun refreshCatalog() = viewModelScope.launch {
+        _state.update { it.copy(loading = true) }
         try {
             val rows = repository.talleres()
-            _state.update { it.copy(talleres = rows, message = "", offline = false) }
+            _state.update { it.copy(talleres = rows, message = "", offline = false, loading = false) }
         } catch (_: Exception) {
-            _state.update { it.copy(message = "Sin conexión. Se muestra el catálogo guardado.", offline = true) }
+            _state.update { it.copy(message = "No se pudo actualizar. Se muestra el catálogo guardado.", offline = true, loading = false) }
         }
     }
 

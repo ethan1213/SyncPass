@@ -492,6 +492,26 @@ header {
   margin-top: 6px;
 }
 
+.inicio-acciones,
+.inicio-enlaces {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 18px;
+  align-items: center;
+}
+
+.inicio-acciones { margin-top: 24px; }
+.inicio-enlaces { margin-top: 20px; }
+.inicio-enlaces a { color: var(--primary); font-weight: 650; text-underline-offset: 3px; }
+.inicio-enlaces a:hover { color: var(--primary-hover); }
+.inicio-vacio { max-width: 42rem; margin-block: 24px; }
+.catalogo-cabecera { display: flex; align-items: start; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+.catalogo-cabecera .btn { min-height: var(--toque-min); }
+
+@media (max-width: 599px) {
+  .inicio-acciones .btn { width: 100%; }
+}
+
 /* Botones */
 .btn {
   display: inline-flex;

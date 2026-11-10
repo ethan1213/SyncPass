@@ -78,7 +78,7 @@ fun HomeScreen(
                 title = {
                     Column {
                         Text(
-                            text = "SyncPass Móvil",
+                            text = "SyncPass",
                             fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.primary,
                             fontSize = 20.sp
@@ -94,14 +94,18 @@ fun HomeScreen(
                     // Estado de conexion siempre visible: en terreno el monitor
                     // necesita saber si esta acumulando registros locales.
                     Surface(
-                        color = MaterialTheme.colorScheme.errorContainer,
+                        color = if (state.offline) MaterialTheme.colorScheme.errorContainer else MaterialTheme.colorScheme.primaryContainer,
                         shape = RoundedCornerShape(12.dp),
                         modifier = Modifier.padding(end = 8.dp)
                     ) {
                         Text(
-                            text = if (state.offline) "Catálogo local" else "API conectada",
+                            text = when {
+                                state.loading -> "Actualizando…"
+                                state.offline -> "Catálogo local"
+                                else -> "API conectada"
+                            },
                             fontSize = 11.sp,
-                            color = MaterialTheme.colorScheme.onErrorContainer,
+                            color = if (state.offline) MaterialTheme.colorScheme.onErrorContainer else MaterialTheme.colorScheme.onPrimaryContainer,
                             fontWeight = FontWeight.Bold,
                             modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
                         )
@@ -113,7 +117,7 @@ fun HomeScreen(
                             minHeight = AREA_TACTIL_MINIMA
                         )
                     ) {
-                        Text("👤", fontSize = 18.sp)
+                        Text("Cuenta", fontSize = 12.sp, fontWeight = FontWeight.SemiBold)
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
@@ -133,33 +137,83 @@ fun HomeScreen(
         ) {
             // La tarjeta de accion y el titulo ocupan siempre el ancho completo.
             item(span = { GridItemSpan(maxLineSpan) }) {
-                Column {
-                    if (owner == null) Button(onClick = onNavigateToLogin) { Text("Iniciar sesión o registrarse") }
-                    else {
-                        Text("Perfil: ${AuthSession.roles.joinToString().ifBlank { "sin asignar" }}")
-                        if (message.isNotEmpty()) Text(message)
-                        val qr = remember(owner) { makeQr("SP1:$owner") }
-                        qr?.let { Image(it, contentDescription = "Mi QR de acreditación", modifier = Modifier.size(220.dp)) }
-                        Text("$pending registro(s) pendiente(s) de sincronización")
-                        Button(onClick = {
-                            val token = AuthSession.accessToken
-                            if (token != null) {
-                                vm.sync(owner, token)
+                Surface(
+                    color = MaterialTheme.colorScheme.primaryContainer,
+                    shape = RoundedCornerShape(4.dp),
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Column(Modifier.padding(22.dp)) {
+                        Text("CITT PLAZA VESPUCIO · VINCULACIÓN CON EL MEDIO",
+                            color = MaterialTheme.colorScheme.secondary,
+                            fontSize = 11.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.sp)
+                        Spacer(Modifier.height(8.dp))
+                        Text("En terreno. Sin papel.", style = MaterialTheme.typography.headlineMedium,
+                            fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onPrimaryContainer)
+                        Spacer(Modifier.height(8.dp))
+                        Text("Explora talleres, acredita asistentes y responde encuestas. Los registros pendientes se envían cuando vuelve la señal.",
+                            color = MaterialTheme.colorScheme.onPrimaryContainer)
+                        Spacer(Modifier.height(16.dp))
+                        Button(onClick = { vm.refreshCatalog() }, enabled = !state.loading,
+                            modifier = Modifier.fillMaxWidth().heightIn(min = AREA_TACTIL_MINIMA)) {
+                            Text(if (state.loading) "Actualizando talleres…" else "Actualizar talleres")
+                        }
+                        if (owner == null) {
+                            OutlinedButton(onClick = onNavigateToLogin,
+                                modifier = Modifier.fillMaxWidth().heightIn(min = AREA_TACTIL_MINIMA)) {
+                                Text("Iniciar sesión o registrarse")
                             }
-                        }, enabled = pending > 0) { Text("Sincronizar ahora") }
+                        }
                     }
-                    if (AuthSession.roles.any { it in listOf("admin","coordinador","monitor") })
-                        TarjetaAccesoEscaner { talleres.firstOrNull()?.let { onNavigateToScanner(it.id.toLong()) } }
                 }
             }
 
+            if (owner != null) item(span = { GridItemSpan(maxLineSpan) }) {
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+                ) {
+                    Column(Modifier.padding(20.dp)) {
+                        Text("Mi acreditación", style = MaterialTheme.typography.titleLarge,
+                            fontWeight = FontWeight.Bold)
+                        Text("Perfil: ${AuthSession.roles.joinToString().ifBlank { "sin asignar" }}",
+                            color = MaterialTheme.colorScheme.onSurfaceVariant)
+                        val qr = remember(owner) { makeQr("SP1:$owner") }
+                        qr?.let { Image(it, contentDescription = "Mi QR de acreditación", modifier = Modifier.size(180.dp)) }
+                        Text("$pending registro(s) pendiente(s) de sincronización")
+                        if (message.isNotEmpty()) Text(message, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                        OutlinedButton(onClick = {
+                            AuthSession.accessToken?.let { vm.sync(owner, it) }
+                        }, enabled = pending > 0,
+                            modifier = Modifier.fillMaxWidth().heightIn(min = AREA_TACTIL_MINIMA)) {
+                            Text("Sincronizar ahora")
+                        }
+                    }
+                }
+            }
+
+            if (AuthSession.roles.any { it in listOf("admin","coordinador","monitor") } && talleres.isNotEmpty())
+                item(span = { GridItemSpan(maxLineSpan) }) {
+                    TarjetaAccesoEscaner { onNavigateToScanner(talleres.first().id.toLong()) }
+                }
+
             item(span = { GridItemSpan(maxLineSpan) }) {
-                Text(
-                    text = "Talleres asignados en terreno",
-                    fontSize = 17.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onBackground
-                )
+                Column {
+                    Text("Talleres comunitarios", fontSize = 20.sp,
+                        fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onBackground)
+                    Text("Actividades disponibles y cupos registrados.",
+                        color = MaterialTheme.colorScheme.onSurfaceVariant)
+                }
+            }
+
+            if (talleres.isEmpty() && !state.loading) item(span = { GridItemSpan(maxLineSpan) }) {
+                Card(modifier = Modifier.fillMaxWidth()) {
+                    Column(Modifier.padding(20.dp)) {
+                        Text(if (state.offline) "Sin talleres guardados" else "Aún no hay talleres publicados",
+                            fontWeight = FontWeight.Bold)
+                        Text(if (state.offline) "Conéctate y pulsa Actualizar talleres para descargar el catálogo."
+                            else "Vuelve más tarde para revisar las próximas actividades comunitarias.")
+                    }
+                }
             }
 
             items(talleres) { taller ->
@@ -192,20 +246,20 @@ private fun TarjetaAccesoEscaner(onNavigateToScanner: () -> Unit) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(top = 8.dp),
-        shape = RoundedCornerShape(12.dp),
+        shape = RoundedCornerShape(18.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.primaryContainer
         )
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
-                text = "Acreditación rápida en terreno",
+                text = "Acreditación en terreno",
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onPrimaryContainer
             )
             Text(
-                text = "Operatividad garantizada en zonas sin cobertura móvil.",
+                text = "Escanea el QR de cada participante. Los registros pendientes se sincronizan al recuperar conexión.",
                 fontSize = 13.sp,
                 color = MaterialTheme.colorScheme.onPrimaryContainer,
                 modifier = Modifier.padding(vertical = 4.dp)
@@ -218,7 +272,7 @@ private fun TarjetaAccesoEscaner(onNavigateToScanner: () -> Unit) {
                     .padding(top = 8.dp),
                 shape = RoundedCornerShape(8.dp)
             ) {
-                Text("📷 ABRIR ESCÁNER QR (< 5 seg)", fontWeight = FontWeight.Bold)
+                Text("Abrir escáner QR", fontWeight = FontWeight.Bold)
             }
         }
     }
@@ -235,9 +289,9 @@ private fun TarjetaTaller(
         modifier = Modifier
             .fillMaxWidth()
             .clickable { if (canScan) onAcreditar() },
-        shape = RoundedCornerShape(10.dp),
+        shape = RoundedCornerShape(18.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -276,7 +330,7 @@ private fun TarjetaTaller(
             // Barra de quorum: indicador visual inmediato para el coordinador.
             LinearProgressIndicator(
                 progress = {
-                    (taller.inscritos.toFloat() / taller.cuposMaximos.toFloat())
+                    (taller.inscritos.toFloat() / taller.cuposMaximos.coerceAtLeast(1).toFloat())
                         .coerceIn(0f, 1f)
                 },
                 modifier = Modifier
@@ -303,7 +357,7 @@ private fun TarjetaTaller(
                         .weight(1f)
                         .heightIn(min = AREA_TACTIL_MINIMA)
                 ) {
-                    Text("⭐ Encuesta", fontSize = 12.sp)
+                    Text("Encuesta", fontSize = 12.sp)
                 }
             }
         }
