@@ -4,13 +4,13 @@
 
 Al terminar un taller, los apuntes quedan dispersos y las personas no pueden repasar fácilmente lo tratado. La bitácora vincula una transcripción o apuntes al **ID del taller**. Un administrador o coordinador publica el texto; la API genera un resumen extractivo y permite consultar preguntas mostrando el fragmento de origen. Web y Android leen el mismo registro en PostgreSQL a través de API Gateway y EC2.
 
-Esta versión **no usa un modelo generativo**: la API selecciona frases y busca términos normalizados. Es verificable, funciona sin clave de un proveedor de IA y evita inventar respuestas. No interpreta sinónimos ni conceptos que no compartan palabras; cuando no encuentra coincidencia, lo indica. El dictado web depende del reconocimiento de voz disponible en el navegador y puede requerir un servicio del propio navegador. SyncPass **no guarda el audio**; solo guarda el texto cuando el docente pulsa Guardar. No se implementó grabación de audio persistente ni transcripción Android.
+Esta versión **no usa un modelo generativo**: la API selecciona frases y busca términos normalizados. Es verificable, funciona sin clave de un proveedor externo y evita inventar respuestas. No interpreta sinónimos ni conceptos que no compartan palabras; cuando no encuentra coincidencia, lo indica. El dictado web depende del reconocimiento de voz disponible en el navegador y puede requerir un servicio del propio navegador. La web también puede **grabar y descargar audio localmente** con MediaRecorder. SyncPass **no envía ni guarda el audio** en la API; solo guarda el texto cuando el docente pulsa Guardar. No se implementó transcripción automática de archivos de audio ni grabación Android.
 
 ## Arquitectura y archivos
 
 | Capa | Responsabilidad | Archivo |
 | --- | --- | --- |
-| Web | Edición por admin/coordinador, dictado opcional con consentimiento, resumen y preguntas | `web-react/src/pages/BitacoraPage.jsx` |
+| Web | Edición por admin/coordinador, dictado o grabación local opcional con consentimiento, resumen y preguntas | `web-react/src/pages/BitacoraPage.jsx` |
 | Navegación web | Enlace desde el detalle y ruta protegida | `web-react/src/pages/TallerDetailPage.jsx`, `web-react/src/App.jsx` |
 | API | Permisos, validación, resumen y respuestas con cita | `backend/src/main/java/cl/duoc/syncpass/BitacoraController.java` |
 | Base | Una bitácora por taller, borrado en cascada con el taller | `backend/src/main/resources/db/migration/V4__bitacoras.sql` |
@@ -33,7 +33,7 @@ El contenido admite hasta 20 000 caracteres; la pregunta, hasta 300. El resumen 
 
 1. Recuperar Gateway: `/actuator/health` debe responder 200. El 12-11-2026 devolvió 503; sin resolverlo no hay demo en nube.
 2. Como administrador, crear un taller ficticio y anotar su ID. Abrir **Resumen y preguntas del taller** en su detalle.
-3. Confirmar consentimiento antes de activar el micrófono, o pegar apuntes ficticios. Guardar y verificar resumen y `GET` en Postman. No usar una grabación real de personas sin autorización.
+3. Confirmar consentimiento antes de activar el micrófono. Grabar audio, detener y descargar el archivo local; dictar o pegar apuntes ficticios por separado. Guardar el texto y verificar resumen y `GET` en Postman. No usar una grabación real de personas sin autorización.
 4. Consultar “¿Qué hacemos con los envases?” y comprobar que la cita coincide con un fragmento del texto. Preguntar por un tema ausente y comprobar el mensaje de insuficiencia.
 5. Abrir el mismo taller en Android y entrar en **Resumen y preguntas del taller**. Comprobar el mismo resumen y respuesta. Editar la bitácora en web, reabrir Android y verificar el cambio.
 6. Probar participante: lectura y preguntas 200, escritura 403. Sin sesión: 401. Registrar capturas y respuestas sin mostrar tokens.
@@ -42,4 +42,4 @@ El contenido admite hasta 20 000 caracteres; la pregunta, hasta 300. El resumen 
 
 En el entorno local, Flyway V4, la prueba de permisos/persistencia/respuesta en Spring y la compilación web y Android son las comprobaciones mínimas. Falta desplegar el JAR nuevo, aplicar la migración a Supabase y repetir la prueba cruzada con un teléfono. La bitácora requiere red en Android; no tiene caché Room propia. El dictado de Chrome debe probarse en el navegador y con permiso de micrófono.
 
-Para una segunda versión con **audio grabado y transcripción automática**, diseñar consentimiento revocable, borrado y retención, cifrado/almacenamiento privado, tamaño máximo, costo de transcripción, permisos y revisión humana. Para respuestas generativas, exigir citas verificables y rechazo cuando la fuente no respalde la respuesta. No presentar esas capacidades como implementadas en este MVP.
+Para una segunda versión con **audio compartido y transcripción automática**, diseñar consentimiento revocable, borrado y retención, cifrado/almacenamiento privado, tamaño máximo, costo de transcripción, permisos y revisión humana. Para respuestas generativas, exigir citas verificables y rechazo cuando la fuente no respalde la respuesta. No presentar esas capacidades como implementadas en este MVP.

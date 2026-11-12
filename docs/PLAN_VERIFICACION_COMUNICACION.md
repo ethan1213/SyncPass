@@ -8,7 +8,7 @@ Estado observado el 12 de noviembre de 2026. **Una compilación o prueba simulad
 | --- | --- | --- |
 | Web publicada | Vercel responde HTTP 200 | Comprobado solo disponibilidad de portada |
 | API pública | `GET /actuator/health` en Gateway devuelve HTTP 503 | Bloqueada: revisar laboratorio, EC2, Caddy, JAR e integración |
-| Web local | 35 pruebas Vitest pasan; 92,46% de líneas en los módulos incluidos, con bitácora | Comprobado local; no es cobertura global |
+| Web local | 37 pruebas Vitest pasan; 93,35% de líneas en los módulos incluidos, con bitácora | Comprobado local; no es cobertura global |
 | Backend local | 18 pruebas Maven pasan, sin fallos ni errores | Comprobado local con H2; no demuestra EC2/Supabase |
 | Android | `:app:assembleDebug` compila; `adb devices` no lista un teléfono | APK local listo; falta prueba física actual |
 | Innovación de bitácora consultable | Implementación local en API, web y Android; resumen extractivo y preguntas con cita | Falta desplegar y probar web-Android con la misma bitácora; ver `INNOVACION_BITACORA.md` |
@@ -49,7 +49,7 @@ Estado observado el 12 de noviembre de 2026. **Una compilación o prueba simulad
 1. Ejecutar `npm run build` y `npm run coverage` en `web-react`; conservar el reporte y declarar explícitamente el alcance de `vitest.config.ts`. La cifra actual 97,29% solo cubre los módulos incluidos; ampliar instrumentación antes de afirmar 80% global.
 2. Ejecutar `mvnw.cmd test` en backend y `gradlew.bat :app:assembleDebug` en móvil. Añadir pruebas de repositorio Room/Retrofit y una prueba de contrato JSON web-móvil-API.
 3. Comparar inicio, login, catálogo, taller, QR y estados vacíos/error en web y Android: textos, paleta, jerarquía, botones, navegación y accesibilidad. Probar tamaños compacto y amplio y contraste.
-4. Innovación implementada localmente: **bitácora de taller con resumen extractivo y preguntas con cita**. Verificar publicación web, lectura y preguntas Android con el mismo tallerId, permisos, pregunta sin coincidencia y cambio visible tras editar. El dictado web requiere consentimiento y comprobación manual en Chrome. Audio persistente y transcripción Android son una fase posterior, no parte del MVP actual.
+4. Innovación implementada localmente: **bitácora de taller con resumen extractivo y preguntas con cita**. Verificar publicación web, lectura y preguntas Android con el mismo tallerId, permisos, pregunta sin coincidencia y cambio visible tras editar. Dictado y grabación local web requieren consentimiento y comprobación manual en Chrome. Audio compartido y transcripción Android son una fase posterior, no parte del MVP actual.
 
 ## Criterio de cierre
 

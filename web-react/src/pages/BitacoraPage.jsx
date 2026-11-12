@@ -16,15 +16,24 @@ export default function BitacoraPage({ tallerId }) {
   const [mensaje, setMensaje] = useState('');
   const [ocupado, setOcupado] = useState(false);
   const [dictando, setDictando] = useState(false);
+  const [grabando, setGrabando] = useState(false);
+  const [audioUrl, setAudioUrl] = useState('');
   const [consentimiento, setConsentimiento] = useState(false);
   const recognition = useRef(null);
+  const recorder = useRef(null);
+  const audioUrlRef = useRef('');
 
   useEffect(() => {
     let active = true;
     getAccessTokenSilently().then((token) => request(`/api/eventos/${tallerId}/bitacora`, { token }))
       .then((data) => { if (active) { setContenido(data.contenido); setResumen(data.resumen); setFragmentos(data.fragmentos); } })
       .catch((error) => { if (active) setMensaje(error.message.includes('404') ? 'Este taller aún no tiene bitácora.' : error.message); });
-    return () => { active = false; recognition.current?.stop(); };
+    return () => {
+      active = false; recognition.current?.stop();
+      if (recorder.current?.state === 'recording') recorder.current.stop();
+      recorder.current?.stream?.getTracks().forEach((track) => track.stop());
+      if (audioUrlRef.current) URL.revokeObjectURL(audioUrlRef.current);
+    };
   }, [tallerId, getAccessTokenSilently]);
 
   async function guardar() {
@@ -66,6 +75,28 @@ export default function BitacoraPage({ tallerId }) {
     recognition.current = instance; instance.start(); setDictando(true);
   }
 
+  async function grabar() {
+    if (grabando) { recorder.current?.stop(); setGrabando(false); return; }
+    if (!consentimiento) return setMensaje('Confirma el consentimiento de las personas antes de grabar.');
+    if (!navigator.mediaDevices?.getUserMedia || !window.MediaRecorder) return setMensaje('Este navegador no admite grabación de audio.');
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const mimeType = MediaRecorder.isTypeSupported('audio/webm') ? 'audio/webm' : '';
+      const instance = new MediaRecorder(stream, mimeType ? { mimeType } : undefined);
+      const chunks = [];
+      instance.ondataavailable = (event) => { if (event.data.size) chunks.push(event.data); };
+      instance.onstop = () => {
+        stream.getTracks().forEach((track) => track.stop());
+        if (audioUrlRef.current) URL.revokeObjectURL(audioUrlRef.current);
+        audioUrlRef.current = URL.createObjectURL(new Blob(chunks, { type: instance.mimeType || 'audio/webm' }));
+        setAudioUrl(audioUrlRef.current); setGrabando(false);
+      };
+      recorder.current = instance;
+      setAudioUrl(''); setMensaje('Grabando solo en este navegador. Detén la grabación y descarga el archivo antes de salir.');
+      instance.start(); setGrabando(true);
+    } catch { setMensaje('No se pudo iniciar el micrófono. Revisa el permiso del navegador.'); }
+  }
+
   return <main className="contenedor" style={{ padding: '28px 0 64px', maxWidth: 900 }}>
     <Link href={`/taller/${tallerId}`} className="enlace-volver">← Volver al taller</Link>
     <p className="eyebrow">Bitácora del taller</p>
@@ -74,14 +105,16 @@ export default function BitacoraPage({ tallerId }) {
     {mensaje && <p className="alert alert-info" role="status">{mensaje}</p>}
     {canEdit && <section className="seccion-bloque">
       <h2>Contenido de la sesión</h2>
-      <p className="texto-apoyo">Pide consentimiento antes de dictar. El navegador transcribe la voz; SyncPass guarda solo el texto al pulsar Guardar.</p>
+      <p className="texto-apoyo">Pide consentimiento antes de usar el micrófono. El dictado convierte voz a texto; el audio grabado se descarga en este dispositivo y no se envía a SyncPass. Publica los apuntes para que Android pueda consultarlos.</p>
       <label style={{ display: 'block', marginBottom: 12 }}><input type="checkbox" checked={consentimiento} onChange={(event) => setConsentimiento(event.target.checked)} /> Confirmo que las personas presentes autorizaron el uso del micrófono para esta bitácora.</label>
       <label htmlFor="contenido-bitacora">Transcripción o apuntes</label>
       <textarea id="contenido-bitacora" rows="10" maxLength={20000} value={contenido} onChange={(e) => setContenido(e.target.value)} style={{ width: '100%', padding: 12 }} />
       <div className="acciones-fila">
-        <button type="button" className="btn btn-secondary" onClick={dictar}>{dictando ? 'Detener dictado' : 'Dictar en Chrome'}</button>
+        <button type="button" className="btn btn-secondary" onClick={dictar} disabled={grabando}>{dictando ? 'Detener dictado' : 'Dictar en Chrome'}</button>
+        <button type="button" className="btn btn-secondary" onClick={grabar} disabled={dictando}>{grabando ? 'Detener grabación' : 'Grabar audio local'}</button>
         <button type="button" className="btn btn-primary" disabled={ocupado} onClick={guardar}>Guardar y resumir</button>
       </div>
+      {audioUrl && <p><a href={audioUrl} download={`syncpass-taller-${tallerId}.webm`} className="btn btn-secondary">Descargar grabación</a></p>}
     </section>}
     <section className="seccion-bloque"><h2>Resumen de la sesión</h2>
       <p>{resumen || 'Cuando el equipo publique la bitácora, el resumen aparecerá aquí.'}</p>
