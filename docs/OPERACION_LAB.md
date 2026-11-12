@@ -47,7 +47,7 @@ curl -fsSLo /tmp/syncpass-update.sh https://raw.githubusercontent.com/ethan1213/
 sudo bash /tmp/syncpass-update.sh
 ```
 
-El script descarga `main`, compila, instala el JAR, reinicia la API y comprueba la salud local y la de Gateway. Flyway aplica las migraciones al iniciar, incluida V3 de geocercas. Conserva `/etc/syncpass/syncpass.env` sin mostrar sus valores.
+El script descarga `main`, compila, instala el JAR, reinicia la API y comprueba la salud local y la de Gateway. Flyway aplica las migraciones al iniciar, incluidas V3 de geocercas y V4 de bitácoras cuando la rama de innovación se integre en `main`. Conserva `/etc/syncpass/syncpass.env` sin mostrar sus valores.
 
 ## Si Gateway responde 503
 
