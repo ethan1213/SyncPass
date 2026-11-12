@@ -20,6 +20,7 @@ import cl.duoc.syncpass.ui.screens.LoginScreen
 import cl.duoc.syncpass.ui.screens.RegisterScreen
 import cl.duoc.syncpass.ui.screens.ScannerScreen
 import cl.duoc.syncpass.ui.screens.SurveyScreen
+import cl.duoc.syncpass.ui.screens.BitacoraScreen
 import cl.duoc.syncpass.ui.theme.SyncPassTheme
 import cl.duoc.syncpass.data.AuthSession
 import cl.duoc.syncpass.data.SyncPassRepository
@@ -73,6 +74,7 @@ fun SyncPassNavigation(repository: SyncPassRepository, onAuthenticated: () -> Un
                 repository = repository,
                 onNavigateToScanner = { selectedTaller = it; navController.navigate(Screen.Scanner.route) },
                 onNavigateToSurvey = { selectedTaller = it; navController.navigate(Screen.Survey.route) },
+                onNavigateToBitacora = { selectedTaller = it; navController.navigate(Screen.Bitacora.route) },
                 onNavigateToLogin = { navController.navigate(Screen.Login.route) }
             )
         }
@@ -91,6 +93,10 @@ fun SyncPassNavigation(repository: SyncPassRepository, onAuthenticated: () -> Un
                 tallerId = selectedTaller,
                 onNavigateBack = { navController.popBackStack() }
             )
+        }
+
+        composable(Screen.Bitacora.route) {
+            BitacoraScreen(repository, selectedTaller) { navController.popBackStack() }
         }
 
         composable(Screen.Login.route) {

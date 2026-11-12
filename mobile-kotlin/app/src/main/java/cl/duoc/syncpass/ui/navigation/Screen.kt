@@ -19,6 +19,7 @@ sealed class Screen(val route: String, val title: String) {
 
     /** Encuesta de satisfaccion en terreno (1 a 5 estrellas). */
     object Survey : Screen("survey", "Encuesta de satisfacción")
+    object Bitacora : Screen("bitacora", "Bitácora del taller")
 
     /** Centro de sincronizacion de la cola local (is_synced = 0). */
     object Sync : Screen("sync", "Sincronización")

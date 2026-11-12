@@ -101,6 +101,9 @@ data class RegisterRequest(val username: String, val email: String, val nickname
 data class RegisterResult(val userConfirmed: Boolean, val destination: String)
 data class ConfirmRequest(val username: String, val code: String)
 data class UsernameRequest(val username: String)
+data class BitacoraDto(val contenido: String, val resumen: String, val actualizadoEn: String, val fragmentos: List<String>)
+data class PreguntaBitacora(val pregunta: String)
+data class RespuestaBitacora(val respuesta: String, val fragmento: Int, val cita: String)
 
 interface SyncPassApi {
     @POST("api/auth/login") suspend fun login(@Body request: LoginRequest): LoginResult
@@ -110,6 +113,13 @@ interface SyncPassApi {
     @GET("api/eventos") suspend fun talleres(): List<TallerDto>
     @POST("api/sync/batch") suspend fun sync(
         @Header("Authorization") authorization: String, @Body batch: SyncBatch): SyncResult
+    @GET("api/eventos/{tallerId}/bitacora") suspend fun bitacora(
+        @retrofit2.http.Path("tallerId") tallerId: Long,
+        @Header("Authorization") authorization: String): BitacoraDto
+    @POST("api/eventos/{tallerId}/bitacora/preguntas") suspend fun preguntarBitacora(
+        @retrofit2.http.Path("tallerId") tallerId: Long,
+        @Header("Authorization") authorization: String,
+        @Body pregunta: PreguntaBitacora): RespuestaBitacora
 }
 
 class SyncPassRepository(context: Context) {
@@ -139,6 +149,9 @@ class SyncPassRepository(context: Context) {
     }
 
     suspend fun pending(owner: String) = db.pending().forOwner(owner)
+    suspend fun bitacora(tallerId: Long, token: String) = api.bitacora(tallerId, "Bearer $token")
+    suspend fun preguntarBitacora(tallerId: Long, token: String, pregunta: String) =
+        api.preguntarBitacora(tallerId, "Bearer $token", PreguntaBitacora(pregunta))
     suspend fun queue(row: PendingRecord) = db.pending().save(row)
     suspend fun sync(owner: String, accessToken: String): Int = syncMutex.withLock {
         var total = 0

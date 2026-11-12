@@ -15,6 +15,7 @@ import ProyectosAdminPage from './pages/ProyectosAdminPage';
 import DraftsPage from './pages/DraftsPage';
 import RoleDashboard from './pages/RoleDashboard';
 import MyQrPage from './pages/MyQrPage';
+import BitacoraPage from './pages/BitacoraPage';
 import {ROLES} from './config/auth';
 import {useSession} from './auth/SessionProvider';
 import {apiGetEventos,apiSyncBatch} from './clients/api';
@@ -57,6 +58,7 @@ export default function App(){
  {isLoading?<p className="contenedor">Verificando sesión…</p>:<Switch>
  <Route path="/"><HomePage talleres={talleres} onSelectTaller={t=>navigate('/taller/'+t.id)}/></Route>
  <Route path="/taller/:id">{params=><TallerDetailPage taller={talleres.find(t=>String(t.id)===params.id)}/>}</Route>
+ <Route path="/bitacora/:id">{params=>protect(<BitacoraPage tallerId={params.id}/>)}</Route>
  <Route path="/mi-panel">{protect(<RoleDashboard/>)}</Route>
  <Route path="/mi-qr">{protect(<MyQrPage/>)}</Route>
  <Route path="/talleres">{protect(<TalleresAdminPage talleres={talleres} onRefresh={refresh}/>,[ROLES.admin,ROLES.coordinator])}</Route>
