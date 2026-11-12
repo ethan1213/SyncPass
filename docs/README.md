@@ -10,6 +10,7 @@ Esta carpeta documenta exclusivamente la solución SyncPass. El punto de entrada
 | [MOCKUPS.md](MOCKUPS.md) | Explicación de pantallas; visor en [`mockups.html`](../mockups.html). |
 | [ARQUITECTURA_FULLSTACK_MOBILE.md](ARQUITECTURA_FULLSTACK_MOBILE.md) | Componentes, API, persistencia y flujos. |
 | [PLAN_VERIFICACION_COMUNICACION.md](PLAN_VERIFICACION_COMUNICACION.md) | Pasos y criterios para comprobar web, API, Android e innovación. |
+| [INNOVACION_BITACORA.md](INNOVACION_BITACORA.md) | Diseño, contratos, límites y demostración de la bitácora consultable. |
 | [Informe técnico PDF](../output/pdf/SyncPass_Informe_Tecnico_y_Plan_de_Verificacion.pdf) | Arquitectura, tecnologías, pruebas actuales y diagnóstico. |
 | [DEMO_EC2_JAR_POSTMAN.md](DEMO_EC2_JAR_POSTMAN.md) | JAR, EC2, Gateway y colección Postman. |
 | [COGNITO.md](COGNITO.md) | Registro, login y grupos de acceso. |

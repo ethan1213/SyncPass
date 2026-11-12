@@ -1,0 +1,6 @@
+CREATE TABLE taller_bitacoras (
+ taller_id BIGINT PRIMARY KEY REFERENCES talleres(id) ON DELETE CASCADE,
+ contenido VARCHAR(20000) NOT NULL,
+ resumen VARCHAR(3000) NOT NULL,
+ actualizado_en TIMESTAMP WITH TIME ZONE NOT NULL
+);

@@ -12,6 +12,7 @@ SyncPass registra talleres comunitarios, asistencia y encuestas para actividades
 - [Mockups y modelos en un solo archivo](SyncPass-Mockups-y-BD.html) y [visor de mockups](mockups.html)
 - [Guion de exposición](docs/DEMO_VIERNES_30.md) y [requisitos](docs/REQUISITOS_SYNCPASS.md)
 - [Plan de verificación web, API y móvil](docs/PLAN_VERIFICACION_COMUNICACION.md) y [informe técnico PDF](output/pdf/SyncPass_Informe_Tecnico_y_Plan_de_Verificacion.pdf)
+- [Bitácora consultable de talleres](docs/INNOVACION_BITACORA.md): resumen extractivo y preguntas con cita, para web y Android.
 
 La web de Vercel puede abrir aunque el laboratorio esté detenido. Las operaciones que usan la API requieren que EC2 esté encendida; el [procedimiento de arranque](docs/OPERACION_LAB.md) explica cómo comprobarlo y obtener su IP.
 
@@ -82,7 +83,7 @@ La entrada web es `main.tsx`; la sesión, los roles, la configuración, el clien
 ## Publicación, pruebas y colaboración
 
 - La publicación web se hace en Vercel desde `web-react/`. La API está en EC2 tras API Gateway. Cuando el laboratorio se reinicia, [la recuperación de IP](docs/OPERACION_LAB.md) actualiza Caddy y Gateway automáticamente una vez instalado el servicio.
-- Ejecutar `npm run coverage` en `web-react/` produce un informe Vitest. El 12-11-2026 pasaron 34 pruebas, con 97,29% de líneas y 89,28% de ramas en los módulos instrumentados. **No es la cobertura de toda la aplicación**. El backend pasó 17 pruebas locales; para la evaluación que exija 80% global aún faltan pruebas de otras páginas.
+- Ejecutar `npm run coverage` en `web-react/` produce un informe Vitest. El 12-11-2026 pasaron 37 pruebas, con 93,35% de líneas y 85,44% de ramas en los módulos instrumentados, incluida la bitácora. **No es la cobertura de toda la aplicación**. El backend pasó 18 pruebas locales; para la evaluación que exija 80% global aún faltan pruebas de otras páginas.
 - Los resultados concretos de la integración web, API Gateway, Cognito, EC2 y Android están en [Verificación del despliegue](docs/VERIFICACION_DESPLIEGUE.md).
 - `main` contiene la versión integrada. `developer/ethan` y `feature/*` permiten preparar cambios revisados mediante pull request. Ver [convención de ramas](docs/RAMAS.md).
 - No subir `.env`, contraseñas, claves de AWS ni tokens. El APK de demostración publicado en `web-react/public/descargas/` contiene solo la configuración pública necesaria para acceder a API Gateway y no credenciales privadas; se recompila al cambiar la app Android.

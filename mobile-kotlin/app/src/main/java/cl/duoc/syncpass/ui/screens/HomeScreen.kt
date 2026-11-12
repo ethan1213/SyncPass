@@ -45,6 +45,7 @@ fun HomeScreen(
     repository: SyncPassRepository,
     onNavigateToScanner: (Long) -> Unit,
     onNavigateToSurvey: (Long) -> Unit,
+    onNavigateToBitacora: (Long) -> Unit,
     onNavigateToLogin: () -> Unit
 ) {
     val formato = LocalFormatoPantalla.current
@@ -167,7 +168,8 @@ fun HomeScreen(
                     taller = taller,
                     canScan = AuthSession.roles.any { it in listOf("admin","coordinador","monitor") },
                     onAcreditar = { onNavigateToScanner(taller.id.toLong()) },
-                    onEncuestar = { onNavigateToSurvey(taller.id.toLong()) }
+                    onEncuestar = { onNavigateToSurvey(taller.id.toLong()) },
+                    onBitacora = { onNavigateToBitacora(taller.id.toLong()) }
                 )
             }
 
@@ -229,7 +231,8 @@ private fun TarjetaTaller(
     taller: TallerComunitario,
     canScan: Boolean,
     onAcreditar: () -> Unit,
-    onEncuestar: () -> Unit
+    onEncuestar: () -> Unit,
+    onBitacora: () -> Unit
 ) {
     Card(
         modifier = Modifier
@@ -305,6 +308,9 @@ private fun TarjetaTaller(
                 ) {
                     Text("⭐ Encuesta", fontSize = 12.sp)
                 }
+            }
+            if (AuthSession.accessToken != null) TextButton(onClick = onBitacora) {
+                Text("Resumen y preguntas del taller")
             }
         }
     }

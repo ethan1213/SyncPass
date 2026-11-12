@@ -92,6 +92,9 @@ export default function TallerDetailPage({ taller }) {
           </dl>
 
           <div className="acciones-fila">
+            <Link href={`/bitacora/${taller.id}`} className="btn btn-secondary">
+              Resumen y preguntas del taller
+            </Link>
             <Link href="/acreditar" className="btn btn-primary">
               Acreditar asistencia por QR
             </Link>
