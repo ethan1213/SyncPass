@@ -1,4 +1,5 @@
 plugins {
+    id("jacoco")
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.compose.compiler)
@@ -29,6 +30,13 @@ android {
     buildTypes {
         debug {
             isMinifyEnabled = false
+            val localApi = providers.gradleProperty("syncpassApiUrl").orNull
+            if (localApi != null) {
+                require(localApi.startsWith("http://") && localApi.endsWith("/")) {
+                    "syncpassApiUrl debe ser una URL HTTP local terminada en /"
+                }
+                buildConfigField("String", "API_BASE_URL", "\"$localApi\"")
+            }
         }
         release {
             isMinifyEnabled = false
@@ -57,6 +65,25 @@ android {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
+    }
+    testOptions {
+        unitTests.isIncludeAndroidResources = true
+    }
+}
+
+jacoco { toolVersion = "0.8.14" }
+
+tasks.register<org.gradle.testing.jacoco.tasks.JacocoReport>("jacocoDebugUnitReport") {
+    dependsOn("testDebugUnitTest")
+    val classes = layout.buildDirectory.dir("tmp/kotlin-classes/debug")
+    classDirectories.setFrom(fileTree(classes) {
+        exclude("**/R.class", "**/R$*.class", "**/BuildConfig.class")
+    })
+    sourceDirectories.setFrom(files("src/main/java"))
+    executionData.setFrom(layout.buildDirectory.file("jacoco/testDebugUnitTest.exec"))
+    reports {
+        xml.required.set(true)
+        html.required.set(true)
     }
 }
 
@@ -99,6 +126,8 @@ dependencies {
     implementation("com.google.zxing:core:3.5.3")
 
     testImplementation(libs.junit)
+    testImplementation("org.robolectric:robolectric:4.14.1")
+    testImplementation("androidx.test:core:1.6.1")
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))

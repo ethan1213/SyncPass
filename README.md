@@ -31,7 +31,7 @@ Android ── Room/SQLite: catálogo y registros pendientes
 1. La web muestra el catálogo público desde `GET /api/eventos`. El login y el registro web envían las credenciales a la API (`/api/auth/*`); la API habla con Cognito. La web conserva la sesión en `sessionStorage` y adjunta el token a las operaciones protegidas.
 2. Android usa Retrofit para registrar, confirmar e iniciar sesión mediante `/api/auth/*` en Gateway. Room conserva el catálogo y los pendientes del dispositivo.
 3. Spring Security valida los JWT y los grupos de Cognito. Los controladores autorizan cada acción. JPA persiste proyectos y talleres; Flyway aplica las migraciones de PostgreSQL. La sincronización guarda asistencias y encuestas recibidas.
-4. Vercel sirve el frontend. API Gateway ofrece una dirección HTTPS fija. Caddy termina TLS en EC2 y entrega la petición al JAR en `127.0.0.1:8080`. La instancia está en una VPC del laboratorio AWS Academy.
+4. Vercel sirve el frontend. API Gateway ofrece una dirección HTTPS fija. Caddy termina TLS en EC2 y entrega la petición al JAR en `127.0.0.1:18080`. La instancia está en una VPC del laboratorio AWS Academy.
 
 API Gateway está **delante de EC2**: recibe peticiones de web, Android y Postman. El JAR llama al servicio Cognito mediante el SDK de AWS para registro, confirmación, login y renovación. Para las rutas protegidas, Spring verifica la firma del JWT con las claves públicas de Cognito, su emisor, vencimiento, tipo de token y cliente. Ningún cliente llama directamente a Cognito.
 
@@ -72,6 +72,8 @@ La cola local asigna registros al usuario actual. Al sincronizar, la API acepta 
 La entrada web es `main.tsx`; la sesión, los roles, la configuración, el cliente HTTP, el aviso de geocerca y el parser de QR son TypeScript. Las páginas heredadas aún son `.jsx` y se migran gradualmente. `tsc --noEmit` verifica los módulos TypeScript antes del build. Tailwind está configurado con la paleta territorial y se usa para utilidades puntuales; el diseño principal permanece en CSS propio. Vite compila la web y Wouter resuelve las rutas.
 
 ## Ejecutar en un equipo
+
+**Demostración local sin laboratorio AWS:** con Docker Desktop iniciado, ejecutar `powershell -NoProfile -ExecutionPolicy Bypass -File deploy/start-local.ps1` desde la raíz. El script crea un `.env` privado si falta, compila y levanta PostgreSQL, API y web, espera el health check y carga tres talleres ficticios solo si la tabla está vacía. Abre `http://localhost:3000` y comprueba `http://localhost:18080/actuator/health`. Para detenerlo: `docker compose down` (conserva el volumen PostgreSQL). El login sigue necesitando internet para hablar con Cognito; la API y la base locales no requieren EC2 ni Supabase. Consulta [arquitectura](docs/ARQUITECTURA.md), [alcance](docs/ALCANCE.md) y [evidencia académica](docs/EVIDENCIA_ANDROID.md).
 
 **Web:** instalar Node.js, entrar a `web-react/`, copiar `.env.example` a `.env.local` y configurar `VITE_API_URL` con la API local o API Gateway. Luego ejecutar `npm ci` y `npm run dev`. Vite abre el servidor de desarrollo en el puerto configurado por `vite.config.js`. `npm run build` genera `web-react/dist/`.
 

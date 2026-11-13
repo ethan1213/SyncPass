@@ -24,7 +24,7 @@ services:
       COGNITO_CLIENT_ID: ${COGNITO_CLIENT_ID:?Define COGNITO_CLIENT_ID}
       CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:3000}
     ports:
-      - "127.0.0.1:8080:8080"
+      - "127.0.0.1:${LOCAL_API_PORT:-18080}:8080"
     depends_on:
       db:
         condition: service_healthy
