@@ -4003,6 +4003,12 @@
 <section id="roles" hidden>
   <h2>Una vista por rol</h2>
   <p class="apoyo">Los cuatro grupos del user pool de Cognito. Cada grupo entra a su propia vista: el menú, la ruta y las acciones cambian con el rol.</p>
+  <p class="apoyo">Selecciona un perfil para saltar a su maqueta. «Probar en la aplicación» abre la vista real y aplica los permisos de tu cuenta actual.</p>
+  <nav class="tabs" aria-label="Perfiles SyncPass">
+    <a class="tab" href="#rol-administrador">Administrador</a><a class="tab" href="#rol-coordinador">Coordinador</a>
+    <a class="tab" href="#rol-monitor">Monitor</a><a class="tab" href="#rol-participante">Participante</a>
+    <a class="tab" href="/mi-panel">Probar en la aplicación</a>
+  </nav>
   <article class="vista">
     <h3><span class="num">1</span> Administrador (equipo administrativo)</h3>
     <p class="apoyo">Usuarios, grupos de Cognito y estado del sistema. Es el perfil que consolida la información.</p>
@@ -5711,6 +5717,11 @@
 <section id="crud" hidden>
   <h2>Mantenedores y CRUD local</h2>
   <p class="apoyo">Dos mantenedores contra la API desplegada en EC2 y borradores en el dispositivo.</p>
+  <nav class="tabs" aria-label="Probar mantenedores">
+    <a class="tab" href="/talleres">Abrir CRUD de talleres</a>
+    <a class="tab" href="/proyectos">Abrir CRUD de proyectos</a>
+    <a class="tab" href="/borradores">Abrir CRUD local</a>
+  </nav>
   <article class="vista">
     <h3><span class="num">1</span> CRUD por API: talleres</h3>
     <p class="apoyo">Alta, lectura, edición y baja contra la API REST desplegada en EC2.</p>
@@ -6801,6 +6812,7 @@
   var paneles = ['mockups', 'roles', 'crud', 'relacional', 'estrella', 'copo', 'infra'];
 
   function mostrar(id) {
+    if (id.indexOf('rol-') === 0) id = 'roles';
     if (!paneles.includes(id)) id = 'mockups';
     paneles.forEach(function (p) {
       document.getElementById(p).hidden = (p !== id);
@@ -6817,6 +6829,17 @@
   });
   window.addEventListener('hashchange', function () { mostrar(location.hash.slice(1)); });
   if (location.hash) mostrar(location.hash.slice(1));
+  ['administrador','coordinador','monitor','participante'].forEach(function (name, index) {
+    var article = document.querySelectorAll('#roles > article.vista')[index];
+    if (article) article.id = 'rol-' + name;
+  });
+  document.querySelectorAll('#roles nav a[href^="#rol-"]').forEach(function (link) {
+    link.addEventListener('click', function (event) {
+      event.preventDefault(); mostrar('roles');
+      var target = document.getElementById(link.hash.slice(1));
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
 </script>
 
 <script>

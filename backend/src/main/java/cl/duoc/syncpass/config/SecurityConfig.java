@@ -1,4 +1,4 @@
-package cl.duoc.syncpass;
+package cl.duoc.syncpass.config;
 import java.util.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.*;
@@ -18,7 +18,7 @@ public class SecurityConfig {
    decoder.setJwtValidator(new DelegatingOAuth2TokenValidator<>(JwtValidators.createDefaultWithIssuer(issuer), accessValidator(clientId)));
    return decoder;
  }
- static OAuth2TokenValidator<Jwt> accessValidator(String clientId) {
+ public static OAuth2TokenValidator<Jwt> accessValidator(String clientId) {
    return jwt -> "access".equals(jwt.getClaimAsString("token_use")) && clientId.equals(jwt.getClaimAsString("client_id"))
      ? OAuth2TokenValidatorResult.success() : OAuth2TokenValidatorResult.failure(new OAuth2Error("invalid_token"));
  }
@@ -29,6 +29,8 @@ public class SecurityConfig {
    return http.csrf(c -> c.disable()).cors(c -> {}).sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
     .authorizeHttpRequests(a -> a.requestMatchers("/actuator/health").permitAll()
       .requestMatchers(HttpMethod.GET,"/api/eventos","/api/eventos/*").permitAll()
+      .requestMatchers(HttpMethod.GET,"/api/eventos/*/grabacion").permitAll()
+      .requestMatchers(HttpMethod.POST,"/api/eventos/*/ingreso/invitado").permitAll()
       .requestMatchers(HttpMethod.POST,"/api/auth/*").permitAll()
       .anyRequest().authenticated())
     .oauth2ResourceServer(o -> o.jwt(j -> j.jwtAuthenticationConverter(converter))).build();

@@ -5,6 +5,9 @@ package cl.duoc.syncpass.ui.navigation
  * Cada destino corresponde a una de las vistas documentadas en docs/MOCKUPS.md.
  */
 sealed class Screen(val route: String, val title: String) {
+    object Entry : Screen("entry", "Acceder a SyncPass")
+    object GuestQr : Screen("guest-qr", "QR del taller")
+    object GuestTaller : Screen("guest-taller", "Taller invitado")
     /** Panel de talleres en terreno del dia. */
     object Home : Screen("home", "Talleres en terreno")
 

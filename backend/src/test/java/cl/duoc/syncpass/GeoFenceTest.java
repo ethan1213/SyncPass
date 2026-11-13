@@ -1,5 +1,6 @@
 package cl.duoc.syncpass;
 
+import cl.duoc.syncpass.common.GeoFence;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 

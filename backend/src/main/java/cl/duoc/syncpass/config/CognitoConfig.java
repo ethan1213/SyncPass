@@ -1,4 +1,4 @@
-package cl.duoc.syncpass;
+package cl.duoc.syncpass.config;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.*;
 import software.amazon.awssdk.auth.credentials.AnonymousCredentialsProvider;

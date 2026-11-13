@@ -12,10 +12,18 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.compose.viewModel
 import cl.duoc.syncpass.ui.layout.LocalFormatoPantalla
 import cl.duoc.syncpass.ui.layout.recordarFormatoPantalla
 import cl.duoc.syncpass.ui.navigation.Screen
 import cl.duoc.syncpass.ui.screens.HomeScreen
+import cl.duoc.syncpass.ui.screens.EntryScreen
+import cl.duoc.syncpass.ui.screens.EntryViewModel
+import cl.duoc.syncpass.ui.syncPassViewModel
+import cl.duoc.syncpass.ui.screens.GuestQrScreen
+import cl.duoc.syncpass.ui.screens.GuestTallerScreen
 import cl.duoc.syncpass.ui.screens.LoginScreen
 import cl.duoc.syncpass.ui.screens.RegisterScreen
 import cl.duoc.syncpass.ui.screens.ScannerScreen
@@ -63,15 +71,49 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun SyncPassNavigation(repository: SyncPassRepository, onAuthenticated: () -> Unit) {
     val navController = rememberNavController()
+    // Un solo EntryViewModel para todo el flujo de entrada: la pantalla inicial,
+    // el escaner del QR del taller y el detalle comparten el mismo estado.
+    val entryVm = syncPassViewModel(repository) { EntryViewModel(it) }
     var selectedTaller by remember { mutableLongStateOf(0L) }
+    var guestTallerId by remember { mutableStateOf<Long?>(null) }
 
     NavHost(
         navController = navController,
-        startDestination = Screen.Home.route
+        startDestination = Screen.Entry.route
     ) {
+        composable(Screen.Entry.route) {
+            EntryScreen(
+                vm = entryVm,
+                onLogin = { navController.navigate(Screen.Login.route) },
+                onContinue = { navController.navigate(Screen.Home.route) },
+                onScanQr = { navController.navigate(Screen.GuestQr.route) },
+                onGuestTaller = { id ->
+                    guestTallerId = id
+                    navController.navigate(Screen.GuestTaller.route) {
+                        popUpTo(Screen.Entry.route) { inclusive = false }
+                    }
+                }
+            )
+        }
+        composable(Screen.GuestQr.route) {
+            GuestQrScreen(entryVm,
+                onGuestTaller = { id ->
+                    guestTallerId = id
+                    navController.navigate(Screen.GuestTaller.route) {
+                        popUpTo(Screen.Entry.route) { inclusive = false }
+                    }
+                },
+                onBack = { navController.popBackStack() })
+        }
+        composable(Screen.GuestTaller.route) {
+            GuestTallerScreen(entryVm,
+                onBack = { navController.popBackStack() },
+                onLogin = { navController.navigate(Screen.Login.route) })
+        }
         composable(Screen.Home.route) {
             HomeScreen(
                 repository = repository,
+                guestTallerId = guestTallerId,
                 onNavigateToScanner = { selectedTaller = it; navController.navigate(Screen.Scanner.route) },
                 onNavigateToSurvey = { selectedTaller = it; navController.navigate(Screen.Survey.route) },
                 onNavigateToBitacora = { selectedTaller = it; navController.navigate(Screen.Bitacora.route) },
@@ -105,8 +147,12 @@ fun SyncPassNavigation(repository: SyncPassRepository, onAuthenticated: () -> Un
                 onNavigateBack = { navController.popBackStack() },
                 onNavigateToRegister = { navController.navigate(Screen.Register.route) },
                 onLogin = {
-                    // Evita que el login quede en la pila al volver atras.
-                    navController.popBackStack(Screen.Home.route, inclusive = false)
+                    val attendedTallerId = guestTallerId
+                    navController.navigate(Screen.Home.route) {
+                        popUpTo(Screen.Entry.route) { inclusive = true }
+                    }
+                    if (attendedTallerId != null && entryVm.selectedTaller?.latitud == null)
+                        AuthSession.accessToken?.let { entryVm.joinAccount(attendedTallerId, it) }
                     onAuthenticated()
                 }
             )

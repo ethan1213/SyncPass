@@ -1,5 +1,32 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'wouter';
+import QRCode from 'qrcode';
+import { request } from '../clients/api';
+
+function RecordingNotice({ id }) {
+  const [status, setStatus] = useState(null);
+  useEffect(() => {
+    let active = true;
+    request(`/api/eventos/${id}/grabacion`).then((data) => { if (active) setStatus(data); }).catch(() => {});
+    return () => { active = false; };
+  }, [id]);
+  return status && <p className="alert alert-info" role="status">{status.mensaje}</p>;
+}
+
+function TallerJoinQr({ id }) {
+  const [image, setImage] = useState('');
+  useEffect(() => {
+    let active = true;
+    QRCode.toDataURL(`SPT:${id}`, { width: 240, margin: 2 })
+      .then((url) => { if (active) setImage(url); });
+    return () => { active = false; };
+  }, [id]);
+  return <section className="seccion-bloque" aria-label="Acceso invitado al taller">
+    <h2>Acceso invitado</h2>
+    <p>En Android, ingresa el código <strong>#{id}</strong> o escanea este QR para abrir el taller sin cuenta.</p>
+    {image && <img src={image} width="240" height="240" alt={`QR de acceso al taller ${id}`} />}
+  </section>;
+}
 
 /**
  * Detalle de un taller / evento en terreno.
@@ -90,6 +117,9 @@ export default function TallerDetailPage({ taller }) {
               <dd>{taller.cuposMaximos}</dd>
             </div>
           </dl>
+
+          <TallerJoinQr id={taller.id} />
+          <RecordingNotice id={taller.id} />
 
           <div className="acciones-fila">
             <Link href={`/bitacora/${taller.id}`} className="btn btn-secondary">

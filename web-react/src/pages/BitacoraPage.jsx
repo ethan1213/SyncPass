@@ -19,6 +19,7 @@ export default function BitacoraPage({ tallerId }) {
   const [grabando, setGrabando] = useState(false);
   const [audioUrl, setAudioUrl] = useState('');
   const [consentimiento, setConsentimiento] = useState(false);
+  const [grabado, setGrabado] = useState(null);
   const recognition = useRef(null);
   const recorder = useRef(null);
   const audioUrlRef = useRef('');
@@ -28,6 +29,9 @@ export default function BitacoraPage({ tallerId }) {
     getAccessTokenSilently().then((token) => request(`/api/eventos/${tallerId}/bitacora`, { token }))
       .then((data) => { if (active) { setContenido(data.contenido); setResumen(data.resumen); setFragmentos(data.fragmentos); } })
       .catch((error) => { if (active) setMensaje(error.message.includes('404') ? 'Este taller aún no tiene bitácora.' : error.message); });
+    request(`/api/eventos/${tallerId}/grabacion`)
+      .then((state) => { if (active) setGrabado(state.grabado); })
+      .catch(() => {});
     return () => {
       active = false; recognition.current?.stop();
       if (recorder.current?.state === 'recording') recorder.current.stop();
@@ -44,6 +48,19 @@ export default function BitacoraPage({ tallerId }) {
       const data = await request(`/api/eventos/${tallerId}/bitacora`, { method: 'PUT', body: { contenido }, token });
       setResumen(data.resumen); setFragmentos(data.fragmentos); setRespuesta(null);
       setMensaje('Bitácora guardada en el servidor. Ya se puede consultar desde Android.');
+    } catch (error) { setMensaje(error.message); }
+    finally { setOcupado(false); }
+  }
+
+  async function definirGrabacion(value) {
+    setOcupado(true); setMensaje('');
+    try {
+      const token = await getAccessTokenSilently();
+      const state = await request(`/api/eventos/${tallerId}/grabacion`, {
+        method: 'PUT', body: { grabado: value }, token,
+      });
+      setGrabado(state.grabado);
+      setMensaje(state.mensaje);
     } catch (error) { setMensaje(error.message); }
     finally { setOcupado(false); }
   }
@@ -105,6 +122,11 @@ export default function BitacoraPage({ tallerId }) {
     {mensaje && <p className="alert alert-info" role="status">{mensaje}</p>}
     {canEdit && <section className="seccion-bloque">
       <h2>Contenido de la sesión</h2>
+      <fieldset disabled={ocupado} style={{ marginBottom: 16 }}>
+        <legend>¿Se grabó este taller?</legend>
+        <label><input type="radio" name="grabado" checked={grabado === true} onChange={() => definirGrabacion(true)} /> Sí</label>{' '}
+        <label><input type="radio" name="grabado" checked={grabado === false} onChange={() => definirGrabacion(false)} /> No</label>
+      </fieldset>
       <p className="texto-apoyo">Pide consentimiento antes de usar el micrófono. El dictado convierte voz a texto; el audio grabado se descarga en este dispositivo y no se envía a SyncPass. Publica los apuntes para que Android pueda consultarlos.</p>
       <label style={{ display: 'block', marginBottom: 12 }}><input type="checkbox" checked={consentimiento} onChange={(event) => setConsentimiento(event.target.checked)} /> Confirmo que las personas presentes autorizaron el uso del micrófono para esta bitácora.</label>
       <label htmlFor="contenido-bitacora">Transcripción o apuntes</label>

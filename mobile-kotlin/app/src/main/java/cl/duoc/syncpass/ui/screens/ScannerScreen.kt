@@ -1,6 +1,7 @@
 package cl.duoc.syncpass.ui.screens
 
 import android.Manifest
+import android.content.Context
 import android.content.pm.PackageManager
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -18,104 +19,119 @@ import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
-import cl.duoc.syncpass.data.AuthSession
-import cl.duoc.syncpass.data.PendingRecord
 import cl.duoc.syncpass.data.SyncPassRepository
-import cl.duoc.syncpass.data.currentLocation
+import cl.duoc.syncpass.ui.layout.AREA_TACTIL_MINIMA
+import cl.duoc.syncpass.ui.syncPassViewModel
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.common.InputImage
-import kotlinx.coroutines.launch
 
+/**
+ * Acreditacion por QR.
+ *
+ * La vista se ocupa de la camara y de los permisos, que son cosa del sistema
+ * operativo; la validacion del codigo y el guardado viven en [ScannerViewModel].
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ScannerScreen(repository: SyncPassRepository, tallerId: Long, onNavigateBack: () -> Unit) {
     val context = LocalContext.current
     val lifecycle = LocalLifecycleOwner.current
-    val scope = rememberCoroutineScope()
-    var granted by remember { mutableStateOf(ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) }
-    val permission = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { granted = it }
-    var code by remember { mutableStateOf("") }
-    var message by remember { mutableStateOf("") }
-    var geofenceRequired by remember { mutableStateOf(false) }
-    var locationGranted by remember { mutableStateOf(
-        ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED ||
-        ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
-    ) }
-    val locationPermission = rememberLauncherForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) {
-        locationGranted = it.values.any { allowed -> allowed }
-        if (!locationGranted) message = "Permite la ubicación para acreditar este taller."
-    }
-    val previewView = remember { PreviewView(context) }
-    val scanner = remember { BarcodeScanning.getClient() }
-    LaunchedEffect(Unit) { if (!granted) permission.launch(Manifest.permission.CAMERA) }
-    LaunchedEffect(tallerId) { geofenceRequired = repository.cachedTaller(tallerId)?.latitud != null }
+    val vm = syncPassViewModel(repository) { ScannerViewModel(it) }
+    val state by vm.state.collectAsState()
 
-    DisposableEffect(granted) {
-        if (granted) {
+    var camaraPermitida by remember { mutableStateOf(tienePermiso(context, Manifest.permission.CAMERA)) }
+    val pedirCamara = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) {
+        camaraPermitida = it
+    }
+    var ubicacionPermitida by remember { mutableStateOf(tieneUbicacion(context)) }
+    val pedirUbicacion = rememberLauncherForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) {
+        ubicacionPermitida = it.values.any { concedido -> concedido }
+        if (!ubicacionPermitida) vm.onUbicacionDenegada()
+    }
+
+    val previewView = remember { PreviewView(context) }
+    val lector = remember { BarcodeScanning.getClient() }
+
+    LaunchedEffect(Unit) { if (!camaraPermitida) pedirCamara.launch(Manifest.permission.CAMERA) }
+    LaunchedEffect(tallerId) { vm.cargar(tallerId) }
+
+    DisposableEffect(camaraPermitida) {
+        if (camaraPermitida) {
             val future = ProcessCameraProvider.getInstance(context)
             future.addListener({
                 val provider = future.get()
                 val preview = Preview.Builder().build().also { it.surfaceProvider = previewView.surfaceProvider }
-                val analysis = ImageAnalysis.Builder()
+                val analisis = ImageAnalysis.Builder()
                     .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST).build()
-                analysis.setAnalyzer(ContextCompat.getMainExecutor(context)) { imageProxy ->
-                    val image = imageProxy.image
-                    if (image == null) imageProxy.close()
-                    else scanner.process(InputImage.fromMediaImage(image, imageProxy.imageInfo.rotationDegrees))
-                        .addOnSuccessListener { codes ->
-                            codes.firstOrNull { it.rawValue?.matches(participantPattern) == true }
-                                ?.rawValue?.let { code = it; message = "QR leído. Confirma la marcación." }
+                analisis.setAnalyzer(ContextCompat.getMainExecutor(context)) { imageProxy ->
+                    val imagen = imageProxy.image
+                    if (imagen == null) imageProxy.close()
+                    else lector.process(InputImage.fromMediaImage(imagen, imageProxy.imageInfo.rotationDegrees))
+                        .addOnSuccessListener { codigos ->
+                            codigos.firstOrNull { it.rawValue?.matches(PATRON_PARTICIPANTE) == true }
+                                ?.rawValue?.let(vm::onQrLeido)
                         }.addOnCompleteListener { imageProxy.close() }
                 }
-                try { provider.unbindAll(); provider.bindToLifecycle(lifecycle, CameraSelector.DEFAULT_BACK_CAMERA, preview, analysis) }
-                catch (_: Exception) { message = "Cámara no disponible. Ingresa el código manualmente." }
+                try {
+                    provider.unbindAll()
+                    provider.bindToLifecycle(lifecycle, CameraSelector.DEFAULT_BACK_CAMERA, preview, analisis)
+                } catch (_: Exception) {
+                    vm.onCamaraNoDisponible()
+                }
             }, ContextCompat.getMainExecutor(context))
         }
-        onDispose { if (futureIsAvailable(context)) ProcessCameraProvider.getInstance(context).get().unbindAll() }
+        onDispose {
+            val future = ProcessCameraProvider.getInstance(context)
+            if (future.isDone) future.get().unbindAll()
+        }
     }
 
-    Scaffold(topBar = { TopAppBar(title = { Text("Acreditación QR") }, navigationIcon = {
-        TextButton(onClick = onNavigateBack) { Text("←") }
-    }) }) { padding ->
+    Scaffold(topBar = {
+        TopAppBar(
+            title = { Text("Acreditación QR") },
+            navigationIcon = { TextButton(onClick = onNavigateBack) { Text("←") } }
+        )
+    }) { padding ->
         Column(Modifier.fillMaxSize().padding(padding).padding(20.dp)) {
             Text("Taller $tallerId")
-            if (granted) AndroidView(factory = { previewView }, modifier = Modifier.fillMaxWidth().height(260.dp))
-            else Text("Sin permiso de cámara. Puedes escribir el código.")
-            OutlinedTextField(value = code, onValueChange = { code = it.trim() },
-                label = { Text("Código del participante") }, modifier = Modifier.fillMaxWidth())
-            if (message.isNotEmpty()) Text(message)
-            if (geofenceRequired) {
+
+            if (camaraPermitida) AndroidView(
+                factory = { previewView },
+                modifier = Modifier.fillMaxWidth().height(260.dp)
+            ) else Text("Sin permiso de cámara. Puedes escribir el código.")
+
+            OutlinedTextField(
+                value = state.code,
+                onValueChange = vm::onCode,
+                label = { Text("Código del participante") },
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            if (state.message.isNotEmpty()) Text(state.message)
+
+            if (state.exigeGeocerca) {
                 Text("Este taller exige una ubicación GPS precisa dentro de su radio.")
-                if (!locationGranted) TextButton(onClick = {
-                    locationPermission.launch(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION))
+                if (!ubicacionPermitida) TextButton(onClick = {
+                    pedirUbicacion.launch(arrayOf(
+                        Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.ACCESS_COARSE_LOCATION))
                 }) { Text("Permitir ubicación") }
             }
-            Button(onClick = {
-                val owner = AuthSession.participantId
-                if (owner == null) message = "Inicia sesión antes de acreditar."
-                else if (AuthSession.roles.none { it in listOf("admin","coordinador","monitor") }) message = "Tu perfil no puede acreditar."
-                else if (tallerId <= 0 || !code.matches(participantPattern)) message = "Selecciona un taller y lee un QR válido."
-                else if (geofenceRequired && !locationGranted) message = "Permite la ubicación GPS para este taller."
-                else scope.launch {
-                    try {
-                        val location = if (geofenceRequired) currentLocation(context) else null
-                        if (geofenceRequired && location == null) {
-                            message = "No se obtuvo ubicación reciente. Comprueba GPS y vuelve a intentar."
-                            return@launch
-                        }
-                        repository.queue(PendingRecord(owner = owner, tipo = "asistencia", tallerId = tallerId,
-                            participante = code, latitud = location?.latitude, longitud = location?.longitude,
-                            precisionMetros = location?.accuracy))
-                        message = "Asistencia guardada en el dispositivo. Sincronízala desde Inicio."
-                        code = ""
-                    } catch (e: Exception) { message = e.message ?: "No se pudo guardar." }
-                }
-            }, modifier = Modifier.fillMaxWidth()) { Text("Guardar asistencia") }
+
+            Button(
+                onClick = { vm.guardar(tallerId, ubicacionPermitida) },
+                enabled = !state.busy,
+                modifier = Modifier.fillMaxWidth().heightIn(min = AREA_TACTIL_MINIMA)
+            ) {
+                Text("Guardar asistencia")
+            }
         }
     }
 }
 
-private fun futureIsAvailable(context: android.content.Context): Boolean =
-    ProcessCameraProvider.getInstance(context).isDone
+private fun tienePermiso(context: Context, permiso: String): Boolean =
+    ContextCompat.checkSelfPermission(context, permiso) == PackageManager.PERMISSION_GRANTED
 
-private val participantPattern = Regex("SP1:[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}")
+private fun tieneUbicacion(context: Context): Boolean =
+    tienePermiso(context, Manifest.permission.ACCESS_FINE_LOCATION) ||
+        tienePermiso(context, Manifest.permission.ACCESS_COARSE_LOCATION)

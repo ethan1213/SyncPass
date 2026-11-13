@@ -27,7 +27,7 @@ export default function RequireAuth({ roles, children }) {
         <h2>Necesitas iniciar sesión</h2>
         <p>Esta sección está reservada para el equipo acreditado de SyncPass.</p>
         <button className="btn btn-primary" onClick={() => loginWithRedirect()}>
-          Iniciar sesión con Amazon Cognito
+          Iniciar sesión
         </button>
       </div>
     );
