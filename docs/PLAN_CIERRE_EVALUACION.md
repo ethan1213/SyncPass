@@ -4,7 +4,7 @@ Responsable: Ethan Astorga. Fuente: `prueba3Android.md`, manual de evidencias de
 
 | Orden | Entregable y criterio de cierre | Estado actual | Evidencia pendiente |
 | --- | --- | --- | --- |
-| 1 | Ejecución local web, API y PostgreSQL con datos de prueba | Script y Compose preparados; Docker Desktop no responde actualmente | `start-local.ps1` termina, health `UP`, catálogo y dos CRUD funcionales |
+| 1 | Ejecución local web, API y PostgreSQL con datos de prueba | `start-local.ps1` terminó; health 200, catálogo 200 con 3 talleres, filtro por comuna 200 y web local activa | Probar los dos CRUD con sesión y persistencia |
 | 2 | Login, registro y cuatro perfiles con autorización real | Cognito y Spring Security implementados; local requiere Internet | Registro nuevo, login web/Android, 403 por rol y vistas correctas |
 | 3 | Dos mantenedores completos: proyectos y talleres | CRUD web y API implementados | Crear, leer, editar y eliminar desde web; comprobar JSON y persistencia |
 | 4 | Android nativo y comunicación compartida | Kotlin/Compose, Retrofit, Room, cámara y GPS; APK local compiló | Teléfono USB, `adb reverse`, QR, asistencia offline, sincronizar y ver cambio web |
@@ -21,7 +21,7 @@ Problema y mockups → arquitectura C1–C3 → web local con login y dos manten
 
 ## Bloqueos actuales
 
-- Docker Desktop está detenido; por ello no se ha verificado el arranque local completo.
+- Docker Desktop está activo; el catálogo público ya funciona localmente. Falta una sesión administradora para verificar escritura en ambos mantenedores.
 - ADB no detecta teléfono; la prueba física web↔Android queda pendiente.
 - JaCoCo Android aún no generó porcentaje confirmado. No presentar 30% como logrado.
 - No hay MP4 grabado ni carga AzCopy realizada. Confirmar sede/asignatura exacta antes de entregar.

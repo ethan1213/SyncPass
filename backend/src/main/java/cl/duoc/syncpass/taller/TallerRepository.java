@@ -15,11 +15,11 @@ public interface TallerRepository extends JpaRepository<Taller, Long> {
     @Query("""
            SELECT t FROM Taller t
             WHERE (:proyectoId IS NULL OR t.proyectoId = :proyectoId)
-              AND (:comuna IS NULL OR LOWER(t.comuna) = LOWER(:comuna))
-              AND (:area IS NULL OR LOWER(t.area) = LOWER(:area))
+              AND (:comuna IS NULL OR LOWER(t.comuna) = LOWER(CAST(:comuna AS string)))
+              AND (:area IS NULL OR LOWER(t.area) = LOWER(CAST(:area AS string)))
               AND (:texto IS NULL
-                   OR LOWER(t.title) LIKE LOWER(CONCAT('%', :texto, '%'))
-                   OR LOWER(t.descripcion) LIKE LOWER(CONCAT('%', :texto, '%')))
+                   OR LOWER(t.title) LIKE LOWER(CONCAT('%', CAST(:texto AS string), '%'))
+                   OR LOWER(t.descripcion) LIKE LOWER(CONCAT('%', CAST(:texto AS string), '%')))
             ORDER BY t.fechaHora ASC, t.id ASC
            """)
     List<Taller> buscar(@Param("proyectoId") Long proyectoId, @Param("comuna") String comuna,
