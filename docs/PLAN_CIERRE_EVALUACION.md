@@ -6,7 +6,7 @@ Responsable: Ethan Astorga. Fuente: `prueba3Android.md`, manual de evidencias de
 | --- | --- | --- | --- |
 | 1 | Ejecución local web, API y PostgreSQL con datos de prueba | `start-local.ps1` terminó; health 200, catálogo 200 con 3 talleres, filtro por comuna 200 y web local activa | Probar los dos CRUD con sesión y persistencia |
 | 2 | Login, registro y cuatro perfiles con autorización real | Cognito y Spring Security implementados; local requiere Internet | Registro nuevo, login web/Android, 403 por rol y vistas correctas |
-| 3 | Dos mantenedores completos: proyectos y talleres | CRUD web y API implementados | Crear, leer, editar y eliminar desde web; comprobar JSON y persistencia |
+| 3 | Dos mantenedores completos: proyectos y talleres | CRUD web y API implementados; MockMvc/JWT simulado y Vitest pasaron el 15-11-2026 | Repetir crear, leer, editar y borrar desde web con sesión real y comprobar persistencia PostgreSQL |
 | 4 | Android nativo y comunicación compartida | Kotlin/Compose, Retrofit, Room, cámara y GPS; APK local compiló | Teléfono USB, `adb reverse`, QR, asistencia offline, sincronizar y ver cambio web |
 | 5 | Arquitectura y alcance para defensa | `ARQUITECTURA.md` C1–C3 y `ALCANCE.md` creados | Revisar cada flujo contra ejecución y explicar View–ViewModel–Repository–Remote/Local, Controller–Service–Repository y CSR |
 | 6 | Pruebas y cobertura | Backend: 22/22; web: 37/37, 90,06 % líneas instrumentadas; Android: 4/4, 0,81 % líneas globales con reporte AGP | Ampliar pruebas Android hasta ≥30 % global medido; luego volver a ejecutar todos los reportes |
