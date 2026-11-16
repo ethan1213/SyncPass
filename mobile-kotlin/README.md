@@ -14,9 +14,11 @@ $env:ANDROID_HOME="$env:LOCALAPPDATA\Android\Sdk"
 
 El APK instalable queda en `app/build/outputs/apk/debug/app-debug.apk`. Está firmado con la clave de depuración local de Android; es apto para la demostración académica, no para distribuirlo en Play Store. Se necesita Android 8.0 o superior. Registro, confirmación por correo y login usan HTTPS hacia API Gateway; el backend en EC2 se comunica con Cognito.
 
-Para probar contra Docker local, compila `.\gradlew.bat :app:assembleDebug -PsyncpassApiUrl=http://127.0.0.1:18080/`. En un teléfono USB autorizado ejecuta `adb reverse tcp:18080 tcp:18080` antes de abrir el APK; esta compilación debug usa HTTP únicamente para loopback. La compilación normal conserva API Gateway. Si usas emulador, pasa `-PsyncpassApiUrl=http://10.0.2.2:8080/`. Las pruebas locales y el reporte se generan con `.\gradlew.bat :app:testDebugUnitTest :app:jacocoDebugUnitReport`; abre `app/build/reports/jacoco/jacocoDebugUnitReport/html/index.html`.
+Para probar contra Docker local, compila `.\gradlew.bat :app:assembleDebug -PsyncpassApiUrl=http://127.0.0.1:18080/`. En un teléfono USB autorizado ejecuta `adb reverse tcp:18080 tcp:18080` antes de abrir el APK; esta compilación debug usa HTTP únicamente para loopback. La compilación normal conserva API Gateway. Si usas emulador, pasa `-PsyncpassApiUrl=http://10.0.2.2:8080/`. Las pruebas locales y el reporte se generan con `.\gradlew.bat :app:testDebugUnitTest :app:createDebugUnitTestCoverageReport`; abre `app/build/reports/coverage/test/debug/index.html`.
 
 ## Demostración
+
+Para las pruebas Robolectric usa JDK 21: el JBR de Android Studio instalado en este equipo es Java 25 y produjo `Unsupported class file major version 69`. El reporte oficial de AGP del 15-11-2026 midió 4 pruebas correctas y 0,81 % de líneas del módulo completo; el objetivo académico de 30 % sigue pendiente.
 
 1. Abre la app, inicia sesión o crea una cuenta en Cognito y verifica el correo. Un usuario de los grupos `admin`, `coordinador` o `monitor` puede acreditar; el grupo `participante` puede mostrar su QR y responder encuestas.
 2. En Inicio aparece el catálogo descargado de la API; sin red se muestra la última copia guardada en Room. El QR personal contiene `SP1:` seguido del identificador anónimo de Cognito.

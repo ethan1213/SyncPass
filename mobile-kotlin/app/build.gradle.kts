@@ -1,5 +1,4 @@
 plugins {
-    id("jacoco")
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.compose.compiler)
@@ -30,6 +29,7 @@ android {
     buildTypes {
         debug {
             isMinifyEnabled = false
+            enableUnitTestCoverage = true
             val localApi = providers.gradleProperty("syncpassApiUrl").orNull
             if (localApi != null) {
                 require(localApi.startsWith("http://") && localApi.endsWith("/")) {
@@ -68,22 +68,6 @@ android {
     }
     testOptions {
         unitTests.isIncludeAndroidResources = true
-    }
-}
-
-jacoco { toolVersion = "0.8.14" }
-
-tasks.register<org.gradle.testing.jacoco.tasks.JacocoReport>("jacocoDebugUnitReport") {
-    dependsOn("testDebugUnitTest")
-    val classes = layout.buildDirectory.dir("tmp/kotlin-classes/debug")
-    classDirectories.setFrom(fileTree(classes) {
-        exclude("**/R.class", "**/R$*.class", "**/BuildConfig.class")
-    })
-    sourceDirectories.setFrom(files("src/main/java"))
-    executionData.setFrom(layout.buildDirectory.file("jacoco/testDebugUnitTest.exec"))
-    reports {
-        xml.required.set(true)
-        html.required.set(true)
     }
 }
 

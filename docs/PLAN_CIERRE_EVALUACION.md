@@ -9,7 +9,7 @@ Responsable: Ethan Astorga. Fuente: `prueba3Android.md`, manual de evidencias de
 | 3 | Dos mantenedores completos: proyectos y talleres | CRUD web y API implementados | Crear, leer, editar y eliminar desde web; comprobar JSON y persistencia |
 | 4 | Android nativo y comunicación compartida | Kotlin/Compose, Retrofit, Room, cámara y GPS; APK local compiló | Teléfono USB, `adb reverse`, QR, asistencia offline, sincronizar y ver cambio web |
 | 5 | Arquitectura y alcance para defensa | `ARQUITECTURA.md` C1–C3 y `ALCANCE.md` creados | Revisar cada flujo contra ejecución y explicar View–ViewModel–Repository–Remote/Local, Controller–Service–Repository y CSR |
-| 6 | Pruebas y cobertura | Build web pasa; pruebas Android iniciadas | Finalizar JaCoCo, alcanzar o declarar honestamente el umbral Android de 30%; verificar cobertura web exigida para la evaluación correspondiente |
+| 6 | Pruebas y cobertura | Backend: 22/22; web: 37/37, 90,06 % líneas instrumentadas; Android: 4/4, 0,81 % líneas globales con reporte AGP | Ampliar pruebas Android hasta ≥30 % global medido; luego volver a ejecutar todos los reportes |
 | 7 | Mockups y UI | Mockups por rol y navegación web existentes | Recorrido por cuatro perfiles; comparación Android/web; corregir diferencias funcionales importantes |
 | 8 | Innovación | Bitácora y resumen extractivo disponibles con texto publicado | Probar misma bitácora en web/Android; audio y transcripción automática siguen en backlog |
 | 9 | Evidencia MP4 y entrega | Procedimiento en `EVIDENCIA_ANDROID.md` | Grabar <=90 s, 1280×720, <=50 MB; validar con ffprobe; subir con AzCopy a sección 001v y guardar captura de terminal |
@@ -23,5 +23,6 @@ Problema y mockups → arquitectura C1–C3 → web local con login y dos manten
 
 - Docker Desktop está activo; el catálogo público ya funciona localmente. Falta una sesión administradora para verificar escritura en ambos mantenedores.
 - ADB no detecta teléfono; la prueba física web↔Android queda pendiente.
-- JaCoCo Android aún no generó porcentaje confirmado. No presentar 30% como logrado.
+- La cobertura Android oficial AGP del 15-11-2026 es 0,81 % de líneas (16 cubiertas de 1 979). Las dos pruebas Robolectric pasan, pero sus clases transformadas no suman líneas al reporte; las dos pruebas JVM puras sí. No presentar 30 % como logrado.
+- La web y el backend se probaron con datos y JWT simulados. Falta repetir la integración física Android↔API↔web cuando el teléfono vuelva a estar disponible.
 - No hay MP4 grabado ni carga AzCopy realizada. Confirmar sede/asignatura exacta antes de entregar.
