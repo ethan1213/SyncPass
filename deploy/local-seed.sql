@@ -7,3 +7,17 @@ SELECT * FROM (VALUES
   ('Bienestar digital', 'Sesión ficticia para demostrar bitácora y resumen.', 'Salud', 'Unidad Vecinal Demo 03', 'Puente Alto', 'Espacio comunitario de prueba', '2026-11-21T11:00:00', 'Docente de ejemplo', 20, 0)
 ) AS demo(title, descripcion, area, unidad_vecinal, comuna, direccion, fecha_hora, docente_lider, cupos_maximos, version)
 WHERE NOT EXISTS (SELECT 1 FROM talleres);
+
+-- Corrige datos demo importados por una terminal Windows con codificación antigua.
+UPDATE talleres SET title = 'Alfabetización digital comunitaria', area = 'Tecnología'
+WHERE title LIKE 'Alfabetizaci%' AND title <> 'Alfabetización digital comunitaria';
+
+-- Bitácora ficticia para recorrer la innovación sin devolver 404 en el taller demo.
+INSERT INTO taller_bitacoras (taller_id, contenido, resumen, actualizado_en)
+SELECT id,
+  'En la sesión de alfabetización digital se practicó el uso de contraseñas únicas. Los participantes aprendieron a reconocer mensajes sospechosos y a verificar enlaces antes de abrirlos. Al finalizar, cada persona preparó un plan simple para proteger sus cuentas.',
+  'En la sesión de alfabetización digital se practicó el uso de contraseñas únicas. Los participantes aprendieron a reconocer mensajes sospechosos y a verificar enlaces antes de abrirlos.',
+  NOW()
+FROM talleres
+WHERE title = 'Alfabetización digital comunitaria'
+  AND NOT EXISTS (SELECT 1 FROM taller_bitacoras WHERE taller_id = talleres.id);

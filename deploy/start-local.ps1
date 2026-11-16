@@ -36,8 +36,9 @@ for ($attempt = 0; $attempt -lt 60; $attempt++) {
 if (-not $ready) { throw 'La API no respondió. Revisa docker compose logs api --tail 80.' }
 
 if (-not $NoSeed) {
-    Get-Content -LiteralPath (Join-Path $root 'deploy/local-seed.sql') -Raw |
-        docker compose exec -T db psql -U syncpass -d syncpass -v ON_ERROR_STOP=1
+    docker compose cp 'deploy/local-seed.sql' 'db:/tmp/local-seed.sql'
+    if ($LASTEXITCODE -ne 0) { throw 'No se pudo copiar el SQL de prueba.' }
+    docker compose exec -T db psql -U syncpass -d syncpass -v ON_ERROR_STOP=1 -f /tmp/local-seed.sql
     if ($LASTEXITCODE -ne 0) { throw 'No se pudieron cargar los talleres de prueba.' }
 }
 
