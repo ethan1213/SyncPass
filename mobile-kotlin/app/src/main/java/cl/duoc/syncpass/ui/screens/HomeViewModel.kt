@@ -106,17 +106,12 @@ class HomeViewModel(private val repository: SyncPassRepository) : ViewModel() {
             waiting = count + entries > 0 && !repository.isOnline()) }
     }
 
-    fun sync(owner: String, token: String) = viewModelScope.launch {
-        try {
-            val count = repository.sync(owner, token)
-            val snapshot = repository.catalog()
-            val quedan = repository.pending(owner).size
-            _state.update { it.copy(talleres = if (snapshot.rows.isEmpty()) it.talleres else snapshot.rows,
-                pending = quedan, waiting = quedan > 0,
-                message = "$count registro(s) sincronizado(s).", offline = snapshot.fromCache) }
-        } catch (e: Exception) {
+    fun sync() = viewModelScope.launch {
+        if (!repository.isOnline()) {
             _state.update { it.copy(waiting = true,
-                message = e.message ?: "No se pudo sincronizar. Se reintentará al volver la conexión.") }
+                message = "Sin conexión. Los registros siguen guardados en el teléfono.") }
+            return@launch
         }
+        sincronizarAlReconectar()
     }
 }

@@ -174,12 +174,9 @@ fun HomeScreen(
                         Text(if (state.waiting)
                             "${pending + state.entries} registro(s) en espera: se envían solos al volver la conexión."
                         else "$pending registros pendientes de sincronización")
-                        Button(onClick = {
-                            val token = AuthSession.accessToken
-                            if (token != null) {
-                                vm.sync(owner, token)
-                            }
-                        }, enabled = pending > 0) { Text("Sincronizar ahora") }
+                        Button(onClick = { vm.sync() }, enabled = pending + state.entries > 0) {
+                            Text("Sincronizar ahora")
+                        }
                     }
                     if (AuthSession.roles.any { it in listOf("admin","coordinador","monitor") })
                         TarjetaAccesoEscaner { talleres.firstOrNull()?.let { onNavigateToScanner(it.id.toLong()) } }
