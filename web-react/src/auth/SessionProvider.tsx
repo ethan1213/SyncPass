@@ -13,7 +13,8 @@ type SessionContext={configured:boolean;isLoading:boolean;error:string|null;user
  register:(data:Registration)=>Promise<{userConfirmed:boolean;destination:string}>;
  confirm:(username:string,code:string)=>Promise<unknown>;resend:(username:string)=>Promise<unknown>;
  logout:()=>Promise<void>;getAccessTokenSilently:()=>Promise<string>};
-const Context=createContext<SessionContext|null>(null);
+export const SessionContext=createContext<SessionContext|null>(null);
+const Context=SessionContext;
 const decode=(jwt:string):UserClaims|null=>{try{const b=jwt.split('.')[1].replace(/-/g,'+').replace(/_/g,'/');return JSON.parse(decodeURIComponent(atob(b).split('').map(c=>'%'+c.charCodeAt(0).toString(16).padStart(2,'0')).join('')));}catch{return null;}};
 const load=():Session|null=>{try{const raw=sessionStorage.getItem(STORE);return raw?JSON.parse(raw):null;}catch{return null;}};
 const save=(s:Session|null)=>{try{s?sessionStorage.setItem(STORE,JSON.stringify(s)):sessionStorage.removeItem(STORE);}catch{}};

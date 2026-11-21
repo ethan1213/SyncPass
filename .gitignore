@@ -1,4 +1,9 @@
 tmp/
+tmp-local-*.log
+tmp-evidence-*.log
+tmp-android-*.log
+tmp-backend-*.log
+tmp-web-*.log
 __pycache__/
 .DS_Store
 Thumbs.db

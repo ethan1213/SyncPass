@@ -1,6 +1,7 @@
 package cl.duoc.syncpass;
 import java.time.Instant;
 import java.util.*;
+import cl.duoc.syncpass.config.SecurityConfig;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;

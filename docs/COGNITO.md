@@ -86,6 +86,24 @@ Un usuario recién registrado no pertenece a ningún grupo: puede iniciar sesió
 su perfil, pero no crear talleres. Para darle permisos se agrega al grupo en
 **Cognito → Users → usuario → Add user to group** y se vuelve a iniciar sesión.
 
+### Equivalencia con los perfiles de la rúbrica
+
+SyncPass nombra sus grupos de Cognito según el caso comunitario (coordinadores,
+monitores y participantes de talleres), no con los nombres genéricos de la rúbrica.
+La equivalencia 1 a 1 es:
+
+| Perfil de la rúbrica | Grupo Cognito en SyncPass | Rol en la app |
+| --- | --- | --- |
+| Administrador *(opcional)* | `admin` | Administra usuarios y grupos desde la consola de Cognito |
+| Docente | `coordinador` | Crea/edita proyectos y talleres, aplica encuestas, ve quórum y bitácora |
+| Voluntario | `monitor` | Acredita participantes por QR, aplica encuestas en terreno, usa el modo offline |
+| Estudiante | `participante` | Se inscribe, entra por código/QR, no requiere cuenta (puede ingresar como invitado) |
+
+Los bocetos de login (`docs/MOCKUPS.md`, Vista 2) usan las etiquetas "Estudiante
+Monitor" y "Docente Coordinador" como texto de ayuda para quien diseñó la maqueta;
+el grupo real que recibe el token sigue siendo uno de los cuatro de la tabla de
+arriba — no hay un quinto rol oculto.
+
 ## Android
 
 La app móvil llama a `/api/auth/register`, `/confirm`, `/resend` y `/login` por API Gateway.

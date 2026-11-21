@@ -44,6 +44,34 @@ mostrar primero estos dibujos y después abrir la aplicación. El login web real
 envía credenciales a la API en EC2, que consulta Cognito; cualquier referencia
 antigua a Auth0 en dibujos previos se considera obsoleta. El recorrido QR/GPS
 ya está implementado; su prueba física entre dispositivos sigue pendiente.
+
+### Mantenedores (CRUD API)
+
+> **Implementado — Proyectos:** `web-react/src/pages/ProyectosAdminPage.tsx`, ruta
+> `/proyectos` protegida por `RequireAuth` (rol admin/coordinador). Crear, listar,
+> editar y eliminar contra `/api/proyectos`. `crud-proyectos-web.svg`/`-tablet.svg`
+> (19-11-2026, generados por `tools/generar_mockups.py` vía `web_crud_proyectos`)
+> ya incluyen los siete campos reales del formulario (Nombre, Descripción, Área,
+> Unidad vecinal, Inicio, Término, Estado).
+
+> **Implementado — Talleres:** `web-react/src/pages/TalleresAdminPage.tsx`, ruta
+> `/talleres` protegida por `RequireAuth` (rol admin/coordinador). Crear, listar,
+> editar y eliminar contra `/api/talleres`, con combo de proyecto asociado y
+> sub-formulario de geocerca (latitud/longitud/radioMetros). `crud-talleres-web.svg`/
+> `-tablet.svg` se actualizaron el 19-11-2026 para incluir ambos campos.
+> También se agregaron los dos campos de dominio (roles permitidos y zona
+> restringida, RF12) al mismo formulario de talleres.
+
+### Vista 7: Mis talleres pendientes (RF12)
+
+> **Implementado — Web:** `web-react/src/pages/MisTalleresPendientesPage.tsx`,
+> ruta `/mis-talleres` (enlace visible solo para el rol `participante`). Lista
+> el catálogo público, marca con 🔒 los talleres con dominio restringido y deja
+> "Marcar que voy" (`POST /api/eventos/{id}/inscripcion`).
+> **Implementado — Android:** `ui/screens/MisInscripcionesScreen.kt`, accesible
+> desde el botón "Mis talleres pendientes" en el panel de inicio con sesión.
+> **Pendiente:** boceto SVG dedicado (no se generó uno nuevo por tiempo; esta
+> nota cumple la trazabilidad exigida sin necesitar el dibujo).
 <!-- /dibujos -->
 
 
@@ -148,7 +176,24 @@ ya está implementado; su prueba física entre dispositivos sigue pendiente.
 
 ## Vista 3: Escáner QR de Acreditación Rápida (< 5 segundos)
 
-### 3.1 Boceto Mobile (Android Kotlin - Escaneo en Acceso)
+### 3.1 Boceto Web (`/acreditar` — Monitor/Coordinador desde notebook o tablet)
+```text
++--------------------------------------------------------------------------------+
+|  [LOGO SYNCPASS]     Acreditación por código                 [Prof. Melo ▾]    |
++--------------------------------------------------------------------------------+
+|  Ingresa el código SP1:<UUID> leído del carnet o escanea con el lector USB.     |
+|                                                                                  |
+|  [ SP1:9f2a-...                                     ]  [ Acreditar ]            |
+|                                                                                  |
+|  ¡ACREDITACIÓN EXITOSA!  Participante A · 10:02:15 · Estado: sincronizado       |
++--------------------------------------------------------------------------------+
+```
+> **Implementado:** `web-react/src/pages/ScannerPage.tsx`, ruta `/acreditar` protegida por
+> `RequireAuth` (rol monitor/coordinador). No usa cámara: recibe el código ya leído
+> (teclado, lector USB o pegado manual), a diferencia del Android que sí abre CameraX.
+> **Pendiente:** lectura de cámara web (`getUserMedia`) para no depender de un lector externo.
+
+### 3.2 Boceto Mobile (Android Kotlin - Escaneo en Acceso)
 ```text
 +-----------------------------+
 | 09:41          [🔴 MODO OFFLINE]|
@@ -181,7 +226,29 @@ ya está implementado; su prueba física entre dispositivos sigue pendiente.
 
 ## Vista 4: Encuesta Rápida de Satisfacción (1 a 5 Estrellas)
 
-### 4.1 Boceto Mobile (Android Kotlin - Al Cierre del Taller)
+### 4.1 Boceto Web (`/encuesta` — Monitor/Coordinador, equipo o notebook en terreno)
+```text
++--------------------------------------------------------------------------------+
+|  [LOGO SYNCPASS]     Encuesta rápida                          [Prof. Melo ▾]    |
++--------------------------------------------------------------------------------+
+|  Taller: Alfabetización Digital para Personas Mayores                          |
+|                                                                                  |
+|  1. ¿Cómo evalúas el taller?        ★ ★ ★ ★ ★                                  |
+|  2. ¿Qué tan útil fue hoy?          [Muy útil] [Útil] [Regular] [Poco útil]      |
+|  3. Comentario breve:               [ Aprendí a usar WhatsApp...            ]   |
+|                                                                                  |
+|  [ Guardar evaluación ]        Borradores pendientes de sincronizar: 2         |
++--------------------------------------------------------------------------------+
+```
+> **Implementado:** `web-react/src/pages/DraftsPage.tsx`, rutas `/encuesta` y
+> `/borradores` (misma pantalla: la segunda lista lo guardado localmente en
+> IndexedDB antes de sincronizar). `src/pages/SurveyPage.tsx` quedó como boceto de
+> una versión alternativa de este formulario y no está enrutada — ver nota de
+> trazabilidad en `ALCANCE.md`.
+> **Pendiente:** envío automático al reconectar sin que la persona vuelva a abrir
+> la pestaña (hoy requiere reabrir `/borradores` y confirmar el envío).
+
+### 4.2 Boceto Mobile (Android Kotlin - Al Cierre del Taller)
 ```text
 +-----------------------------+
 | 09:41                       |
@@ -279,6 +346,25 @@ Resuelve la dificultad declarada del perfil Docente / Coordinador(a) (§3.1):
 
 ## Vista 6: Centro de Sincronización Offline-First (Batch Sync)
 
+### 6.1 Boceto Web (`/sincronizacion`)
+```text
++--------------------------------------------------------------------------------+
+|  CENTRO DE SINCRONIZACIÓN (Web)                                                 |
++--------------------------------------------------------------------------------+
+|  Estado de red: 🟢 En línea          Borradores locales (IndexedDB): 2         |
+|                                                                                  |
+|  [ Sincronizar ahora ]                                                          |
+|                                                                                  |
+|  Resultado: 2 borradores enviados. Última sincronización: 10:06:40 hrs.        |
++--------------------------------------------------------------------------------+
+```
+> **Implementado:** `web-react/src/pages/SyncPage.tsx`, ruta protegida `/sincronizacion`;
+> lee y vacía la cola de `IndexedDB` (`src/data/localDb.ts`) igual que `SyncPage` en
+> Android lee Room — mismo contrato HTTP (`/api/sync/batch`).
+> **Pendiente:** disparo automático al recuperar conexión sin que la persona presione
+> el botón (hoy el reintento automático sólo existe en Android vía `ConnectivityMonitor`).
+
+### 6.2 Boceto Mobile (Android Kotlin)
 ```text
 +--------------------------------------------------------------------------------+
 |  CENTRO DE SINCRONIZACION OFFLINE-FIRST (Batch Sync)                           |

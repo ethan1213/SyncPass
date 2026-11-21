@@ -373,16 +373,24 @@ def web_crud_talleres(L, x, y, w, compacta):
     fx = x if compacta else x + lw + 18
     fy0 = fin + 40 if compacta else y + 48
     fw = w if compacta else w - lw - 18
-    alto_form = 318
+    alto_form = 382
     L.caja(fx, fy0, fw, alto_form, None, color="blanco", rx=3)
     L.txt(fx + 14, fy0 + 24, "Editar taller TAL-018", size=11.5, peso=700)
     L.txt(fx + 14, fy0 + 40, "El mismo formulario sirve para crear", size=9, fill=SUAVE)
-    campos = [("Nombre de la actividad", "Alfabetización digital"), ("Recinto", "UV 12 Los Castaños"),
+    campos = [("Proyecto asociado", "Vinculación con el Medio 2026"),
+              ("Nombre de la actividad", "Alfabetización digital"), ("Recinto", "UV 12 Los Castaños"),
               ("Fecha y hora", "18-10-2026 10:00"), ("Cupos máximos", "35")]
     cy = fy0 + 62
     for etiqueta, valor in campos:
         L.campo_wf(fx + 14, cy + 12, fw - 28, 30, etiqueta, valor)
         cy += 48
+    L.txt(fx + 14, cy + 10, "Geocerca (opcional): exige ubicación real al acreditar", size=9, fill=SUAVE)
+    cy += 16
+    geo_w = (fw - 28 - 16) / 3
+    L.campo_wf(fx + 14, cy + 12, geo_w, 30, "Latitud", "-33.52")
+    L.campo_wf(fx + 14 + geo_w + 8, cy + 12, geo_w, 30, "Longitud", "-70.59")
+    L.campo_wf(fx + 14 + 2 * (geo_w + 8), cy + 12, geo_w, 30, "Radio (m)", "80")
+    cy += 48
     L.caja(fx + 14, cy + 10, (fw - 40) / 2, 32, "Guardar", color="azul", rx=3, size=10.5, peso=700)
     L.caja(fx + 26 + (fw - 40) / 2, cy + 10, (fw - 40) / 2, 32, "Cancelar", color="blanco",
            rx=3, size=10.5, stroke="#9aa5b1")
@@ -420,6 +428,90 @@ def web_crud_talleres(L, x, y, w, compacta):
         (3, "U de actualizar", ["Editar carga la fila en el", "formulario y hace PUT."]),
         (4, "Formulario único", ["Crear y editar comparten", "campos y validaciones."]),
         (5, "D de eliminar", ["Siempre con confirmación", "porque arrastra marcaciones."]),
+    ], (ay + 118) - y
+
+
+# ----------------------------------------------------------------------
+# CRUD de negocio contra la API (EC2): proyectos comunitarios
+# ----------------------------------------------------------------------
+def web_crud_proyectos(L, x, y, w, compacta):
+    _cabecera(L, x, y, w, "Proyectos · altas, cambios y bajas",
+              "CRUD de negocio contra la API REST desplegada en EC2",
+              "Grupo: admin / coordinador", "naranja")
+
+    lw = w if compacta else w * 0.56
+    L.caja(x + lw - 128 if not compacta else x + w - 128, y + 48, 128, 28, "+ Nuevo proyecto",
+           color="verde", rx=3, size=10.5, peso=700)
+    L.marca(1, (x + lw - 148) if not compacta else (x + w - 148), y + 48)
+
+    cols_p = [("ID", 0.7), ("Proyecto", 2.0), ("Área", 1.1), ("Estado", 0.9), ("Acciones", 1.2)]
+    filas = [
+        ["PRY-04", "Vinculación con el Medio 2026", "Comunidad", "Activo", ""],
+        ["PRY-05", "Alfabetización digital adultos", "Educación", "Planificado", ""],
+        ["PRY-06", "Huertos urbanos CITT", "Medioambiente", "Finalizado", ""],
+    ]
+    xs, fin = _tabla(L, x, y + 86, lw, cols_p, filas)
+    for r in range(3):
+        fy = y + 86 + 26 + r * 26
+        L.caja(xs[4] + 8, fy + 4, 46, 18, "Editar", color="azul", rx=3, size=8.5, peso=700)
+        L.caja(xs[4] + 58, fy + 4, 50, 18, "Eliminar", color="rojo", rx=3, size=8.5, peso=700)
+    L.marca(2, x - 10, y + 86 + 26 + 13)
+    L.marca(3, x - 10, y + 86 + 26 + 13 + 52)
+    L.txt(x, fin + 20, "3 de 4 proyectos · página 1", size=9.5, fill=SUAVE)
+
+    # Formulario de alta y edición: mismos campos que ProyectosAdminPage.tsx
+    fx = x if compacta else x + lw + 18
+    fy0 = fin + 40 if compacta else y + 48
+    fw = w if compacta else w - lw - 18
+    alto_form = 382
+    L.caja(fx, fy0, fw, alto_form, None, color="blanco", rx=3)
+    L.txt(fx + 14, fy0 + 24, "Editar proyecto PRY-04", size=11.5, peso=700)
+    L.txt(fx + 14, fy0 + 40, "El mismo formulario sirve para crear", size=9, fill=SUAVE)
+    campos = [("Nombre del proyecto", "Vinculación con el Medio 2026"),
+              ("Descripción", "Talleres comunitarios del semestre"),
+              ("Área temática", "Comunidad"), ("Unidad vecinal", "UV 12 Los Castaños"),
+              ("Inicio", "01-03-2026"), ("Término", "15-12-2026"), ("Estado", "Activo")]
+    cy = fy0 + 62
+    for etiqueta, valor in campos:
+        L.campo_wf(fx + 14, cy + 12, fw - 28, 30, etiqueta, valor)
+        cy += 48
+    L.caja(fx + 14, cy + 10, (fw - 40) / 2, 32, "Guardar", color="azul", rx=3, size=10.5, peso=700)
+    L.caja(fx + 26 + (fw - 40) / 2, cy + 10, (fw - 40) / 2, 32, "Cancelar", color="blanco",
+           rx=3, size=10.5, stroke="#9aa5b1")
+    L.marca(4, fx + fw + 10, cy + 26)
+
+    # Confirmación de borrado
+    dy = max(fin + 48, fy0 + alto_form + 22)
+    dw = min(360, w * 0.46)
+    L.caja(x, dy, dw, 104, None, color="rojo", rx=3)
+    L.txt(x + 14, dy + 26, "¿Eliminar PRY-06?", size=11.5, peso=700)
+    L.txt(x + 14, dy + 44, "409 si el proyecto tiene talleres", size=9.5, fill=SUAVE)
+    L.txt(x + 14, dy + 58, "asociados: no se puede borrar.", size=9.5, fill=SUAVE)
+    L.caja(x + 14, dy + 68, 96, 26, "Eliminar", color="rojo", rx=3, size=10, peso=700)
+    L.caja(x + 118, dy + 68, 96, 26, "Cancelar", color="blanco", rx=3, size=10, stroke="#9aa5b1")
+    L.marca(5, x - 10, dy + 81)
+
+    # Mapa de operaciones contra la API
+    ax = x if compacta else x + dw + 18
+    ay = dy + 118 if compacta else dy
+    aw2 = w if compacta else w - dw - 18
+    L.caja(ax, ay, aw2, 104, None, color="morado", rx=3)
+    L.txt(ax + 14, ay + 22, "Qué llama cada botón (API en EC2)", size=10.5, peso=700)
+    ops = [("Listar", "GET /api/proyectos"), ("Crear", "POST /api/proyectos"),
+           ("Editar", "PUT /api/proyectos/:id"), ("Eliminar", "DELETE /api/proyectos/:id")]
+    for i, (accion, ruta) in enumerate(ops):
+        oy = ay + 36 + (i % 2) * 20
+        ox = ax + 14 + (i // 2) * (aw2 - 28) / 2
+        L.txt(ox, oy + 10, accion, size=9.5, peso=700)
+        L.txt(ox + 52, oy + 10, ruta, size=9.5, mono=True, fill=SUAVE)
+    L.txt(ax + 14, ay + 92, "Todas con el token de Cognito en la cabecera Authorization.",
+          size=9, fill=SUAVE)
+    return [
+        (1, "C de crear", ["Abre el formulario vacío y", "hace POST al guardar."]),
+        (2, "R de leer", ["La tabla es un GET con", "paginado."]),
+        (3, "U de actualizar", ["Editar carga la fila en el", "formulario y hace PUT."]),
+        (4, "Formulario único", ["Crear y editar comparten", "campos y validaciones."]),
+        (5, "D de eliminar", ["Rechaza con 409 si el", "proyecto tiene talleres."]),
     ], (ay + 118) - y
 
 

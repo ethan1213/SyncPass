@@ -113,6 +113,10 @@
       </a>
       <p class="ayuda" id="pie"></p>
     </div>
+    <div class="grupo-vistas" id="flujo-contenedor">
+      <h2>Seguir navegando desde aquí</h2>
+      <div class="page-nav" id="flujo" role="group" aria-label="Siguiente pantalla del flujo"></div>
+    </div>
   </main>
 
   <footer>
@@ -126,37 +130,50 @@
     var TODAS = 'web tablet movil'.split(' ');
     var VISTAS = {
       panel: { grupo: 'vistas', tab: '1. Panel de talleres', doc: 'docs/MOCKUPS.md',
-        texto: 'Listado de actividades en terreno con su quórum. Es la entrada al resto del sistema.' },
+        texto: 'Listado de actividades en terreno con su quórum. Es la entrada al resto del sistema.',
+        siguiente: ['escaner', 'quorum', 'rol-participante'] },
       login: { grupo: 'vistas', tab: '2. Login', doc: 'docs/COGNITO.md',
-        texto: 'La web envía las credenciales a la API en EC2; la API autentica en Cognito y devuelve la sesión con el grupo.' },
+        texto: 'La web envía las credenciales a la API en EC2; la API autentica en Cognito y devuelve la sesión con el grupo.',
+        siguiente: ['panel'] },
       escaner: { grupo: 'vistas', tab: '3. Escáner QR', doc: 'docs/MOCKUPS.md',
-        texto: 'Reemplazo de la planilla de papel. Objetivo del caso: menos de 5 segundos por persona.' },
+        texto: 'Reemplazo de la planilla de papel. Objetivo del caso: menos de 5 segundos por persona.',
+        siguiente: ['encuesta', 'quorum'] },
       encuesta: { grupo: 'vistas', tab: '4. Encuesta 1-5', doc: 'docs/MOCKUPS.md',
-        texto: 'Se responde en el recinto al cerrar el taller, no por correo días después.' },
+        texto: 'Se responde en el recinto al cerrar el taller, no por correo días después.',
+        siguiente: ['sync'] },
       quorum: { grupo: 'vistas', tab: '5. Quórum en vivo', doc: 'docs/MOCKUPS.md',
-        texto: 'Marcaciones con hora y estado de sincronización. Si el taller configura una geocerca, la API valida ubicación y precisión al sincronizar.' },
+        texto: 'Marcaciones con hora y estado de sincronización. Si el taller configura una geocerca, la API valida ubicación y precisión al sincronizar.',
+        siguiente: ['sync', 'panel'] },
       sync: { grupo: 'vistas', tab: '6. Sincronización', doc: 'docs/RESPONSIVE.md',
-        texto: 'Offline-first: primero se guarda local (is_synced = 0) y después se envía por lote.' },
+        texto: 'Offline-first: primero se guarda local (is_synced = 0) y después se envía por lote.',
+        siguiente: ['panel'] },
 
       'rol-admin': { grupo: 'roles', tab: 'Administrador', formatos: ['web', 'tablet'],
         doc: 'docs/COGNITO.md',
-        texto: 'Equipo administrativo: usuarios, grupos del user pool y estado del sistema.' },
+        texto: 'Equipo administrativo: usuarios, grupos del user pool y estado del sistema.',
+        siguiente: ['crud-proyectos', 'crud-talleres'] },
       'rol-coordinador': { grupo: 'roles', tab: 'Coordinador(a)', formatos: ['web', 'tablet'],
         doc: 'docs/COGNITO.md',
-        texto: 'Docente o coordinador(a) de proyecto: talleres del período, monitores y reportes.' },
+        texto: 'Docente o coordinador(a) de proyecto: talleres del período, monitores y reportes.',
+        siguiente: ['crud-proyectos', 'crud-talleres', 'quorum'] },
       'rol-monitor': { grupo: 'roles', tab: 'Monitor', doc: 'docs/COGNITO.md',
-        texto: 'Estudiante voluntario en terreno: acreditar, encuestar y revisar la cola local.' },
+        texto: 'Estudiante voluntario en terreno: acreditar, encuestar y revisar la cola local.',
+        siguiente: ['escaner', 'quorum'] },
       'rol-participante': { grupo: 'roles', tab: 'Participante', doc: 'docs/COGNITO.md',
-        texto: 'Beneficiario comunitario: su código QR, sus talleres y sus encuestas pendientes.' },
+        texto: 'Beneficiario comunitario: su código QR, sus talleres y sus encuestas pendientes.',
+        siguiente: ['panel', 'encuesta'] },
 
-      'crud-proyectos': { grupo: 'datos', tab: 'CRUD API · Proyectos', bd: 'img/mockups/crud-proyectos-web.svg',
-        doc: 'docs/DEMO_EC2_JAR_POSTMAN.md',
-        texto: 'Primer mantenedor: crear, listar, editar y eliminar proyectos comunitarios con sesión de coordinador o administrador.' },
+      'crud-proyectos': { grupo: 'datos', tab: 'CRUD API · Proyectos', formatos: ['web', 'tablet'],
+        doc: 'docs/MOCKUPS.md',
+        texto: 'Primer mantenedor: crear, listar, editar y eliminar proyectos comunitarios con sesión de coordinador o administrador. Implementado en web-react/src/pages/ProyectosAdminPage.tsx.',
+        siguiente: ['crud-talleres'] },
       'crud-talleres': { grupo: 'datos', tab: 'CRUD API · Talleres', formatos: ['web', 'tablet'],
-        doc: 'docs/DEMO_EC2_JAR_POSTMAN.md',
-        texto: 'Alta, lectura, edición y baja de talleres contra la API REST desplegada en EC2.' },
+        doc: 'docs/MOCKUPS.md',
+        texto: 'Alta, lectura, edición y baja de talleres contra la API REST desplegada en EC2. Implementado en web-react/src/pages/TalleresAdminPage.tsx, incluido el combo de proyecto y la geocerca.',
+        siguiente: ['crud-proyectos', 'crud-local'] },
       'crud-local': { grupo: 'datos', tab: 'CRUD local · Borradores', doc: 'docs/ARQUITECTURA_FULLSTACK_MOBILE.md',
-        texto: 'Las mismas cuatro operaciones sobre la base del dispositivo, sin conexión.' },
+        texto: 'Las mismas cuatro operaciones sobre la base del dispositivo, sin conexión.',
+        siguiente: ['sync'] },
       relacional: { grupo: 'datos', tab: 'BD · Relacional', bd: 'img/dibujo-modelo-relacional.svg',
         doc: 'docs/MODELO_BASE_DATOS.md',
         texto: 'Ocho tablas en tercera forma normal, con las claves foráneas y las banderas is_synced.' },
@@ -206,6 +223,33 @@
       });
       document.querySelectorAll('.page-tab').forEach(function (tab) {
         tab.setAttribute('aria-selected', String(tab.dataset.vista === vista));
+      });
+      pintarFlujo(info);
+    }
+
+    /**
+     * Botones de "siguiente pantalla" dentro del propio visor: a diferencia
+     * de la barra de pestañas (navegación externa), estos representan los
+     * accesos reales que un usuario tocaría dentro de esa vista (ej. desde
+     * el panel, "Acreditar con QR"), para poder recorrer todo el flujo sin
+     * volver arriba cada vez.
+     */
+    function pintarFlujo(info) {
+      var contenedor = document.getElementById('flujo-contenedor');
+      var nav = document.getElementById('flujo');
+      nav.innerHTML = '';
+      var siguientes = info.siguiente || [];
+      if (!siguientes.length) { contenedor.style.display = 'none'; return; }
+      contenedor.style.display = '';
+      siguientes.forEach(function (clave) {
+        var destino = VISTAS[clave];
+        if (!destino) return;
+        var boton = document.createElement('button');
+        boton.className = 'page-tab';
+        boton.type = 'button';
+        boton.textContent = '→ ' + destino.tab;
+        boton.addEventListener('click', function () { setVista(clave); });
+        nav.appendChild(boton);
       });
     }
 

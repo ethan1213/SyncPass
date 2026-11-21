@@ -1,9 +1,8 @@
 #!/bin/bash
 # Reapunta Caddy a la IP publica actual de la EC2.
 #
-# Cada stop/start del laboratorio cambia la IPv4 publica, pero /etc/caddy/Caddyfile
-# conserva el dominio nip.io de la IP anterior. Caddy queda sin certificado para el
-# nombre nuevo, el handshake TLS falla y API Gateway responde 503.
+# La IP elastica asociada normalmente permanece fija tras stop/start. Este
+# chequeo corrige Caddy y Gateway si la asociacion o el dominio cambia.
 #
 # Este script recalcula el dominio, reinicia Caddy y actualiza API Gateway.
 # No recompila el JAR. Se ejecuta tambien al arrancar EC2 mediante systemd.

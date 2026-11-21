@@ -15,7 +15,15 @@ MAVEN=/opt/maven-3.9.9/bin/mvn
 }
 git -C "$SOURCE" remote set-url origin "$REPO"
 git -C "$SOURCE" fetch --depth 1 origin "$REF"
-git -C "$SOURCE" checkout -B deploy FETCH_HEAD
+if [ -n "$(git -C "$SOURCE" status --porcelain --untracked-files=no)" ]; then
+  BACKUP_DIR=/opt/syncpass/backups
+  install -d -m 700 "$BACKUP_DIR"
+  BACKUP="$BACKUP_DIR/source-$(date -u +%Y%m%dT%H%M%SZ).patch"
+  git -C "$SOURCE" diff HEAD --binary > "$BACKUP"
+  chmod 600 "$BACKUP"
+  echo "SYNCPASS_SOURCE_BACKUP=$BACKUP"
+fi
+git -C "$SOURCE" checkout -f -B deploy FETCH_HEAD
 export JAVA_HOME=/usr/lib/jvm/java-21-amazon-corretto
 "$MAVEN" -B -q -f "$SOURCE/backend/pom.xml" -DskipTests package
 install -m 644 "$SOURCE/backend/target/syncpass-api-1.0.0.jar" /opt/syncpass/syncpass-api.jar

@@ -5,6 +5,9 @@ package cl.duoc.syncpass.ui.navigation
  * Cada destino corresponde a una de las vistas documentadas en docs/MOCKUPS.md.
  */
 sealed class Screen(val route: String, val title: String) {
+    object Entry : Screen("entry", "Acceder a SyncPass")
+    object GuestQr : Screen("guest-qr", "QR del taller")
+    object GuestTaller : Screen("guest-taller", "Taller invitado")
     /** Panel de talleres en terreno del dia. */
     object Home : Screen("home", "Talleres en terreno")
 
@@ -20,6 +23,9 @@ sealed class Screen(val route: String, val title: String) {
     /** Encuesta de satisfaccion en terreno (1 a 5 estrellas). */
     object Survey : Screen("survey", "Encuesta de satisfacción")
     object Bitacora : Screen("bitacora", "Bitácora del taller")
+
+    /** RF12: talleres marcados "voy a asistir" (preinscripcion en el servidor). */
+    object MisInscripciones : Screen("mis-inscripciones", "Mis talleres pendientes")
 
     /** Centro de sincronizacion de la cola local (is_synced = 0). */
     object Sync : Screen("sync", "Sincronización")

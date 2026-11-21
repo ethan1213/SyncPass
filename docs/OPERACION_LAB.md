@@ -2,7 +2,7 @@
 
 ## Qué se mantiene y qué cambia
 
-La URL pública de API Gateway es estable: `https://hluamat8vg.execute-api.us-east-1.amazonaws.com`. La instancia `i-01d851d6163897cb1` recibe una IPv4 pública distinta cada vez que el laboratorio se detiene y vuelve a iniciar. Caddy usa `api.<IP-con-guiones>.nip.io` como dominio HTTPS; por eso la integración de Gateway debe seguir la IP nueva. La instancia no puede permanecer disponible mientras el laboratorio está apagado.
+La URL pública de API Gateway es estable: `https://hluamat8vg.execute-api.us-east-1.amazonaws.com`. La instancia `i-01d851d6163897cb1` tiene asociada la IP elástica `32.202.0.213`; un reinicio normal conserva esa IP. Caddy usa `api.32-202-0-213.nip.io` como dominio HTTPS. La instancia no responde mientras el laboratorio está apagado.
 
 ## Instalación única del arranque automático
 
@@ -19,7 +19,7 @@ El instalador conserva `/etc/syncpass/syncpass.env`, actualiza el JAR desde este
 | --- | --- |
 | `syncpass-api` | Inicia Spring Boot con JDK 21 y la configuración privada del servidor. |
 | `caddy` | Recibe HTTPS en 443 y reenvía a `127.0.0.1:8080`. |
-| `syncpass-gateway-sync` | Detecta la IPv4 por IMDSv2, ajusta Caddy, espera el certificado y actualiza la integración de API Gateway. |
+| `syncpass-gateway-sync` | Comprueba la IPv4 por IMDSv2, ajusta Caddy si cambió, espera el certificado y verifica la integración de API Gateway. |
 
 El último servicio se ejecuta en cada inicio de EC2. Usa el rol de la instancia para AWS CLI; no guarda claves AWS en archivos. Si AWS o el certificado tardan en estar disponibles, `systemd` vuelve a intentarlo. El servicio registra `SYNCPASS_PUBLIC_IP=<IP>` y `SYNCPASS_GATEWAY_UP=<URL>` cuando termina correctamente.
 
@@ -33,10 +33,10 @@ sudo systemctl status syncpass-gateway-sync --no-pager
 sudo journalctl -u syncpass-gateway-sync -n 30 --no-pager
 ```
 
-3. La línea `SYNCPASS_PUBLIC_IP` da la IP actual. También aparece en **EC2 → Instancias → Dirección IPv4 pública**. Para pedirla en este chat, mantener abierto el panel EC2 o copiar solo la IP; no hace falta enviar claves.
+3. La línea `SYNCPASS_PUBLIC_IP` debe indicar `32.202.0.213`. También aparece en **EC2 → Instancias → Dirección IPv4 pública**. Si difiere, revisa la asociación de la IP elástica antes de presentar.
 4. Abrir `https://hluamat8vg.execute-api.us-east-1.amazonaws.com/actuator/health`: debe responder `{"status":"UP"}`. Después comprobar login y ambos mantenedores en Vercel.
 
-La web de Vercel conserva su URL durante los apagados, pero no puede leer datos nuevos ni iniciar sesión mientras la API está fuera de servicio. La IP de EC2 cambia; compartir la URL estable de API Gateway para Postman y móvil.
+La web de Vercel conserva su URL durante los apagados, pero no puede leer datos nuevos ni iniciar sesión mientras la API está fuera de servicio. Comparte la URL de API Gateway para Postman y móvil; la IP elástica identifica la EC2 detrás de Caddy.
 
 ## Publicar una nueva versión del JAR
 
@@ -61,4 +61,4 @@ Si `/usr/local/sbin/syncpass-fix-ip` aún no existe, ejecutar la instalación ú
 
 ## Alcance del costo
 
-El servicio de recuperación no mantiene EC2 encendida ni crea una IP elástica. Solo trabaja cuando el laboratorio inicia. Detener el laboratorio según las indicaciones del curso evita consumir crédito innecesario. Un laboratorio apagado no puede servir la API; no existe una configuración gratuita dentro de esta EC2 que elimine esa dependencia.
+El servicio de recuperación no mantiene EC2 encendida. La IP elástica ya está asociada y evita cambiar el dominio tras un reinicio normal. Un laboratorio apagado no puede servir la API aunque conserve la IP.

@@ -1,0 +1,5 @@
+CREATE TABLE taller_grabaciones (
+ taller_id BIGINT PRIMARY KEY REFERENCES talleres(id) ON DELETE CASCADE,
+ grabado BOOLEAN NOT NULL,
+ actualizado_en TIMESTAMP WITH TIME ZONE NOT NULL
+);

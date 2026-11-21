@@ -13,6 +13,7 @@ SyncPass registra talleres comunitarios, asistencia y encuestas para actividades
 - [Guion de exposición](docs/DEMO_VIERNES_30.md) y [requisitos](docs/REQUISITOS_SYNCPASS.md)
 - [Plan de verificación web, API y móvil](docs/PLAN_VERIFICACION_COMUNICACION.md) y [informe técnico PDF](output/pdf/SyncPass_Informe_Tecnico_y_Plan_de_Verificacion.pdf)
 - [Bitácora consultable de talleres](docs/INNOVACION_BITACORA.md): resumen extractivo y preguntas con cita, para web y Android.
+- [Defensa técnica de capas, MVVM, Controller, Service, Repository y CSR](docs/DEFENSA_ARQUITECTURA.md).
 
 La web de Vercel puede abrir aunque el laboratorio esté detenido. Las operaciones que usan la API requieren que EC2 esté encendida; el [procedimiento de arranque](docs/OPERACION_LAB.md) explica cómo comprobarlo y obtener su IP.
 
@@ -30,7 +31,7 @@ Android ── Room/SQLite: catálogo y registros pendientes
 1. La web muestra el catálogo público desde `GET /api/eventos`. El login y el registro web envían las credenciales a la API (`/api/auth/*`); la API habla con Cognito. La web conserva la sesión en `sessionStorage` y adjunta el token a las operaciones protegidas.
 2. Android usa Retrofit para registrar, confirmar e iniciar sesión mediante `/api/auth/*` en Gateway. Room conserva el catálogo y los pendientes del dispositivo.
 3. Spring Security valida los JWT y los grupos de Cognito. Los controladores autorizan cada acción. JPA persiste proyectos y talleres; Flyway aplica las migraciones de PostgreSQL. La sincronización guarda asistencias y encuestas recibidas.
-4. Vercel sirve el frontend. API Gateway ofrece una dirección HTTPS fija. Caddy termina TLS en EC2 y entrega la petición al JAR en `127.0.0.1:8080`. La instancia está en una VPC del laboratorio AWS Academy.
+4. Vercel sirve el frontend. API Gateway ofrece una dirección HTTPS fija. Caddy termina TLS en EC2 y entrega la petición al JAR en `127.0.0.1:18080`. La instancia está en una VPC del laboratorio AWS Academy.
 
 API Gateway está **delante de EC2**: recibe peticiones de web, Android y Postman. El JAR llama al servicio Cognito mediante el SDK de AWS para registro, confirmación, login y renovación. Para las rutas protegidas, Spring verifica la firma del JWT con las claves públicas de Cognito, su emisor, vencimiento, tipo de token y cliente. Ningún cliente llama directamente a Cognito.
 
@@ -55,8 +56,8 @@ La cola local asigna registros al usuario actual. Al sincronizar, la API acepta 
 
 | Ruta | Qué contiene | Herramientas principales |
 | --- | --- | --- |
-| `web-react/src/pages/` | Pantallas por ruta: inicio, login, perfiles, mantenedores, QR, encuestas y sincronización | React 18, JSX, Wouter |
-| `web-react/src/components/` | Barra, pie y control de ruta protegida | React |
+| `web-react/src/pages/` | Pantallas por ruta: inicio, login, perfiles, mantenedores, QR, encuestas y sincronización | React 18, TypeScript, Wouter |
+| `web-react/src/components/` | Diseño atómico (`atoms`/`molecules`/`organisms`: Button, Badge, NavLinkItem, Navbar, Footer) y `RequireAuth` | React, TypeScript |
 | `web-react/src/auth/`, `clients/`, `data/` | Sesión, cliente `fetch`, IndexedDB y QR | `idb`, `qrcode`, `@zxing/browser` |
 | `web-react/src/index.css` | Paleta propia, componentes visuales y diseño adaptable | CSS y utilidades Tailwind |
 | `backend/src/main/java/` | Controladores REST, autorización y entidades | Java 21, Spring Boot 3.5, Spring Security, JPA |
@@ -68,9 +69,11 @@ La cola local asigna registros al usuario actual. Al sincronizar, la API acepta 
 | `deploy/` | Instalación EC2, Caddy y recuperación de IP | Bash, systemd, AWS CLI |
 | `docs/` | Caso, arquitectura, requisitos, operación y demostración | Markdown |
 
-La entrada web es `main.tsx`; la sesión, los roles, la configuración, el cliente HTTP, el aviso de geocerca y el parser de QR son TypeScript. Las páginas heredadas aún son `.jsx` y se migran gradualmente. `tsc --noEmit` verifica los módulos TypeScript antes del build. Tailwind está configurado con la paleta territorial y se usa para utilidades puntuales; el diseño principal permanece en CSS propio. Vite compila la web y Wouter resuelve las rutas.
+La entrada web es `main.tsx`. El proyecto está 100% en TypeScript (`.tsx`/`.ts`, sin `.jsx`/`.js`), con diseño atómico (`components/atoms` → `molecules` → `organisms`), un único Context de sesión (`contexts/` → `auth/SessionProvider.tsx`) y un Hook de dominio (`hooks/useRoles.ts`). `tsc --noEmit` verifica los módulos TypeScript antes del build. Tailwind está configurado con la paleta territorial y se usa para utilidades puntuales; el diseño principal permanece en CSS propio. Vite compila la web y Wouter resuelve las rutas.
 
 ## Ejecutar en un equipo
+
+**Demostración local sin laboratorio AWS:** con Docker Desktop iniciado, ejecutar `powershell -NoProfile -ExecutionPolicy Bypass -File deploy/start-local.ps1` desde la raíz. El script crea un `.env` privado si falta, compila y levanta PostgreSQL, API y web, espera el health check y carga tres talleres ficticios solo si la tabla está vacía. Abre `http://localhost:3000` y comprueba `http://localhost:18080/actuator/health`. Para detenerlo: `docker compose down` (conserva el volumen PostgreSQL). El login sigue necesitando internet para hablar con Cognito; la API y la base locales no requieren EC2 ni Supabase. Consulta [arquitectura](docs/ARQUITECTURA.md), [alcance](docs/ALCANCE.md) y [evidencia académica](docs/EVIDENCIA_ANDROID.md).
 
 **Web:** instalar Node.js, entrar a `web-react/`, copiar `.env.example` a `.env.local` y configurar `VITE_API_URL` con la API local o API Gateway. Luego ejecutar `npm ci` y `npm run dev`. Vite abre el servidor de desarrollo en el puerto configurado por `vite.config.js`. `npm run build` genera `web-react/dist/`.
 
@@ -83,7 +86,7 @@ La entrada web es `main.tsx`; la sesión, los roles, la configuración, el clien
 ## Publicación, pruebas y colaboración
 
 - La publicación web se hace en Vercel desde `web-react/`. La API está en EC2 tras API Gateway. Cuando el laboratorio se reinicia, [la recuperación de IP](docs/OPERACION_LAB.md) actualiza Caddy y Gateway automáticamente una vez instalado el servicio.
-- Ejecutar `npm run coverage` en `web-react/` produce un informe Vitest. El 12-11-2026 pasaron 37 pruebas, con 93,35% de líneas y 85,44% de ramas en los módulos instrumentados, incluida la bitácora. **No es la cobertura de toda la aplicación**. El backend pasó 18 pruebas locales; para la evaluación que exija 80% global aún faltan pruebas de otras páginas.
+- Ejecutar `npm run coverage` en `web-react/` produce un informe Vitest sobre **todo `src/**/*.{ts,tsx}`** (ya no un subconjunto). El 19-11-2026 pasaron 88 pruebas en 27 archivos, con 74,12% de líneas/sentencias, 86,15% de ramas y 81,51% de funciones globales — supera el 30% mínimo de la pauta. El backend pasó 22 pruebas locales.
 - Los resultados concretos de la integración web, API Gateway, Cognito, EC2 y Android están en [Verificación del despliegue](docs/VERIFICACION_DESPLIEGUE.md).
 - `main` contiene la versión integrada. `developer/ethan` y `feature/*` permiten preparar cambios revisados mediante pull request. Ver [convención de ramas](docs/RAMAS.md).
 - No subir `.env`, contraseñas, claves de AWS ni tokens. El APK de demostración publicado en `web-react/public/descargas/` contiene solo la configuración pública necesaria para acceder a API Gateway y no credenciales privadas; se recompila al cambiar la app Android.

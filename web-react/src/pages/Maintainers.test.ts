@@ -92,4 +92,22 @@ describe('mantenedor de talleres', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Eliminar' }));
     await waitFor(() => expect(api).toHaveBeenCalledWith('/api/eventos/8', expect.objectContaining({ method: 'DELETE' })));
   });
+  it('envía el dominio (rol y zona) cuando se marca al crear un taller', async () => {
+    api.mockResolvedValue([]);
+    const onRefresh = vi.fn(async () => {});
+    render(React.createElement(TalleresAdminPage, { talleres: [], onRefresh }));
+    const fields = [
+      ['Nombre del taller', 'Taller con dominio'], ['Descripción', 'Descripción demo'], ['Área temática', 'Tecnología'],
+      ['Unidad vecinal', 'UV 1'], ['Comuna', 'La Florida'], ['Dirección', 'Sede demo'],
+      ['Fecha y hora', '2026-10-30T10:00'], ['Coordinador', 'Monitor demo'], ['Cupos máximos', '20'],
+    ];
+    for (const [label, value] of fields) fireEvent.change(screen.getByLabelText(label), { target: { value } });
+    fireEvent.click(screen.getByLabelText('Estudiante voluntario / Monitor'));
+    fireEvent.change(screen.getByLabelText('Zona / unidad vecinal exigida'), { target: { value: 'UV 12 Los Castaños' } });
+    fireEvent.click(screen.getByRole('button', { name: 'Guardar' }));
+    await waitFor(() => expect(api).toHaveBeenCalledWith('/api/eventos', expect.objectContaining({
+      method: 'POST', body: expect.objectContaining({ rolesPermitidos: 'monitor', zonaRestringida: 'UV 12 Los Castaños' })
+    })));
+    expect(onRefresh).toHaveBeenCalled();
+  });
 });
