@@ -56,8 +56,8 @@ La cola local asigna registros al usuario actual. Al sincronizar, la API acepta 
 
 | Ruta | Qué contiene | Herramientas principales |
 | --- | --- | --- |
-| `web-react/src/pages/` | Pantallas por ruta: inicio, login, perfiles, mantenedores, QR, encuestas y sincronización | React 18, JSX, Wouter |
-| `web-react/src/components/` | Barra, pie y control de ruta protegida | React |
+| `web-react/src/pages/` | Pantallas por ruta: inicio, login, perfiles, mantenedores, QR, encuestas y sincronización | React 18, TypeScript, Wouter |
+| `web-react/src/components/` | Diseño atómico (`atoms`/`molecules`/`organisms`: Button, Badge, NavLinkItem, Navbar, Footer) y `RequireAuth` | React, TypeScript |
 | `web-react/src/auth/`, `clients/`, `data/` | Sesión, cliente `fetch`, IndexedDB y QR | `idb`, `qrcode`, `@zxing/browser` |
 | `web-react/src/index.css` | Paleta propia, componentes visuales y diseño adaptable | CSS y utilidades Tailwind |
 | `backend/src/main/java/` | Controladores REST, autorización y entidades | Java 21, Spring Boot 3.5, Spring Security, JPA |
@@ -69,7 +69,7 @@ La cola local asigna registros al usuario actual. Al sincronizar, la API acepta 
 | `deploy/` | Instalación EC2, Caddy y recuperación de IP | Bash, systemd, AWS CLI |
 | `docs/` | Caso, arquitectura, requisitos, operación y demostración | Markdown |
 
-La entrada web es `main.tsx`; la sesión, los roles, la configuración, el cliente HTTP, el aviso de geocerca y el parser de QR son TypeScript. Las páginas heredadas aún son `.jsx` y se migran gradualmente. `tsc --noEmit` verifica los módulos TypeScript antes del build. Tailwind está configurado con la paleta territorial y se usa para utilidades puntuales; el diseño principal permanece en CSS propio. Vite compila la web y Wouter resuelve las rutas.
+La entrada web es `main.tsx`. El proyecto está 100% en TypeScript (`.tsx`/`.ts`, sin `.jsx`/`.js`), con diseño atómico (`components/atoms` → `molecules` → `organisms`), un único Context de sesión (`contexts/` → `auth/SessionProvider.tsx`) y un Hook de dominio (`hooks/useRoles.ts`). `tsc --noEmit` verifica los módulos TypeScript antes del build. Tailwind está configurado con la paleta territorial y se usa para utilidades puntuales; el diseño principal permanece en CSS propio. Vite compila la web y Wouter resuelve las rutas.
 
 ## Ejecutar en un equipo
 
@@ -86,7 +86,7 @@ La entrada web es `main.tsx`; la sesión, los roles, la configuración, el clien
 ## Publicación, pruebas y colaboración
 
 - La publicación web se hace en Vercel desde `web-react/`. La API está en EC2 tras API Gateway. Cuando el laboratorio se reinicia, [la recuperación de IP](docs/OPERACION_LAB.md) actualiza Caddy y Gateway automáticamente una vez instalado el servicio.
-- Ejecutar `npm run coverage` en `web-react/` produce un informe Vitest. El 13-11-2026 pasaron 37 pruebas, con 90,06% de líneas, 85,51% de ramas y 82,53% de funciones en los módulos instrumentados. **No es la cobertura de toda la aplicación**. El backend pasó 22 pruebas locales; para una exigencia de 80% global aún faltan pruebas de otras páginas y Android.
+- Ejecutar `npm run coverage` en `web-react/` produce un informe Vitest sobre **todo `src/**/*.{ts,tsx}`** (ya no un subconjunto). El 19-11-2026 pasaron 88 pruebas en 27 archivos, con 74,12% de líneas/sentencias, 86,15% de ramas y 81,51% de funciones globales — supera el 30% mínimo de la pauta. El backend pasó 22 pruebas locales.
 - Los resultados concretos de la integración web, API Gateway, Cognito, EC2 y Android están en [Verificación del despliegue](docs/VERIFICACION_DESPLIEGUE.md).
 - `main` contiene la versión integrada. `developer/ethan` y `feature/*` permiten preparar cambios revisados mediante pull request. Ver [convención de ramas](docs/RAMAS.md).
 - No subir `.env`, contraseñas, claves de AWS ni tokens. El APK de demostración publicado en `web-react/public/descargas/` contiene solo la configuración pública necesaria para acceder a API Gateway y no credenciales privadas; se recompila al cambiar la app Android.

@@ -1,0 +1,178 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1150 1174" width="1150" height="1174" role="img" aria-label="CRUD por API · Proyectos (tablet)" font-family="Helvetica, 'Helvetica Neue', Arial, sans-serif">
+<title>CRUD por API · Proyectos (tablet)</title>
+<rect width="1150" height="1174" fill="#ffffff"/>
+<text x="24.0" y="32.0" font-size="17" fill="#1a1a1a" font-weight="700">CRUD por API · Proyectos</text>
+<text x="24.0" y="52.0" font-size="11.5" fill="#5d6673" font-weight="400">Versión tablet · 768 a 1024 px · la misma página, en dos columnas</text>
+<rect x="1065.7" y="16.0" width="60.3" height="24.0" rx="3" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1"/>
+<text x="1095.9" y="32.0" font-size="11" fill="#1a1a1a" font-weight="700" text-anchor="middle">Mockup</text>
+<rect x="24.0" y="80.0" width="700.0" height="1034.0" rx="16" fill="#f0f2f5" stroke="#666666" stroke-width="1.4"/>
+<circle cx="374.00" cy="89.00" r="3.00" fill="#ffffff" stroke="#9aa5b1" stroke-width="1"/>
+<rect x="40.0" y="96.0" width="668.0" height="1002.0" rx="0" fill="#ffffff" stroke="#9aa5b1" stroke-width="1"/>
+<text x="374.0" y="1130.0" font-size="10" fill="#5d6673" font-weight="400" text-anchor="middle">Tablet 10" · 820 × 1180 px</text>
+<rect x="40.0" y="96.0" width="668.0" height="1002.0" rx="3" fill="#ffffff" stroke="#666666" stroke-width="1.4"/>
+<rect x="40.0" y="96.0" width="668.0" height="30.0" rx="0" fill="#f0f2f5" stroke="#666666" stroke-width="1.4"/>
+<circle cx="56.00" cy="111.00" r="4.50" fill="#ffffff" stroke="#9aa5b1" stroke-width="1"/>
+<circle cx="70.00" cy="111.00" r="4.50" fill="#ffffff" stroke="#9aa5b1" stroke-width="1"/>
+<circle cx="84.00" cy="111.00" r="4.50" fill="#ffffff" stroke="#9aa5b1" stroke-width="1"/>
+<rect x="102.0" y="103.0" width="518.0" height="16.0" rx="2" fill="#ffffff" stroke="#9aa5b1" stroke-width="1"/>
+<text x="110.0" y="114.5" font-size="10" fill="#5d6673" font-weight="400" font-family="Consolas, 'Courier New', monospace">syncpass.duocuc.cl/proyectos</text>
+<rect x="634.4" y="103.0" width="63.6" height="16.0" rx="2" fill="#d5e8d4" stroke="#82b366" stroke-width="1"/>
+<text x="666.2" y="114.4" font-size="9.5" fill="#1a1a1a" font-weight="700" text-anchor="middle">Conectado</text>
+<rect x="40.0" y="126.0" width="668.0" height="46.0" rx="0" fill="#ffffff" stroke="#9aa5b1" stroke-width="1"/>
+<rect x="52.0" y="137.0" width="24.0" height="24.0" rx="3" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1"/>
+<text x="64.0" y="152.2" font-size="9" fill="#1a1a1a" font-weight="700" text-anchor="middle">QR</text>
+<text x="84.0" y="147.0" font-size="13" fill="#1a1a1a" font-weight="700">SyncPass</text>
+<text x="84.0" y="160.0" font-size="8.5" fill="#5d6673" font-weight="400">CITT Plaza Vespucio</text>
+<line x1="558.0" y1="143.0" x2="572.0" y2="143.0" stroke="#5d6673" stroke-width="1.6"/>
+<line x1="558.0" y1="147.7" x2="572.0" y2="147.7" stroke="#5d6673" stroke-width="1.6"/>
+<line x1="558.0" y1="152.3" x2="572.0" y2="152.3" stroke="#5d6673" stroke-width="1.6"/>
+<rect x="578.0" y="137.0" width="24.0" height="24.0" rx="3" fill="#ffffff" stroke="#c2cbd4" stroke-width="1"/>
+<text x="590.0" y="152.6" font-size="10" fill="#1a1a1a" font-weight="400" text-anchor="middle">?</text>
+<rect x="610.0" y="137.0" width="86.0" height="24.0" rx="12" fill="#f5f5f5" stroke="#666666" stroke-width="1"/>
+<text x="653.0" y="152.4" font-size="9.5" fill="#1a1a1a" font-weight="400" text-anchor="middle">M. Vega</text>
+<line x1="40.0" y1="172.0" x2="708.0" y2="172.0" stroke="#9aa5b1" stroke-width="1"/>
+<rect x="40.0" y="172.0" width="668.0" height="32.0" rx="0" fill="#fafbfc" stroke="#9aa5b1" stroke-width="1"/>
+<rect x="50.0" y="177.0" width="47.0" height="22.0" rx="3" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1"/>
+<text x="73.5" y="191.6" font-size="10" fill="#1a1a1a" font-weight="700" text-anchor="middle">Panel</text>
+<rect x="103.0" y="177.0" width="64.4" height="22.0" rx="3" fill="#ffffff" stroke="#c2cbd4" stroke-width="1"/>
+<text x="135.2" y="191.6" font-size="10" fill="#1a1a1a" font-weight="400" text-anchor="middle">Talleres</text>
+<rect x="173.4" y="177.0" width="70.2" height="22.0" rx="3" fill="#ffffff" stroke="#c2cbd4" stroke-width="1"/>
+<text x="208.5" y="191.6" font-size="10" fill="#1a1a1a" font-weight="400" text-anchor="middle">Monitores</text>
+<rect x="249.6" y="177.0" width="70.2" height="22.0" rx="3" fill="#ffffff" stroke="#c2cbd4" stroke-width="1"/>
+<text x="284.7" y="191.6" font-size="10" fill="#1a1a1a" font-weight="400" text-anchor="middle">Encuestas</text>
+<rect x="325.8" y="177.0" width="64.4" height="22.0" rx="3" fill="#ffffff" stroke="#c2cbd4" stroke-width="1"/>
+<text x="358.0" y="191.6" font-size="10" fill="#1a1a1a" font-weight="400" text-anchor="middle">Reportes</text>
+<text x="54.0" y="228.0" font-size="14" fill="#1a1a1a" font-weight="700">Proyectos · altas, cambios y bajas</text>
+<text x="54.0" y="244.0" font-size="10" fill="#5d6673" font-weight="400">CRUD de negocio contra la API REST desplegada en EC2</text>
+<rect x="521.2" y="216.0" width="172.8" height="24.0" rx="3" fill="#ffe6cc" stroke="#d79b00" stroke-width="1"/>
+<text x="607.6" y="231.6" font-size="10" fill="#1a1a1a" font-weight="700" text-anchor="middle">Grupo: admin / coordinador</text>
+<rect x="566.0" y="262.0" width="128.0" height="28.0" rx="3" fill="#d5e8d4" stroke="#82b366" stroke-width="1"/>
+<text x="630.0" y="279.8" font-size="10.5" fill="#1a1a1a" font-weight="700" text-anchor="middle">+ Nuevo proyecto</text>
+<circle cx="546.00" cy="262.00" r="11.00" fill="#ffe6cc" stroke="#d79b00" stroke-width="1.2"/>
+<text x="546.0" y="266.0" font-size="12" fill="#1a1a1a" font-weight="700" text-anchor="middle">1</text>
+<rect x="54.0" y="300.0" width="640.0" height="26.0" rx="0" fill="#eceff3" stroke="#9aa5b1" stroke-width="1"/>
+<text x="64.0" y="317.0" font-size="8.5" fill="#5d6673" font-weight="700">ID</text>
+<text x="139.9" y="317.0" font-size="8.5" fill="#5d6673" font-weight="700">PROYECTO</text>
+<text x="356.9" y="317.0" font-size="8.5" fill="#5d6673" font-weight="700">ÁREA</text>
+<text x="476.2" y="317.0" font-size="8.5" fill="#5d6673" font-weight="700">ESTADO</text>
+<text x="573.8" y="317.0" font-size="8.5" fill="#5d6673" font-weight="700">ACCIONES</text>
+<rect x="54.0" y="326.0" width="640.0" height="26.0" rx="0" fill="#fafbfc" stroke="#dde3ea" stroke-width="1"/>
+<text x="64.0" y="343.0" font-size="9.5" fill="#1a1a1a" font-weight="700">PRY-04</text>
+<text x="139.9" y="343.0" font-size="9.5" fill="#1a1a1a" font-weight="400">Vinculación con el Medio 2026</text>
+<text x="356.9" y="343.0" font-size="9.5" fill="#1a1a1a" font-weight="400">Comunidad</text>
+<text x="476.2" y="343.0" font-size="9.5" fill="#1a1a1a" font-weight="400">Activo</text>
+<text x="573.8" y="343.0" font-size="9.5" fill="#1a1a1a" font-weight="400"></text>
+<rect x="54.0" y="352.0" width="640.0" height="26.0" rx="0" fill="#ffffff" stroke="#dde3ea" stroke-width="1"/>
+<text x="64.0" y="369.0" font-size="9.5" fill="#1a1a1a" font-weight="700">PRY-05</text>
+<text x="139.9" y="369.0" font-size="9.5" fill="#1a1a1a" font-weight="400">Alfabetización digital adultos</text>
+<text x="356.9" y="369.0" font-size="9.5" fill="#1a1a1a" font-weight="400">Educación</text>
+<text x="476.2" y="369.0" font-size="9.5" fill="#1a1a1a" font-weight="400">Planificado</text>
+<text x="573.8" y="369.0" font-size="9.5" fill="#1a1a1a" font-weight="400"></text>
+<rect x="54.0" y="378.0" width="640.0" height="26.0" rx="0" fill="#fafbfc" stroke="#dde3ea" stroke-width="1"/>
+<text x="64.0" y="395.0" font-size="9.5" fill="#1a1a1a" font-weight="700">PRY-06</text>
+<text x="139.9" y="395.0" font-size="9.5" fill="#1a1a1a" font-weight="400">Huertos urbanos CITT</text>
+<text x="356.9" y="395.0" font-size="9.5" fill="#1a1a1a" font-weight="400">Medioambiente</text>
+<text x="476.2" y="395.0" font-size="9.5" fill="#1a1a1a" font-weight="400">Finalizado</text>
+<text x="573.8" y="395.0" font-size="9.5" fill="#1a1a1a" font-weight="400"></text>
+<rect x="571.8" y="330.0" width="46.0" height="18.0" rx="3" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1"/>
+<text x="594.8" y="342.1" font-size="8.5" fill="#1a1a1a" font-weight="700" text-anchor="middle">Editar</text>
+<rect x="621.8" y="330.0" width="50.0" height="18.0" rx="3" fill="#f8cecc" stroke="#b85450" stroke-width="1"/>
+<text x="646.8" y="342.1" font-size="8.5" fill="#1a1a1a" font-weight="700" text-anchor="middle">Eliminar</text>
+<rect x="571.8" y="356.0" width="46.0" height="18.0" rx="3" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1"/>
+<text x="594.8" y="368.1" font-size="8.5" fill="#1a1a1a" font-weight="700" text-anchor="middle">Editar</text>
+<rect x="621.8" y="356.0" width="50.0" height="18.0" rx="3" fill="#f8cecc" stroke="#b85450" stroke-width="1"/>
+<text x="646.8" y="368.1" font-size="8.5" fill="#1a1a1a" font-weight="700" text-anchor="middle">Eliminar</text>
+<rect x="571.8" y="382.0" width="46.0" height="18.0" rx="3" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1"/>
+<text x="594.8" y="394.1" font-size="8.5" fill="#1a1a1a" font-weight="700" text-anchor="middle">Editar</text>
+<rect x="621.8" y="382.0" width="50.0" height="18.0" rx="3" fill="#f8cecc" stroke="#b85450" stroke-width="1"/>
+<text x="646.8" y="394.1" font-size="8.5" fill="#1a1a1a" font-weight="700" text-anchor="middle">Eliminar</text>
+<circle cx="44.00" cy="339.00" r="11.00" fill="#ffe6cc" stroke="#d79b00" stroke-width="1.2"/>
+<text x="44.0" y="343.0" font-size="12" fill="#1a1a1a" font-weight="700" text-anchor="middle">2</text>
+<circle cx="44.00" cy="391.00" r="11.00" fill="#ffe6cc" stroke="#d79b00" stroke-width="1.2"/>
+<text x="44.0" y="395.0" font-size="12" fill="#1a1a1a" font-weight="700" text-anchor="middle">3</text>
+<text x="54.0" y="424.0" font-size="9.5" fill="#5d6673" font-weight="400">3 de 4 proyectos · página 1</text>
+<rect x="54.0" y="444.0" width="640.0" height="382.0" rx="3" fill="#ffffff" stroke="#666666" stroke-width="1"/>
+<text x="68.0" y="468.0" font-size="11.5" fill="#1a1a1a" font-weight="700">Editar proyecto PRY-04</text>
+<text x="68.0" y="484.0" font-size="9" fill="#5d6673" font-weight="400">El mismo formulario sirve para crear</text>
+<text x="68.0" y="513.0" font-size="9.5" fill="#5d6673" font-weight="700">Nombre del proyecto</text>
+<rect x="68.0" y="518.0" width="612.0" height="30.0" rx="2" fill="#ffffff" stroke="#9aa5b1" stroke-width="1"/>
+<text x="76.0" y="536.5" font-size="10.5" fill="#1a1a1a" font-weight="400">Vinculación con el Medio 2026</text>
+<text x="68.0" y="561.0" font-size="9.5" fill="#5d6673" font-weight="700">Descripción</text>
+<rect x="68.0" y="566.0" width="612.0" height="30.0" rx="2" fill="#ffffff" stroke="#9aa5b1" stroke-width="1"/>
+<text x="76.0" y="584.5" font-size="10.5" fill="#1a1a1a" font-weight="400">Talleres comunitarios del semestre</text>
+<text x="68.0" y="609.0" font-size="9.5" fill="#5d6673" font-weight="700">Área temática</text>
+<rect x="68.0" y="614.0" width="612.0" height="30.0" rx="2" fill="#ffffff" stroke="#9aa5b1" stroke-width="1"/>
+<text x="76.0" y="632.5" font-size="10.5" fill="#1a1a1a" font-weight="400">Comunidad</text>
+<text x="68.0" y="657.0" font-size="9.5" fill="#5d6673" font-weight="700">Unidad vecinal</text>
+<rect x="68.0" y="662.0" width="612.0" height="30.0" rx="2" fill="#ffffff" stroke="#9aa5b1" stroke-width="1"/>
+<text x="76.0" y="680.5" font-size="10.5" fill="#1a1a1a" font-weight="400">UV 12 Los Castaños</text>
+<text x="68.0" y="705.0" font-size="9.5" fill="#5d6673" font-weight="700">Inicio</text>
+<rect x="68.0" y="710.0" width="612.0" height="30.0" rx="2" fill="#ffffff" stroke="#9aa5b1" stroke-width="1"/>
+<text x="76.0" y="728.5" font-size="10.5" fill="#1a1a1a" font-weight="400">01-03-2026</text>
+<text x="68.0" y="753.0" font-size="9.5" fill="#5d6673" font-weight="700">Término</text>
+<rect x="68.0" y="758.0" width="612.0" height="30.0" rx="2" fill="#ffffff" stroke="#9aa5b1" stroke-width="1"/>
+<text x="76.0" y="776.5" font-size="10.5" fill="#1a1a1a" font-weight="400">15-12-2026</text>
+<text x="68.0" y="801.0" font-size="9.5" fill="#5d6673" font-weight="700">Estado</text>
+<rect x="68.0" y="806.0" width="612.0" height="30.0" rx="2" fill="#ffffff" stroke="#9aa5b1" stroke-width="1"/>
+<text x="76.0" y="824.5" font-size="10.5" fill="#1a1a1a" font-weight="400">Activo</text>
+<rect x="68.0" y="852.0" width="300.0" height="32.0" rx="3" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1"/>
+<text x="218.0" y="871.8" font-size="10.5" fill="#1a1a1a" font-weight="700" text-anchor="middle">Guardar</text>
+<rect x="380.0" y="852.0" width="300.0" height="32.0" rx="3" fill="#ffffff" stroke="#9aa5b1" stroke-width="1"/>
+<text x="530.0" y="871.8" font-size="10.5" fill="#1a1a1a" font-weight="400" text-anchor="middle">Cancelar</text>
+<circle cx="704.00" cy="868.00" r="11.00" fill="#ffe6cc" stroke="#d79b00" stroke-width="1.2"/>
+<text x="704.0" y="872.0" font-size="12" fill="#1a1a1a" font-weight="700" text-anchor="middle">4</text>
+<rect x="54.0" y="848.0" width="294.4" height="104.0" rx="3" fill="#f8cecc" stroke="#b85450" stroke-width="1"/>
+<text x="68.0" y="874.0" font-size="11.5" fill="#1a1a1a" font-weight="700">¿Eliminar PRY-06?</text>
+<text x="68.0" y="892.0" font-size="9.5" fill="#5d6673" font-weight="400">409 si el proyecto tiene talleres</text>
+<text x="68.0" y="906.0" font-size="9.5" fill="#5d6673" font-weight="400">asociados: no se puede borrar.</text>
+<rect x="68.0" y="916.0" width="96.0" height="26.0" rx="3" fill="#f8cecc" stroke="#b85450" stroke-width="1"/>
+<text x="116.0" y="932.6" font-size="10" fill="#1a1a1a" font-weight="700" text-anchor="middle">Eliminar</text>
+<rect x="172.0" y="916.0" width="96.0" height="26.0" rx="3" fill="#ffffff" stroke="#9aa5b1" stroke-width="1"/>
+<text x="220.0" y="932.6" font-size="10" fill="#1a1a1a" font-weight="400" text-anchor="middle">Cancelar</text>
+<circle cx="44.00" cy="929.00" r="11.00" fill="#ffe6cc" stroke="#d79b00" stroke-width="1.2"/>
+<text x="44.0" y="933.0" font-size="12" fill="#1a1a1a" font-weight="700" text-anchor="middle">5</text>
+<rect x="54.0" y="966.0" width="640.0" height="104.0" rx="3" fill="#e1d5e7" stroke="#9673a6" stroke-width="1"/>
+<text x="68.0" y="988.0" font-size="10.5" fill="#1a1a1a" font-weight="700">Qué llama cada botón (API en EC2)</text>
+<text x="68.0" y="1012.0" font-size="9.5" fill="#1a1a1a" font-weight="700">Listar</text>
+<text x="120.0" y="1012.0" font-size="9.5" fill="#5d6673" font-weight="400" font-family="Consolas, 'Courier New', monospace">GET /api/proyectos</text>
+<text x="68.0" y="1032.0" font-size="9.5" fill="#1a1a1a" font-weight="700">Crear</text>
+<text x="120.0" y="1032.0" font-size="9.5" fill="#5d6673" font-weight="400" font-family="Consolas, 'Courier New', monospace">POST /api/proyectos</text>
+<text x="374.0" y="1012.0" font-size="9.5" fill="#1a1a1a" font-weight="700">Editar</text>
+<text x="426.0" y="1012.0" font-size="9.5" fill="#5d6673" font-weight="400" font-family="Consolas, 'Courier New', monospace">PUT /api/proyectos/:id</text>
+<text x="374.0" y="1032.0" font-size="9.5" fill="#1a1a1a" font-weight="700">Eliminar</text>
+<text x="426.0" y="1032.0" font-size="9.5" fill="#5d6673" font-weight="400" font-family="Consolas, 'Courier New', monospace">DELETE /api/proyectos/:id</text>
+<text x="68.0" y="1058.0" font-size="9" fill="#5d6673" font-weight="400">Todas con el token de Cognito en la cabecera Authorization.</text>
+<text x="812.0" y="104.0" font-size="12" fill="#5d6673" font-weight="700">Referencias del dibujo</text>
+<circle cx="823.00" cy="129.00" r="10.00" fill="#ffe6cc" stroke="#d79b00" stroke-width="1.2"/>
+<text x="823.0" y="133.0" font-size="12" fill="#1a1a1a" font-weight="700" text-anchor="middle">1</text>
+<text x="840.0" y="127.0" font-size="10.5" fill="#1a1a1a" font-weight="700">C de crear</text>
+<text x="840.0" y="142.0" font-size="10" fill="#5d6673" font-weight="400">Abre el formulario vacío y</text>
+<text x="840.0" y="155.0" font-size="10" fill="#5d6673" font-weight="400">hace POST al guardar.</text>
+<circle cx="823.00" cy="183.00" r="10.00" fill="#ffe6cc" stroke="#d79b00" stroke-width="1.2"/>
+<text x="823.0" y="187.0" font-size="12" fill="#1a1a1a" font-weight="700" text-anchor="middle">2</text>
+<text x="840.0" y="181.0" font-size="10.5" fill="#1a1a1a" font-weight="700">R de leer</text>
+<text x="840.0" y="196.0" font-size="10" fill="#5d6673" font-weight="400">La tabla es un GET con</text>
+<text x="840.0" y="209.0" font-size="10" fill="#5d6673" font-weight="400">paginado.</text>
+<circle cx="823.00" cy="237.00" r="10.00" fill="#ffe6cc" stroke="#d79b00" stroke-width="1.2"/>
+<text x="823.0" y="241.0" font-size="12" fill="#1a1a1a" font-weight="700" text-anchor="middle">3</text>
+<text x="840.0" y="235.0" font-size="10.5" fill="#1a1a1a" font-weight="700">U de actualizar</text>
+<text x="840.0" y="250.0" font-size="10" fill="#5d6673" font-weight="400">Editar carga la fila en el</text>
+<text x="840.0" y="263.0" font-size="10" fill="#5d6673" font-weight="400">formulario y hace PUT.</text>
+<circle cx="823.00" cy="291.00" r="10.00" fill="#ffe6cc" stroke="#d79b00" stroke-width="1.2"/>
+<text x="823.0" y="295.0" font-size="12" fill="#1a1a1a" font-weight="700" text-anchor="middle">4</text>
+<text x="840.0" y="289.0" font-size="10.5" fill="#1a1a1a" font-weight="700">Formulario único</text>
+<text x="840.0" y="304.0" font-size="10" fill="#5d6673" font-weight="400">Crear y editar comparten</text>
+<text x="840.0" y="317.0" font-size="10" fill="#5d6673" font-weight="400">campos y validaciones.</text>
+<circle cx="823.00" cy="345.00" r="10.00" fill="#ffe6cc" stroke="#d79b00" stroke-width="1.2"/>
+<text x="823.0" y="349.0" font-size="12" fill="#1a1a1a" font-weight="700" text-anchor="middle">5</text>
+<text x="840.0" y="343.0" font-size="10.5" fill="#1a1a1a" font-weight="700">D de eliminar</text>
+<text x="840.0" y="358.0" font-size="10" fill="#5d6673" font-weight="400">Rechaza con 409 si el</text>
+<text x="840.0" y="371.0" font-size="10" fill="#5d6673" font-weight="400">proyecto tiene talleres.</text>
+<path d="M 812.0 404.0 H 1120.0 L 1132.0 416.0 V 498.0 H 812.0 Z" fill="#fff2cc" stroke="#d6b656" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter"/>
+<path d="M 1120.0 404.0 V 416.0 H 1132.0 Z" fill="#ffffff" stroke="#d6b656" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" opacity="0.85"/>
+<text x="821.0" y="425.0" font-size="11" fill="#1a1a1a" font-weight="700">Qué cambia respecto al escritorio</text>
+<text x="821.0" y="441.0" font-size="11" fill="#1a1a1a" font-weight="400">El menú lateral pasa a pestañas</text>
+<text x="821.0" y="457.0" font-size="11" fill="#1a1a1a" font-weight="400">horizontales y las grillas bajan</text>
+<text x="821.0" y="473.0" font-size="11" fill="#1a1a1a" font-weight="400">a dos columnas.</text>
+<text x="821.0" y="489.0" font-size="11" fill="#1a1a1a" font-weight="400">Es la misma página, no otra.</text>
+</svg>

@@ -101,6 +101,9 @@ public class TallerService {
         return conteos;
     }
 
+    private static final java.util.Set<String> ROLES_VALIDOS =
+        java.util.Set.of("admin", "coordinador", "monitor", "participante");
+
     /** La geocerca es todo o nada: no sirve media coordenada. */
     private void validar(Taller input) {
         int definidos = (input.latitud != null ? 1 : 0)
@@ -109,6 +112,13 @@ public class TallerService {
         if (definidos != 0 && definidos != 3)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
                 "Completa latitud, longitud y radio de la geocerca");
+        if (input.rolesPermitidos != null && !input.rolesPermitidos.isBlank()) {
+            var invalidos = java.util.Arrays.stream(input.rolesPermitidos.split(","))
+                .map(String::trim).filter(r -> !ROLES_VALIDOS.contains(r)).toList();
+            if (!invalidos.isEmpty())
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "Rol de dominio desconocido: " + invalidos);
+        }
     }
 
     private static String limpiar(String valor) {

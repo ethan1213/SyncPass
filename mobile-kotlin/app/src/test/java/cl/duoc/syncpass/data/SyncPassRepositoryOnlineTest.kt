@@ -1,0 +1,250 @@
+package cl.duoc.syncpass.data
+
+import android.content.Context
+import androidx.test.core.app.ApplicationProvider
+import kotlinx.coroutines.runBlocking
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.ResponseBody.Companion.toResponseBody
+import org.junit.After
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNull
+import org.junit.Assert.assertTrue
+import org.junit.Before
+import org.junit.Test
+import org.junit.runner.RunWith
+import org.robolectric.RobolectricTestRunner
+import retrofit2.HttpException
+import retrofit2.Response
+
+private fun httpError(code: Int): HttpException =
+    HttpException(Response.error<Any>(code, "error".toResponseBody("text/plain".toMediaTypeOrNull())))
+
+/**
+ * Fake de [SyncPassApi]: cada metodo devuelve lo que el test deja preparado
+ * o lanza [errors] si corresponde, sin tocar la red real.
+ */
+private class FakeSyncPassApi : SyncPassApi {
+    var loginResult: LoginResult = LoginResult("access", "id", "refresh", 3600)
+    var registerResult: RegisterResult = RegisterResult(userConfirmed = false, destination = "e@x.cl")
+    var talleresResult: List<TallerDto> = emptyList()
+    var joinGuestResult: JoinResult = JoinResult("presente", "r1", "guest:abc", true)
+    var joinAccountResult: JoinResult = JoinResult("presente", "r2", "sub-1", false)
+    var recordingStatusResult: RecordingStatus = RecordingStatus(grabado = true, resumenDisponible = true, mensaje = "ok")
+    var syncResult: SyncResult = SyncResult(emptyList())
+    var bitacoraResult: BitacoraDto = BitacoraDto("contenido", "resumen", "2026-11-19", emptyList())
+    var respuestaResult: RespuestaBitacora = RespuestaBitacora("respuesta", 0, "cita")
+    var marcarPendienteResult: InscripcionDto = InscripcionDto(1, 1, "pendiente")
+    var misInscripcionesResult: List<InscripcionDto> = emptyList()
+
+    var errorOnJoinGuest: Throwable? = null
+    var errorOnJoinAccount: Throwable? = null
+    var errorOnTalleres: Throwable? = null
+
+    val loginCalls = mutableListOf<LoginRequest>()
+    val registerCalls = mutableListOf<RegisterRequest>()
+    val confirmCalls = mutableListOf<ConfirmRequest>()
+    val resendCalls = mutableListOf<UsernameRequest>()
+    val syncCalls = mutableListOf<SyncBatch>()
+
+    override suspend fun login(request: LoginRequest): LoginResult {
+        loginCalls += request
+        return loginResult
+    }
+    override suspend fun register(request: RegisterRequest): RegisterResult {
+        registerCalls += request
+        return registerResult
+    }
+    override suspend fun confirm(request: ConfirmRequest) { confirmCalls += request }
+    override suspend fun resend(request: UsernameRequest) { resendCalls += request }
+    override suspend fun talleres(): List<TallerDto> {
+        errorOnTalleres?.let { throw it }
+        return talleresResult
+    }
+    override suspend fun joinGuest(tallerId: Long, request: GuestJoinRequest): JoinResult {
+        errorOnJoinGuest?.let { throw it }
+        return joinGuestResult
+    }
+    override suspend fun recordingStatus(tallerId: Long): RecordingStatus = recordingStatusResult
+    override suspend fun joinAccount(tallerId: Long, authorization: String, location: JoinLocation): JoinResult {
+        errorOnJoinAccount?.let { throw it }
+        return joinAccountResult
+    }
+    override suspend fun sync(authorization: String, batch: SyncBatch): SyncResult {
+        syncCalls += batch
+        return syncResult
+    }
+    override suspend fun bitacora(tallerId: Long, authorization: String): BitacoraDto = bitacoraResult
+    override suspend fun preguntarBitacora(tallerId: Long, authorization: String, pregunta: PreguntaBitacora): RespuestaBitacora =
+        respuestaResult
+    override suspend fun marcarPendiente(tallerId: Long, authorization: String): InscripcionDto = marcarPendienteResult
+    override suspend fun misInscripciones(authorization: String): List<InscripcionDto> = misInscripcionesResult
+}
+
+/**
+ * Cobertura de las ramas EN LINEA de SyncPassRepository (login/registro,
+ * catalogo en vivo, sincronizacion exitosa y descartes HTTP 4xx) usando los
+ * dos puntos de inyeccion agregados a SyncPassRepository (injectedApi,
+ * injectedOnline). Complementa SyncPassRepositoryOfflineTest, que solo cubre
+ * las ramas sin conexion.
+ */
+@RunWith(RobolectricTestRunner::class)
+class SyncPassRepositoryOnlineTest {
+    private lateinit var context: Context
+    private lateinit var api: FakeSyncPassApi
+    private var online = true
+    private lateinit var repository: SyncPassRepository
+
+    @Before fun setup() {
+        context = ApplicationProvider.getApplicationContext()
+        context.deleteDatabase("syncpass.db")
+        context.getSharedPreferences("syncpass_guest", Context.MODE_PRIVATE).edit().clear().commit()
+        api = FakeSyncPassApi()
+        online = true
+        repository = SyncPassRepository(context, api, { online })
+    }
+
+    @After fun cleanup() { context.deleteDatabase("syncpass.db") }
+
+    @Test fun loginSuccessReturnsTokensAndForwardsCredentials() = runBlocking {
+        val result = repository.login("usuario", "clave")
+        assertEquals("access", result.accessToken)
+        assertEquals("usuario", api.loginCalls.single().username)
+    }
+
+    @Test fun registerSuccessForwardsRequest() = runBlocking {
+        val result = repository.register("usuario", "u@x.cl", "Nick", "clave")
+        assertEquals("e@x.cl", result.destination)
+        assertEquals("u@x.cl", api.registerCalls.single().email)
+    }
+
+    @Test fun confirmAndResendSuccessDoNotThrow() = runBlocking {
+        repository.confirm("usuario", "123456")
+        repository.resend("usuario")
+        assertEquals("123456", api.confirmCalls.single().code)
+        assertEquals("usuario", api.resendCalls.single().username)
+    }
+
+    @Test fun talleresSuccessPersistsRowsInRoom() = runBlocking {
+        api.talleresResult = listOf(TallerDto(id = 1, title = "Huerto", descripcion = null, area = null,
+            unidadVecinal = null, comuna = null, direccion = null, fechaHora = null,
+            docenteLider = null, cuposMaximos = 10))
+        val rows = repository.talleres()
+        assertEquals(1, rows.size)
+        assertEquals("Huerto", repository.cachedTalleres().single().title)
+    }
+
+    @Test fun catalogOnlineReturnsLiveRowsNotFromCache() = runBlocking {
+        api.talleresResult = listOf(TallerDto(id = 2, title = "Reciclaje", descripcion = null, area = null,
+            unidadVecinal = null, comuna = null, direccion = null, fechaHora = null,
+            docenteLider = null, cuposMaximos = 5))
+        val snapshot = repository.catalog()
+        assertFalse(snapshot.fromCache)
+        assertEquals("Reciclaje", snapshot.rows.single().title)
+    }
+
+    @Test fun catalogFallsBackToCacheWhenApiFailsEvenOnline() = runBlocking {
+        api.errorOnTalleres = RuntimeException("servidor caido")
+        val snapshot = repository.catalog()
+        assertTrue(snapshot.fromCache)
+        assertTrue(snapshot.rows.isEmpty())
+    }
+
+    @Test fun joinGuestOnlineCallsApiInsteadOfQueueing() = runBlocking {
+        val result = repository.joinGuest(7, "Ana")
+        assertEquals("presente", result.estado)
+        assertEquals(0, repository.pendingEntries())
+    }
+
+    @Test fun joinAccountOnlineCallsApiInsteadOfQueueing() = runBlocking {
+        val result = repository.joinAccount(8, "token-abc")
+        assertEquals("sub-1", result.participante)
+        assertEquals(0, repository.pendingEntries())
+    }
+
+    @Test fun marcarPendienteYMisInscripcionesForwardToApiWhenOnline() = runBlocking {
+        api.marcarPendienteResult = InscripcionDto(7, 3, "pendiente")
+        val creada = repository.marcarPendiente(3, "token")
+        assertEquals("pendiente", creada.estado)
+
+        api.misInscripcionesResult = listOf(InscripcionDto(7, 3, "pendiente"))
+        val mias = repository.misInscripciones("token")
+        assertEquals(1, mias.size)
+        assertEquals(3L, mias.first().tallerId)
+    }
+
+    @Test fun recordingStatusAndBitacoraForwardToApiWhenOnline() = runBlocking {
+        assertTrue(repository.recordingStatus(1).grabado)
+        assertEquals("contenido", repository.bitacora(1, "token").contenido)
+        assertEquals("respuesta", repository.preguntarBitacora(1, "token", "hola?").respuesta)
+    }
+
+    @Test fun syncSendsPendingBatchAndRemovesOnlyAcceptedRows() = runBlocking {
+        repository.queue(PendingRecord(owner = "coord-1", tipo = "encuesta", tallerId = 1, rating = 5))
+        val aceptado = PendingRecord(owner = "coord-1", tipo = "encuesta", tallerId = 2, rating = 4)
+        repository.queue(aceptado)
+        api.syncResult = SyncResult(acceptedIds = listOf(aceptado.id))
+
+        val total = repository.sync("coord-1", "token-xyz")
+
+        assertEquals(1, total)
+        val restante = repository.pending("coord-1")
+        assertEquals(1, restante.size)
+        assertEquals(1L, restante.first().tallerId)
+    }
+
+    @Test fun flushEntriesOnlineSendsGuestEntryAndRemovesIt() = runBlocking {
+        online = false
+        repository.joinGuest(3, "Vecino")
+        online = true
+        assertEquals(1, repository.pendingEntries())
+
+        val result = repository.flushEntries(null)
+
+        assertEquals(1, result.enviados)
+        assertEquals(0, result.descartados)
+        assertEquals(0, repository.pendingEntries())
+    }
+
+    @Test fun flushEntriesOnlineSendsAccountEntryOnlyWhenTokenPresent() = runBlocking {
+        online = false
+        repository.joinAccount(4, "ignorado-offline")
+        online = true
+
+        val sinToken = repository.flushEntries(null)
+        assertEquals(0, sinToken.enviados)
+        assertEquals(1, repository.pendingEntries())
+
+        val conToken = repository.flushEntries("token-real")
+        assertEquals(1, conToken.enviados)
+        assertEquals(0, repository.pendingEntries())
+    }
+
+    @Test fun flushEntriesDiscardsRowOnDefinitiveHttpRejection() = runBlocking {
+        online = false
+        repository.joinGuest(5, "Rechazado")
+        online = true
+        api.errorOnJoinGuest = httpError(409)
+
+        val result = repository.flushEntries(null)
+
+        assertEquals(0, result.enviados)
+        assertEquals(1, result.descartados)
+        assertTrue(result.motivo!!.contains("Taller #5"))
+        assertEquals(0, repository.pendingEntries())
+    }
+
+    @Test fun flushEntriesKeepsRowWhenServerRejectionIsRetryable() = runBlocking {
+        online = false
+        repository.joinGuest(6, "Reintentable")
+        online = true
+        api.errorOnJoinGuest = httpError(401)
+
+        val result = repository.flushEntries(null)
+
+        assertEquals(0, result.enviados)
+        assertEquals(0, result.descartados)
+        assertNull(result.motivo)
+        assertEquals(1, repository.pendingEntries())
+    }
+}

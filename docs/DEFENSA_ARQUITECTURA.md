@@ -18,11 +18,11 @@ localmente (Room en Android, IndexedDB en la web) para seguir operando sin seña
 
 | Concepto | Android (Kotlin) | Web (React) | Backend (Spring Boot) |
 |---|---|---|---|
-| **View** | `ui/screens/*Screen.kt` (`@Composable`) | `src/pages/*.jsx` | — (no renderiza HTML) |
-| **ViewModel** | `ui/screens/*ViewModel.kt` (7) | hooks + `SessionProvider.tsx` | — |
-| **Controller** | `MainActivity.kt` → `SyncPassNavigation` (NavHost) | `App.jsx` (router) | `*/<Dominio>Controller.java` |
+| **View** | `ui/screens/*Screen.kt` (`@Composable`) | `src/pages/*.tsx` + `components/atoms`/`molecules`/`organisms` | — (no renderiza HTML) |
+| **ViewModel** | `ui/screens/*ViewModel.kt` (7) | `hooks/useRoles.ts` + `contexts/` (`SessionProvider.tsx`) | — |
+| **Controller** | `MainActivity.kt` → `SyncPassNavigation` (NavHost) | `App.tsx` (router con Wouter) | `*/<Dominio>Controller.java` |
 | **Service** | el repositorio cumple ese rol | `clients/api.ts` | `*/<Dominio>Service.java` (7) |
-| **Repository** | `data/SyncPassRepository.kt` | `data/localDb.js` + `clients/api.ts` | `TallerRepository`, `ProyectoRepository` |
+| **Repository** | `data/SyncPassRepository.kt` | `data/localDb.ts` + `clients/api.ts` | `TallerRepository`, `ProyectoRepository` |
 | **Model / entidades** | `TallerDto`, `PendingRecord`, `PendingEntry` | JSON de la API | `Taller`, `Proyecto` (`@Entity`) |
 | **DAO / fuente local** | `PendingDao`, `TallerDao`, `IngresoDao` (Room) | IndexedDB (`idb`) | JPA y `JdbcTemplate` |
 | **Red** | Retrofit + Gson (`SyncPassApi`) | `fetch` | — |
@@ -40,6 +40,8 @@ cl.duoc.syncpass
 ├── ingreso/    IngresoController · IngresoService
 ├── bitacora/   BitacoraController · BitacoraService · BitacoraTexto
 ├── grabacion/  GrabacionController · GrabacionService
+├── inscripcion/ Inscripcion · InscripcionController · InscripcionService (RF12: preinscripción)
+├── perfil/     UsuarioZona · UsuarioZonaController (RF12: zona declarada por cuenta)
 └── sync/       SyncController · SyncService
 ```
 
@@ -96,8 +98,8 @@ La web es **CSR (Client Side Rendering)**: Vite entrega un `index.html` casi
 vacío y el navegador arma la interfaz con JavaScript.
 
 - `web-react/src/main.tsx` monta el árbol de React en el navegador.
-- `App.jsx` resuelve las rutas en el cliente; no hay petición al servidor al
-  cambiar de pantalla.
+- `App.tsx` resuelve las rutas en el cliente con Wouter (`Switch`/`Route`); no
+  hay petición al servidor al cambiar de pantalla.
 - Vercel sirve archivos estáticos; los datos llegan aparte por `fetch`.
 
 **Por qué CSR y no SSR:** la app es para terreno. Una vez cargada funciona con lo
@@ -179,6 +181,18 @@ motivo en vez de reintentar para siempre.
    igual; es una inconsistencia de estilo heredada.
 4. **La web no es MVVM**: usa hooks y contexto de React, que es el patrón propio
    de esa plataforma.
+5. **El invitado (vecino sin cuenta) no tiene un QR propio para que lo escaneen.**
+   `SP1:<UUID>` solo se genera a partir de `AuthSession.participantId` (el `sub`
+   de Cognito, ver `HomeScreen.kt:172`), así que esa tarjeta "Mi QR" únicamente
+   aparece con sesión iniciada. El vecino se acredita por el flujo autoservicio
+   (`GuestQrScreen` → `EntryViewModel.joinGuest` → `POST /ingreso/invitado`,
+   idempotente por `guest:<deviceId>`), no porque alguien le escanee un código
+   personal. El mockup de la Vista 3 muestra "Vecino Participante A · Acreditado
+   QR" como la experiencia ideal; la versión actual la cubre con un formulario de
+   nombre en vez de un QR personal, documentado en `ALCANCE.md` → Pendientes
+   explícitos. Es una simplificación deliberada por tiempo, no un bug: implementar
+   un QR de invitado exigiría cambiar el formato de `participante` en ambas colas
+   sin romper la idempotencia existente.
 
 ---
 
@@ -198,3 +212,13 @@ motivo en vez de reintentar para siempre.
   `SELECT ... FOR UPDATE` al contar cupos.
 - *¿Cómo pruebas el backend?* `./mvnw test`: 22 pruebas con H2 en memoria y
   Flyway aplicando las mismas 6 migraciones que producción.
+- *¿Por qué el invitado no se registra con un token?* Porque es justo el caso
+  que motiva el proyecto: el vecino de la unidad vecinal no tiene cuenta
+  institucional. `/ingreso/invitado` es público a propósito y usa un UUID que
+  el propio teléfono genera y conserva (`deviceId()`), no una identidad de
+  Cognito.
+- *¿Qué pasa si el invitado pierde señal justo al acreditarse?* Queda en
+  `PendingEntry` (tabla `ingresos`) con su nombre y GPS ya capturados; se envía
+  solo al reconectar o al presionar "Sincronizar ahora" (ambos caminos llaman a
+  `flushEntries`, ver §7) y el backend lo acepta una sola vez por ser idempotente
+  en `(taller, "guest:"+deviceId)`.

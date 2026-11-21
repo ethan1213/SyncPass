@@ -20,8 +20,8 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from drawio import Lienzo, panel_notas, P, TINTA, SUAVE, ancho  # noqa: E402
 from vistas_roles import (MENUS, GRUPOS, PIES, PERFILES, web_rol_admin, web_rol_coordinador,  # noqa: E402
                           web_rol_monitor, mov_rol_monitor, web_rol_participante,
-                          mov_rol_participante, web_crud_talleres, web_crud_local,
-                          mov_crud_local)
+                          mov_rol_participante, web_crud_talleres, web_crud_proyectos,
+                          web_crud_local, mov_crud_local)
 
 RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SALIDA = os.path.join(RAIZ, "img", "mockups")
@@ -685,6 +685,9 @@ VISTAS = [
     dict(slug="crud-talleres", titulo="CRUD por API · Talleres", activo="Talleres",
          menu="coordinador", web=web_crud_talleres, mov=None,
          url="syncpass.duocuc.cl/talleres", formatos=("web", "tablet")),
+    dict(slug="crud-proyectos", titulo="CRUD por API · Proyectos", activo="Panel",
+         menu="coordinador", web=web_crud_proyectos, mov=None,
+         url="syncpass.duocuc.cl/proyectos", formatos=("web", "tablet")),
     dict(slug="crud-local", titulo="CRUD local · Borradores de encuesta", activo="Encuestas",
          menu="monitor", web=web_crud_local, mov=mov_crud_local,
          url="syncpass.duocuc.cl/encuestas/borradores", nav=2, badge=("Sin conexión", False),

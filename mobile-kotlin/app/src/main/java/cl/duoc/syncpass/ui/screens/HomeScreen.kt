@@ -48,7 +48,8 @@ fun HomeScreen(
     onNavigateToScanner: (Long) -> Unit,
     onNavigateToSurvey: (Long) -> Unit,
     onNavigateToBitacora: (Long) -> Unit,
-    onNavigateToLogin: () -> Unit
+    onNavigateToLogin: () -> Unit,
+    onNavigateToMisInscripciones: () -> Unit = {}
 ) {
     val formato = LocalFormatoPantalla.current
     val vm = syncPassViewModel(repository) { HomeViewModel(it) }
@@ -111,14 +112,26 @@ fun HomeScreen(
                             modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
                         )
                     }
-                    IconButton(
-                        onClick = onNavigateToLogin,
-                        modifier = Modifier.sizeIn(
-                            minWidth = AREA_TACTIL_MINIMA,
-                            minHeight = AREA_TACTIL_MINIMA
-                        )
-                    ) {
-                        Text("Cuenta", fontSize = 12.sp, color = MaterialTheme.colorScheme.primary)
+                    var mostrarMenuCuenta by remember { mutableStateOf(false) }
+                    Box {
+                        IconButton(
+                            onClick = { if (owner == null) onNavigateToLogin() else mostrarMenuCuenta = true },
+                            modifier = Modifier.sizeIn(
+                                minWidth = AREA_TACTIL_MINIMA,
+                                minHeight = AREA_TACTIL_MINIMA
+                            )
+                        ) {
+                            Text("Cuenta", fontSize = 12.sp, color = MaterialTheme.colorScheme.primary)
+                        }
+                        DropdownMenu(expanded = mostrarMenuCuenta, onDismissRequest = { mostrarMenuCuenta = false }) {
+                            DropdownMenuItem(
+                                text = { Text("Cerrar sesión") },
+                                onClick = {
+                                    mostrarMenuCuenta = false
+                                    AuthSession.signOut()
+                                }
+                            )
+                        }
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
@@ -168,7 +181,7 @@ fun HomeScreen(
                     else {
                         Text("Mi panel · ${AuthSession.roles.joinToString().ifBlank { "sin asignar" }}",
                             fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onBackground)
-                        if (message.isNotEmpty()) Text(message)
+                        TicketConfirmacion(message, state.ticket)
                         val qr = remember(owner) { makeQr("SP1:$owner") }
                         qr?.let { Image(it, contentDescription = "Mi QR de acreditación", modifier = Modifier.size(220.dp)) }
                         Text(if (state.waiting)
@@ -176,6 +189,9 @@ fun HomeScreen(
                         else "$pending registros pendientes de sincronización")
                         Button(onClick = { vm.sync() }, enabled = pending + state.entries > 0) {
                             Text("Sincronizar ahora")
+                        }
+                        TextButton(onClick = onNavigateToMisInscripciones) {
+                            Text("Mis talleres pendientes")
                         }
                     }
                     if (AuthSession.roles.any { it in listOf("admin","coordinador","monitor") })

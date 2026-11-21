@@ -32,6 +32,11 @@ public class Taller {
     @DecimalMin("-180.0") @DecimalMax("180.0") public Double longitud;
     @Min(10) @Max(5000) public Integer radioMetros;
 
+    /** CSV de roles Cognito que pueden ver/unirse (admin,coordinador,monitor,participante); nulo = abierto a todos. */
+    @Column(name = "roles_permitidos") @Size(max = 100) public String rolesPermitidos;
+    /** Unidad vecinal exigida para unirse; nulo = sin restriccion de zona. */
+    @Column(name = "zona_restringida") @Size(max = 120) public String zonaRestringida;
+
     /** Bloqueo optimista: evita que dos coordinadores se pisen al editar. */
     @Version public Long version;
 

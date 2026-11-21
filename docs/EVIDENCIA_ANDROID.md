@@ -24,7 +24,7 @@ ffprobe -v error -show_entries format=duration,size -show_entries stream=width,h
 | 37–52 s | Android y QR | Kotlin/Compose abre taller por cámara; ViewModel llama a Repository. |
 | 52–68 s | Android sin red | Room guarda asistencia pendiente; mostrar contador local. |
 | 68–80 s | Reconexión y web | Sincronizar por Retrofit y mostrar el cambio recibido por API en la web. |
-| 80–90 s | Arquitectura y cobertura | Señalar C1–C3 y porcentaje JaCoCo medido; no afirmar funciones que no se vieron. |
+| 80–90 s | Arquitectura y cobertura | Señalar C1–C3 y el porcentaje JaCoCo real: 19-11-2026, 88 pruebas, 84,8 % líneas (`jacocoFilteredTestReport`, `SyncPassRepository` 96,8 %); no afirmar funciones que no se vieron. |
 
 Grabar solo después de probar esos pasos. Si no se dispone del teléfono o sesión autorizada, dejar el archivo como pendiente y no enviar una demostración incompleta como si probara la integración móvil.
 

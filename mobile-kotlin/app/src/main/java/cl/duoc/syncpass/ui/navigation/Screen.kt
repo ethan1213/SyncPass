@@ -24,6 +24,9 @@ sealed class Screen(val route: String, val title: String) {
     object Survey : Screen("survey", "Encuesta de satisfacción")
     object Bitacora : Screen("bitacora", "Bitácora del taller")
 
+    /** RF12: talleres marcados "voy a asistir" (preinscripcion en el servidor). */
+    object MisInscripciones : Screen("mis-inscripciones", "Mis talleres pendientes")
+
     /** Centro de sincronizacion de la cola local (is_synced = 0). */
     object Sync : Screen("sync", "Sincronización")
 

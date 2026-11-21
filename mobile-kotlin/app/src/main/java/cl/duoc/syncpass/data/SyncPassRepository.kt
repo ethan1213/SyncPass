@@ -35,7 +35,11 @@ data class TallerDto(
     val unidadVecinal: String?, val comuna: String?, val direccion: String?,
     val fechaHora: String?, val docenteLider: String?, val cuposMaximos: Int,
     val latitud: Double? = null, val longitud: Double? = null, val radioMetros: Int? = null,
-    val inscritos: Int = 0
+    val inscritos: Int = 0,
+    /** CSV de roles Cognito que pueden unirse; null = abierto a todos (RF12). */
+    val rolesPermitidos: String? = null,
+    /** Unidad vecinal exigida para unirse; null = sin restriccion de zona (RF12). */
+    val zonaRestringida: String? = null
 )
 
 @Entity(tableName = "pending")
@@ -94,7 +98,7 @@ data class PendingEntry(
 }
 
 @Database(entities = [PendingRecord::class, TallerDto::class, PendingEntry::class],
-    version = 4, exportSchema = false)
+    version = 5, exportSchema = false)
 abstract class SyncPassDb : RoomDatabase() {
     abstract fun pending(): PendingDao
     abstract fun talleres(): TallerDao
@@ -130,6 +134,13 @@ private val entryQueueMigration = object : Migration(3, 4) {
     }
 }
 
+private val dominioMigration = object : Migration(4, 5) {
+    override fun migrate(db: SupportSQLiteDatabase) {
+        db.execSQL("ALTER TABLE talleres ADD COLUMN rolesPermitidos TEXT")
+        db.execSQL("ALTER TABLE talleres ADD COLUMN zonaRestringida TEXT")
+    }
+}
+
 private val geoMigration = object : Migration(2, 3) {
     override fun migrate(db: SupportSQLiteDatabase) {
         db.execSQL("ALTER TABLE talleres ADD COLUMN latitud REAL")
@@ -162,6 +173,8 @@ data class JoinLocation(val latitud: Double? = null, val longitud: Double? = nul
     val precisionMetros: Float? = null)
 data class JoinResult(val estado: String, val registroId: String, val participante: String, val invitado: Boolean)
 data class RecordingStatus(val grabado: Boolean, val resumenDisponible: Boolean, val mensaje: String)
+/** RF12: preinscripcion a un taller ("pendiente" hasta que una acreditacion real la pasa a "asistio"). */
+data class InscripcionDto(val id: Long, val tallerId: Long, val estado: String)
 
 /** Estado que devuelve la app cuando la asistencia quedo guardada sin conexion. */
 const val ESTADO_PENDIENTE = "pendiente_local"
@@ -199,28 +212,45 @@ interface SyncPassApi {
         @retrofit2.http.Path("tallerId") tallerId: Long,
         @Header("Authorization") authorization: String,
         @Body pregunta: PreguntaBitacora): RespuestaBitacora
+    @POST("api/eventos/{tallerId}/inscripcion") suspend fun marcarPendiente(
+        @Path("tallerId") tallerId: Long, @Header("Authorization") authorization: String): InscripcionDto
+    @GET("api/mis-inscripciones") suspend fun misInscripciones(
+        @Header("Authorization") authorization: String): List<InscripcionDto>
 }
 
-class SyncPassRepository(context: Context) {
+/**
+ * [injectedApi] e [injectedOnline] son las dos semillas de inyeccion de
+ * dependencias del repositorio: en produccion se omiten y se construyen el
+ * Retrofit real contra [BuildConfig.API_BASE_URL] y el [ConnectivityMonitor]
+ * del sistema; las pruebas unitarias pasan un fake de [SyncPassApi] y fuerzan
+ * el estado de conexion para ejercitar las ramas en linea (login/registro/
+ * catalogo/sync) sin tocar la red ni depender del shadow de Robolectric.
+ */
+class SyncPassRepository(
+    context: Context,
+    injectedApi: SyncPassApi? = null,
+    private val injectedOnline: (() -> Boolean)? = null,
+) {
     private val appContext = context.applicationContext
     private val preferences = context.applicationContext.getSharedPreferences("syncpass_guest", Context.MODE_PRIVATE)
     private val syncMutex = Mutex()
     private val entryMutex = Mutex()
     private val db = Room.databaseBuilder(context.applicationContext, SyncPassDb::class.java, "syncpass.db")
-        .addMigrations(catalogMigration, geoMigration, entryQueueMigration).build()
-    private val api = Retrofit.Builder().baseUrl(BuildConfig.API_BASE_URL)
+        .addMigrations(catalogMigration, geoMigration, entryQueueMigration, dominioMigration).build()
+    private val api = injectedApi ?: Retrofit.Builder().baseUrl(BuildConfig.API_BASE_URL)
         .client(OkHttpClient.Builder().build()).addConverterFactory(GsonConverterFactory.create()).build()
         .create(SyncPassApi::class.java)
     private val connectivity = ConnectivityMonitor(context)
+    private fun connected(): Boolean = injectedOnline?.invoke() ?: connectivity.isOnline()
 
     /** Cambios de conexion: la capa de presentacion reacciona a este flujo. */
     val online: Flow<Boolean> get() = connectivity.online
-    fun isOnline(): Boolean = connectivity.isOnline()
-    private fun requireNetwork() { if (!connectivity.isOnline()) throw OfflineException() }
+    fun isOnline(): Boolean = connected()
+    private fun requireNetwork() { if (!connected()) throw OfflineException() }
 
     /** Cognito exige red: sin ella se avisa y queda disponible el modo invitado. */
     private fun requireNetworkForAuth() {
-        if (!connectivity.isOnline()) throw OfflineException(
+        if (!connected()) throw OfflineException(
             "Sin conexión. Para iniciar sesión necesitas internet; mientras tanto puedes entrar como invitado con el código del taller.")
     }
 
@@ -262,7 +292,7 @@ class SyncPassRepository(context: Context) {
         val identifier = deviceId()
         val point = locationFor(tallerId)
         preferences.edit().putString("name", name.trim()).apply()
-        if (!connectivity.isOnline()) {
+        if (!connected()) {
             db.ingresos().save(PendingEntry(tallerId = tallerId, modo = "invitado",
                 dispositivoId = identifier, nombre = name.trim(),
                 latitud = point.latitud, longitud = point.longitud,
@@ -276,7 +306,7 @@ class SyncPassRepository(context: Context) {
     /** Igual que [joinGuest], pero con la cuenta ya iniciada. */
     suspend fun joinAccount(tallerId: Long, token: String): JoinResult {
         val point = locationFor(tallerId)
-        if (!connectivity.isOnline()) {
+        if (!connected()) {
             db.ingresos().save(PendingEntry(tallerId = tallerId, modo = "cuenta",
                 dispositivoId = deviceId(), latitud = point.latitud,
                 longitud = point.longitud, precisionMetros = point.precisionMetros))
@@ -295,7 +325,7 @@ class SyncPassRepository(context: Context) {
      * reintentar para siempre algo que nunca va a entrar.
      */
     suspend fun flushEntries(token: String?): FlushResult = entryMutex.withLock {
-        if (!connectivity.isOnline()) return FlushResult(0, 0)
+        if (!connected()) return FlushResult(0, 0)
         var enviados = 0
         var descartados = 0
         var motivo: String? = null
@@ -334,7 +364,7 @@ class SyncPassRepository(context: Context) {
      * copia local; sin conexion responde Room sin golpear la red.
      */
     suspend fun catalog(): CatalogSnapshot {
-        if (!connectivity.isOnline()) return CatalogSnapshot(db.talleres().all(), fromCache = true)
+        if (!connected()) return CatalogSnapshot(db.talleres().all(), fromCache = true)
         return try {
             CatalogSnapshot(talleres(), fromCache = false)
         } catch (_: Exception) {
@@ -375,6 +405,15 @@ class SyncPassRepository(context: Context) {
     suspend fun preguntarBitacora(tallerId: Long, token: String, pregunta: String): RespuestaBitacora {
         requireNetwork()
         return api.preguntarBitacora(tallerId, "Bearer $token", PreguntaBitacora(pregunta))
+    }
+    /** RF12: declara que se planea asistir. Exige red; no se encola offline (es una preferencia, no una acreditacion). */
+    suspend fun marcarPendiente(tallerId: Long, token: String): InscripcionDto {
+        requireNetwork()
+        return api.marcarPendiente(tallerId, "Bearer $token")
+    }
+    suspend fun misInscripciones(token: String): List<InscripcionDto> {
+        requireNetwork()
+        return api.misInscripciones("Bearer $token")
     }
     suspend fun queue(row: PendingRecord) = db.pending().save(row)
     suspend fun sync(owner: String, accessToken: String): Int = syncMutex.withLock {

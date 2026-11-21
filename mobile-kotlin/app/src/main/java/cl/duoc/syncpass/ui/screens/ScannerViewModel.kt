@@ -18,7 +18,8 @@ data class ScannerUiState(
     val code: String = "",
     val message: String = "",
     val exigeGeocerca: Boolean = false,
-    val busy: Boolean = false
+    val busy: Boolean = false,
+    val ticket: TicketEstado = TicketEstado.NINGUNO
 ) {
     val codigoValido: Boolean get() = code.matches(PATRON_PARTICIPANTE)
 }
@@ -41,11 +42,11 @@ class ScannerViewModel(private val repository: SyncPassRepository) : ViewModel()
         _state.update { it.copy(exigeGeocerca = exige) }
     }
 
-    fun onCode(valor: String) = _state.update { it.copy(code = valor.trim()) }
+    fun onCode(valor: String) = _state.update { it.copy(code = valor.trim(), ticket = TicketEstado.NINGUNO) }
 
     /** El QR leido por la camara entra por aqui, igual que el tecleado a mano. */
     fun onQrLeido(valor: String) = _state.update {
-        it.copy(code = valor, message = "QR leído. Confirma la marcación.")
+        it.copy(code = valor, message = "QR leído. Confirma la marcación.", ticket = TicketEstado.NINGUNO)
     }
 
     fun onCamaraNoDisponible() = _state.update {
@@ -77,12 +78,13 @@ class ScannerViewModel(private val repository: SyncPassRepository) : ViewModel()
                 .onSuccess {
                     _state.update {
                         it.copy(busy = false, code = "",
-                            message = "Asistencia guardada en el dispositivo. Se envía al recuperar la conexión.")
+                            message = "Asistencia guardada en el dispositivo. Se envía al recuperar la conexión.",
+                            ticket = TicketEstado.GUARDADO_LOCAL)
                     }
                     AuthSession.refreshed()
                 }
                 .onFailure { error ->
-                    _state.update { it.copy(busy = false, message = mensajeDeError(error)) }
+                    _state.update { it.copy(busy = false, message = mensajeDeError(error), ticket = TicketEstado.ERROR) }
                 }
         }
     }

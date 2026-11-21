@@ -16,7 +16,8 @@ data class HomeUiState(
     val message: String = "",
     val offline: Boolean = false,
     val waiting: Boolean = false,
-    val entries: Int = 0
+    val entries: Int = 0,
+    val ticket: TicketEstado = TicketEstado.NINGUNO
 )
 
 class HomeViewModel(private val repository: SyncPassRepository) : ViewModel() {
@@ -45,8 +46,9 @@ class HomeViewModel(private val repository: SyncPassRepository) : ViewModel() {
                 _state.update { it.copy(offline = true, entries = enEspera,
                     waiting = enEspera + it.pending > 0,
                     message = if (enEspera + it.pending > 0)
-                        "Sin conexión. ${enEspera + it.pending} registro(s) esperan el enlace para enviarse."
-                    else "Sin conexión. Trabajas con los datos guardados en el teléfono.") }
+                        "Guardado en el teléfono. Se enviará automáticamente al recuperar la conexión (${enEspera + it.pending} registro(s))."
+                    else "Sin conexión. Trabajas con los datos guardados en el teléfono.",
+                    ticket = if (enEspera + it.pending > 0) TicketEstado.GUARDADO_LOCAL else TicketEstado.NINGUNO) }
                 return@collect
             }
             refreshCatalog().join()
@@ -65,7 +67,7 @@ class HomeViewModel(private val repository: SyncPassRepository) : ViewModel() {
         val pendientes = if (owner == null) emptyList()
             else runCatching { repository.pending(owner) }.getOrNull().orEmpty()
         if (enCola == 0 && pendientes.isEmpty()) {
-            _state.update { it.copy(pending = pendientes.size, entries = 0, waiting = false) }
+            _state.update { it.copy(pending = pendientes.size, entries = 0, waiting = false, ticket = TicketEstado.NINGUNO) }
             return
         }
         _state.update { it.copy(waiting = true,
@@ -86,9 +88,11 @@ class HomeViewModel(private val repository: SyncPassRepository) : ViewModel() {
         val quedanEntries = runCatching { repository.pendingEntries() }.getOrDefault(0)
         val quedanPending = if (owner == null) 0
             else runCatching { repository.pending(owner) }.getOrNull()?.size ?: 0
+        val huboEnvioExitoso = (cola?.enviados ?: 0) > 0 || avisos.any { it.contains("sincronizado") }
         _state.update { it.copy(pending = quedanPending, entries = quedanEntries,
             waiting = quedanEntries + quedanPending > 0,
-            message = avisos.joinToString(" · ").ifBlank { "Conexión recuperada." }) }
+            message = avisos.joinToString(" · ").ifBlank { "Conexión recuperada." },
+            ticket = if (huboEnvioExitoso) TicketEstado.ENVIADO else TicketEstado.NINGUNO) }
     }
 
     fun refreshCatalog() = viewModelScope.launch {

@@ -38,9 +38,11 @@ public class IngresoController {
     public IngresoService.Resultado cuenta(@PathVariable Long tallerId,
                                            @RequestBody(required = false) Ubicacion input,
                                            @AuthenticationPrincipal Jwt jwt) {
+        var roles = jwt.getClaimAsStringList("cognito:groups");
         return service.conCuenta(tallerId, jwt.getSubject(),
             input == null ? null : input.latitud(),
             input == null ? null : input.longitud(),
-            input == null ? null : input.precisionMetros());
+            input == null ? null : input.precisionMetros(),
+            roles == null ? java.util.List.of() : roles);
     }
 }
