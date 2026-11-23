@@ -198,6 +198,16 @@ motivo en vez de reintentar para siempre.
 
 ## 9. Preguntas probables y respuesta de una línea
 
+### Simulación de tres preguntas para la defensa
+
+1. **¿Cómo evita que el navegador acceda a datos protegidos y qué función cumple Cognito?** `SessionProvider` guarda la sesión recibida desde `/api/auth/login` y `RequireAuth` controla la navegación en Wouter. Cada petición protegida envía el access token al API Gateway; Spring Security valida JWT y grupo antes de ejecutar el controlador. El control del navegador mejora la experiencia, pero la decisión de acceso la toma el backend. `AuthService` usa el SDK de Cognito para registro y login.
+2. **¿Cómo se sincroniza una asistencia tomada sin Internet?** En Android la pantalla entrega la acción al ViewModel, que llama a `SyncPassRepository`. El repositorio guarda la entrada en `IngresoDao` de Room. Al recuperar conexión, o al pulsar «Sincronizar ahora», `flushEntries` la envía con Retrofit y elimina de Room solo las entradas aceptadas. La API aplica idempotencia para que un reintento no duplique asistencia. Para demostrarlo hay que mostrar la fila pendiente, reconectar y confirmar el resultado desde web/API.
+3. **¿Dónde están C1–C4 y por qué usar React, TypeScript, Wouter, Retrofit y Room?** C1 muestra actores y sistemas externos; C2 separa web, móvil, Gateway, EC2 y bases; C3 identifica componentes de cada aplicación; C4 sigue clases reales desde `HomeScreen` hasta `TallerRepository`. React compone la interfaz web; TypeScript tipa datos y contratos; Wouter resuelve rutas cliente; Retrofit implementa el cliente HTTP Android y Room permite lectura y escritura local sin señal.
+
+### Cómo se usó asistencia de IA con criterio de ingeniería
+
+El contexto de trabajo fue el caso de SyncPass, la pauta `prueba3Android.md`, los contratos REST existentes, las restricciones de AWS Academy y el código del repositorio. Las propuestas se contrastaron con rutas, clases, pruebas y resultados ejecutados antes de describirlas como implementadas. Por ejemplo, se distinguió la cobertura de archivos seleccionados de la cobertura global, y se corrigió una afirmación antigua de que no existía video cuando ya había un MP4 privado. La IA ayudó a revisar, redactar y proponer cambios; la evidencia aceptable sigue siendo el build, las pruebas, las respuestas HTTP y la demostración física. No atribuir a la aplicación funciones que no estén implementadas, como transcripción automática de audio.
+
 - *¿Dónde se guardan los datos?* Room/SQLite en el teléfono (`syncpass.db`),
   IndexedDB en el navegador, PostgreSQL en el servidor.
 - *¿Qué es un DTO?* `TallerDto` en Android: viaja por la red y además es

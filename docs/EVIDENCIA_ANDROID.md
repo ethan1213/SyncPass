@@ -1,6 +1,6 @@
 # Evidencia Android: entrega de SyncPass
 
-Fuente: `prueba3Android.md`, manual de curricularización entregado y requisitos de video comunicados por el docente. Este procedimiento no implica que la evidencia ya se haya grabado ni subido.
+Fuente: `prueba3Android.md`, manual de curricularización entregado y requisitos de video comunicados por el docente. Hay capturas locales; la carga institucional sigue pendiente de permisos.
 
 ## Qué demostrar
 
@@ -29,6 +29,8 @@ ffprobe -v error -show_entries format=duration,size -show_entries stream=width,h
 Grabar solo después de probar esos pasos. Si no se dispone del teléfono o sesión autorizada, dejar el archivo como pendiente y no enviar una demostración incompleta como si probara la integración móvil.
 
 **Captura local del 15-11-2026:** `.private/evidencias/SyncPassEthanAstorgaEntrega.mp4` (excluida de Git) muestra el panel Android admin, catálogo conectado, resumen de una bitácora ficticia y pregunta con respuesta citada. `ffprobe` midió 70,79 s, 1280×720 y 212 478 bytes. Esta toma no demuestra aún los dos CRUD web, GPS, asistencia por QR ni una sincronización tras modo avión; esos pasos requieren una captura complementaria si el docente exige evidencia visual de cada uno. La entrega por AzCopy solo se marca realizada al recibir un resultado exitoso de la herramienta.
+
+**Capturas del 21-11-2026:** `clip1_trimmed.mp4` (72,95 s) muestra login, catálogo y preinscripción. `clip2_trimmed.mp4` incluye un error HTTP 409 y termina antes de guardar la asistencia; no sirve como prueba de QR y sincronización terminados. No unirlo al video final como si el flujo hubiera concluido. Para una toma nueva de hasta 90 s: comenzar con la sesión ya iniciada, mostrar QR y taller correctos, guardar asistencia, mostrar la confirmación y volver al estado «asistió»; capturar la sincronización offline en una segunda evidencia si no cabe. Verificar duración, 1280×720 y tamaño máximo 50 MB con `ffprobe` antes de intentar AzCopy.
 
 **Estado de entrega:** el 15-11-2026 se intentó `azcopy login` con la cuenta institucional. Ethan informó que Microsoft/Azure indicó falta de permisos y guardó una captura de esa pantalla. No se ejecutó una carga exitosa; el MP4 permanece local para enviarlo cuando el docente habilite el acceso. Adjuntar la captura al aviso al docente y conservar el archivo original sin modificar.
 

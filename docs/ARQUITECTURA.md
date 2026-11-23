@@ -62,7 +62,7 @@ flowchart LR
   service --> cognito[Cognito SDK cuando es autenticación]
 ```
 
-Los paquetes `auth`, `taller`, `proyecto`, `ingreso`, `sync`, `bitacora`, `grabacion`, `inscripcion` y `perfil` separan los dominios. Los dos últimos son RF12 (dominio por rol/zona y preinscripción): `inscripcion/Inscripcion.java` guarda si una cuenta "pendiente" ya "asistio", y `perfil/UsuarioZona.java` guarda la zona declarada de cada cuenta porque Cognito no trae ese atributo. `Taller` y `Proyecto` son entidades JPA; `TallerRepository` y `ProyectoRepository` hacen persistencia; `TallerService` aplica filtros, cupos y versión optimista. `IngresoService` bloquea la fila del taller con `FOR UPDATE` antes de asignar el último cupo. Flyway aplica `V1`–`V6` al iniciar.
+Los paquetes `auth`, `taller`, `proyecto`, `ingreso`, `sync`, `bitacora`, `grabacion`, `inscripcion` y `perfil` separan los dominios. Los dos últimos son RF12 (dominio por rol/zona y preinscripción): `inscripcion/Inscripcion.java` guarda si una cuenta "pendiente" ya "asistio", y `perfil/UsuarioZona.java` guarda la zona declarada de cada cuenta porque Cognito no trae ese atributo. `Taller` y `Proyecto` son entidades JPA; `TallerRepository` y `ProyectoRepository` hacen persistencia; `TallerService` aplica filtros, cupos y versión optimista. `IngresoService` bloquea la fila del taller con `FOR UPDATE` antes de asignar el último cupo. Flyway aplica `V1`–`V7` al iniciar.
 
 ## C3 — Componentes Web (React)
 
@@ -80,6 +80,28 @@ flowchart TD
 ```
 
 `main.tsx` monta React en `index.html`; Wouter en `App.tsx` cambia de página sin pedir HTML nuevo al servidor, y cada `Route` arma la pantalla a partir de `components/`. El proyecto está en TypeScript íntegramente (`.tsx`/`.ts`, sin `.jsx`/`.js`), con una capa de diseño atómico (`atoms` → `molecules` → `organisms`) y capas separadas para `hooks`, `contexts`, `clients`, `components`, `pages` y `utils`. `SessionContext` (en `auth/SessionProvider.tsx`, reexportado desde `contexts/`) es el único Context del proyecto y `useRoles` el Hook de dominio que lo consume; `RequireAuth` envuelve toda ruta protegida y redirige a `/login` sin sesión activa — el backend vuelve a comprobar el rol igualmente. `clients/api.ts` centraliza las llamadas HTTP con tipos `Request`/`Response` propios, y `utils/` concentra la lógica repetida (formato de fecha, mapeo de rol Cognito → etiqueta visible) que antes vivía duplicada dentro de cada página. Los mantenedores de proyectos (`/proyectos`) y talleres (`/talleres`) usan esa misma API REST. Los borradores de `/borradores` usan IndexedDB local. Vite compila archivos estáticos que Vercel sirve en `https://web-react-nu-nine.vercel.app/`.
+
+## C4 — Código y responsabilidades verificables
+
+Este nivel muestra clases y funciones concretas de dos recorridos. No representa otro servidor: permite seguir una petición desde un evento de interfaz hasta la persistencia.
+
+```mermaid
+flowchart LR
+  HomeScreen[HomeScreen @Composable] --> HomeViewModel[HomeViewModel]
+  HomeViewModel --> SyncPassRepository[SyncPassRepository]
+  SyncPassRepository --> SyncPassApi[SyncPassApi Retrofit]
+  SyncPassRepository --> SyncPassDb[SyncPassDb Room]
+  SyncPassDb --> TallerDao[TallerDao]
+  SyncPassDb --> IngresoDao[IngresoDao]
+  SyncPassApi --> TallerController[TallerController REST]
+  TallerController --> TallerService[TallerService]
+  TallerService --> TallerRepository[TallerRepository JPA]
+  TallerRepository --> PostgreSQL[(PostgreSQL)]
+```
+
+Al abrir el catálogo, `HomeScreen` observa `HomeViewModel.state`. El ViewModel pide los talleres a `SyncPassRepository`; el repositorio decide entre `SyncPassApi` y `TallerDao` según la conectividad y devuelve un estado que indica si procede de caché. Para una asistencia sin conexión, `IngresoDao` conserva la entrada y el repositorio la envía al recuperar la red o al pulsar «Sincronizar ahora». En el servidor, `TallerController` recibe JSON, `TallerService` aplica las reglas y `TallerRepository` escribe en PostgreSQL. El controlador no consulta Room; Room pertenece solo al teléfono.
+
+**Ejemplo de diseño atómico en web:** `components/atoms/Button.tsx` concentra variantes visuales y atributos HTML de un botón. `components/molecules/NavLinkItem.tsx` combina navegación Wouter con la presentación, y `components/organisms/Navbar.tsx` compone enlaces y botones para la cabecera. Es una convención de composición visual; la autorización real sigue en `RequireAuth` y en Spring Security.
 
 ## Límites comprobables
 
