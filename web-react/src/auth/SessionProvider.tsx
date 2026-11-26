@@ -22,12 +22,17 @@ const decode=(jwt:string):UserClaims|null=>{try{const b=jwt.split('.')[1].replac
 const load=():Session|null=>{try{const raw=sessionStorage.getItem(STORE);return raw?JSON.parse(raw):null;}catch{return null;}};
 const save=(s:Session|null)=>{try{s?sessionStorage.setItem(STORE,JSON.stringify(s)):sessionStorage.removeItem(STORE);}catch{}};
 const withExpiry=(t:Tokens):Session=>({...t,expiresAt:Date.now()+t.expiresIn*1000});
+async function authJson<Result, Body>(path:string, body:Body):Promise<Result>{
+ const data=await request<Result, Body>(path,{method:'POST',body});
+ if(data===null)throw new Error('La API de inicio de sesión devolvió una respuesta vacía.');
+ return data;
+}
 export function SessionProvider({children}:{children:ReactNode}){
  const [session,setSession]=useState(load);
  const [error,setError]=useState<string|null>(null);
  const store=(s:Session|null)=>{save(s);setSession(s);};
- async function login(username:string,password:string){setError(null);store(withExpiry(await request<Tokens, LoginInput>('/api/auth/login',{method:'POST',body:{username,password}})));}
- const register=(data:Registration)=>request<RegistrationResult, Registration>('/api/auth/register',{method:'POST',body:data});
+ async function login(username:string,password:string){setError(null);store(withExpiry(await authJson<Tokens, LoginInput>('/api/auth/login',{username,password})));}
+ const register=(data:Registration)=>authJson<RegistrationResult, Registration>('/api/auth/register',data);
  const confirm=(username:string,code:string)=>request('/api/auth/confirm',{method:'POST',body:{username,code}});
  const resend=(username:string)=>request('/api/auth/resend',{method:'POST',body:{username}});
  async function logout(){
@@ -39,7 +44,7 @@ export function SessionProvider({children}:{children:ReactNode}){
   let current=load();
   if(!current)throw new Error('Inicia sesión para continuar.');
   if(current.expiresAt-Date.now()<60000){
-   try{current=withExpiry(await request<Tokens, RefreshInput>('/api/auth/refresh',{method:'POST',body:{refreshToken:current.refreshToken}}));store(current);}
+   try{current=withExpiry(await authJson<Tokens, RefreshInput>('/api/auth/refresh',{refreshToken:current.refreshToken}));store(current);}
    catch{store(null);throw new Error('Tu sesión expiró. Inicia sesión.');}
   }
   return current.accessToken;

@@ -5,7 +5,7 @@ export class ApiHttpError extends Error {
 }
 export async function request<ResponseBody = any, Body = unknown>(
  path: string, {method='GET',body,token,signal}: RequestOptions<Body> = {},
-): Promise<ResponseBody>{
+): Promise<ResponseBody | null>{
  const multipart = body instanceof FormData;
  const res=await fetch(API_URL+path,{method,signal,headers:{...(body && !multipart?{'Content-Type':'application/json'}:{}),...(token?{Authorization:'Bearer '+token}:{})},body:multipart?body:body?JSON.stringify(body):undefined});
  if (!res.ok) {
