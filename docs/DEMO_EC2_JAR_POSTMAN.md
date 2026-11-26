@@ -121,4 +121,3 @@ No guardar contraseñas, códigos ni tokens en el repositorio.
 
 Detener la instancia para ahorrar crédito del laboratorio. Mientras esté detenida,
 API Gateway responde error y la parte dinámica de Vercel no funciona.
-

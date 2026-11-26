@@ -20,6 +20,3 @@ Esta carpeta documenta exclusivamente la solución SyncPass. El punto de entrada
 | [RAMAS.md](RAMAS.md) | Ramas de Ethan y funcionalidades de SyncPass. |
 | [OPERACION_LAB.md](OPERACION_LAB.md) | Arranque de EC2, recuperación automática de IP y diagnóstico. |
 | [VERIFICACION_DESPLIEGUE.md](VERIFICACION_DESPLIEGUE.md) | Resultados reales de web, API, Cognito, Android y red. |
-
-
-
