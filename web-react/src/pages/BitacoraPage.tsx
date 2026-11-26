@@ -55,6 +55,10 @@ export default function BitacoraPage({ tallerId }: BitacoraPageProps) {
   const [dictando, setDictando] = useState(false);
   const [grabando, setGrabando] = useState(false);
   const [audioUrl, setAudioUrl] = useState('');
+  const [audio, setAudio] = useState<Blob | null>(null);
+  const [archivo, setArchivo] = useState<File | null>(null);
+  const [autorizaProveedor, setAutorizaProveedor] = useState(false);
+  const [borrador, setBorrador] = useState('');
   const [consentimiento, setConsentimiento] = useState(false);
   const [grabado, setGrabado] = useState<boolean | null>(null);
   const recognition = useRef<SpeechRecognitionLike | null>(null);
@@ -84,13 +88,56 @@ export default function BitacoraPage({ tallerId }: BitacoraPageProps) {
     setMensaje('');
     try {
       const token = await getAccessTokenSilently();
-      const data = await request(`/api/eventos/${tallerId}/bitacora`, { method: 'PUT', body: { contenido }, token });
+      const data = await request(`/api/eventos/${tallerId}/bitacora`, {
+        method: 'PUT', body: { contenido, resumenRevisado: borrador || undefined }, token,
+      });
       setResumen(data.resumen);
       setFragmentos(data.fragmentos);
       setRespuesta(null);
       setMensaje('Bitácora guardada en el servidor. Ya se puede consultar desde Android.');
     } catch (error) {
       setMensaje((error as Error).message);
+    } finally {
+      setOcupado(false);
+    }
+  }
+
+  async function prepararBorrador() {
+    setOcupado(true);
+    try {
+      const token = await getAccessTokenSilently();
+      const resultado = await request(`/api/eventos/${tallerId}/bitacora/borrador`, {
+        method: 'POST', token, body: { contenido, autorizaProveedor },
+      });
+      setBorrador(resultado.resumen);
+      setMensaje(resultado.origen === 'gemini'
+        ? 'Gemini preparó el borrador. Revísalo antes de publicar.'
+        : 'Se preparó un borrador extractivo con los apuntes. Revísalo antes de publicar.');
+    } catch (error) {
+      setMensaje((error as Error).message);
+    } finally {
+      setOcupado(false);
+    }
+  }
+
+  async function transcribir(entrada: Blob) {
+    if (entrada.size > 4 * 1024 * 1024) return setMensaje('Elige un audio de hasta 4 MB.');
+    const mime = entrada.type.split(';')[0];
+    const form = new FormData();
+    form.set('audio', entrada.slice(0, entrada.size, mime), 'taller');
+    form.set('autorizaProveedor', String(autorizaProveedor));
+    setOcupado(true);
+    try {
+      const token = await getAccessTokenSilently();
+      const resultado = await request(`/api/eventos/${tallerId}/bitacora/transcripcion`, {
+        method: 'POST', token, body: form,
+      });
+      setContenido(resultado.contenido);
+      setBorrador('');
+      setMensaje('Transcripción lista para revisar. Prepara el resumen y publica cuando termines.');
+    } catch (error) {
+      const detalle = (error as Error).message;
+      setMensaje(detalle.includes('503') ? 'Gemini no está disponible. Puedes pegar los apuntes o usar el dictado.' : detalle);
     } finally {
       setOcupado(false);
     }
@@ -141,6 +188,7 @@ export default function BitacoraPage({ tallerId }: BitacoraPageProps) {
     instance.onresult = (event) => {
       const text = Array.from(event.results).slice(event.resultIndex).map((result) => result[0].transcript).join(' ');
       setContenido((current) => `${current}${current ? ' ' : ''}${text}`);
+      setBorrador('');
     };
     instance.onerror = () => setMensaje('El dictado se interrumpió. Conservamos el texto recibido.');
     instance.onend = () => setDictando(false);
@@ -162,11 +210,14 @@ export default function BitacoraPage({ tallerId }: BitacoraPageProps) {
       instance.onstop = () => {
         stream.getTracks().forEach((track) => track.stop());
         if (audioUrlRef.current) URL.revokeObjectURL(audioUrlRef.current);
-        audioUrlRef.current = URL.createObjectURL(new Blob(chunks, { type: instance.mimeType || 'audio/webm' }));
+        const captura = new Blob(chunks, { type: instance.mimeType || 'audio/webm' });
+        setAudio(captura);
+        audioUrlRef.current = URL.createObjectURL(captura);
         setAudioUrl(audioUrlRef.current);
         setGrabando(false);
       };
       recorder.current = instance;
+      setAudio(null);
       setAudioUrl('');
       setMensaje('Grabando solo en este navegador. Detén la grabación y descarga el archivo antes de salir.');
       instance.start();
@@ -189,16 +240,27 @@ export default function BitacoraPage({ tallerId }: BitacoraPageProps) {
         <label><input type="radio" name="grabado" checked={grabado === true} onChange={() => definirGrabacion(true)} /> Sí</label>{' '}
         <label><input type="radio" name="grabado" checked={grabado === false} onChange={() => definirGrabacion(false)} /> No</label>
       </fieldset>
-      <p className="texto-apoyo">Pide consentimiento antes de usar el micrófono. El dictado convierte voz a texto; el audio grabado se descarga en este dispositivo y no se envía a SyncPass. Publica los apuntes para que Android pueda consultarlos.</p>
+      <p className="texto-apoyo">Puedes dictar, grabar o seleccionar un archivo. Revisa la transcripción y publica la bitácora para compartirla con Android.</p>
       <label style={{ display: 'block', marginBottom: 12 }}><input type="checkbox" checked={consentimiento} onChange={(event) => setConsentimiento(event.target.checked)} /> Confirmo que las personas presentes autorizaron el uso del micrófono para esta bitácora.</label>
       <label htmlFor="contenido-bitacora">Transcripción o apuntes</label>
-      <textarea id="contenido-bitacora" rows={10} maxLength={20000} value={contenido} onChange={(e) => setContenido(e.target.value)} style={{ width: '100%', padding: 12 }} />
+      <textarea id="contenido-bitacora" rows={10} maxLength={20000} disabled={ocupado} value={contenido} onChange={(e) => { setContenido(e.target.value); setBorrador(''); }} style={{ width: '100%', padding: 12 }} />
       <div className="acciones-fila">
         <button type="button" className="btn btn-secondary" onClick={dictar} disabled={grabando}>{dictando ? 'Detener dictado' : 'Dictar en Chrome'}</button>
         <button type="button" className="btn btn-secondary" onClick={grabar} disabled={dictando}>{grabando ? 'Detener grabación' : 'Grabar audio local'}</button>
-        <button type="button" className="btn btn-primary" disabled={ocupado} onClick={guardar}>Guardar y resumir</button>
+        <button type="button" className="btn btn-primary" disabled={ocupado || dictando || grabando} onClick={guardar}>{borrador.trim() ? 'Publicar bitácora' : 'Guardar y resumir'}</button>
       </div>
       {audioUrl && <p><a href={audioUrl} download={`syncpass-taller-${tallerId}.webm`} className="btn btn-secondary">Descargar grabación</a></p>}
+      <fieldset disabled={ocupado || dictando || grabando}>
+        <legend>Asistente de transcripción y resumen</legend>
+        <label><input type="checkbox" checked={autorizaProveedor} onChange={(e) => setAutorizaProveedor(e.target.checked)} /> Autorizo enviar el audio o texto de este taller a Gemini.</label>
+        <div className="acciones-fila">
+          <label>Archivo de audio (hasta 4 MB) <input type="file" accept="audio/*" onChange={(e) => setArchivo(e.target.files?.[0] ?? null)} /></label>
+          {archivo && <button type="button" className="btn btn-secondary" disabled={!autorizaProveedor} onClick={() => transcribir(archivo)}>Transcribir archivo</button>}
+          {audio && <button type="button" className="btn btn-secondary" disabled={!autorizaProveedor} onClick={() => transcribir(audio)}>Transcribir grabación</button>}
+          <button type="button" className="btn btn-secondary" disabled={!contenido.trim()} onClick={prepararBorrador}>Preparar borrador</button>
+        </div>
+        {borrador && <label>Resumen para revisar <textarea rows={5} maxLength={3000} value={borrador} onChange={(e) => setBorrador(e.target.value)} style={{ width: '100%', padding: 12 }} /></label>}
+      </fieldset>
     </section>}
     <section className="seccion-bloque"><h2>Resumen de la sesión</h2>
       <p>{resumen || 'Cuando el equipo publique la bitácora, el resumen aparecerá aquí.'}</p>

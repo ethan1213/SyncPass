@@ -35,11 +35,11 @@ public class BitacoraService {
 
     /** Crea o reemplaza la bitacora y recalcula el resumen a partir del texto. */
     @Transactional
-    public Bitacora publicar(Long tallerId, String contenido) {
+    public Bitacora publicar(Long tallerId, String contenido, String resumenRevisado) {
         exigirTaller(tallerId);
         var texto = contenido.trim();
-        var resumen = BitacoraTexto.resumir(BitacoraTexto.fragmentos(texto));
-        if (resumen.length() > MAX_RESUMEN) resumen = resumen.substring(0, MAX_RESUMEN);
+        var resumen = resumenRevisado == null || resumenRevisado.isBlank()
+            ? resumenExtractivo(texto) : resumenRevisado.strip();
         var ahora = OffsetDateTime.now();
 
         int actualizadas = db.update(
@@ -67,7 +67,12 @@ public class BitacoraService {
         return new Respuesta(fragmentos.get(mejor), mejor + 1, fragmentos.get(mejor));
     }
 
-    private void exigirTaller(Long tallerId) {
+    static String resumenExtractivo(String contenido) {
+        String resumen = BitacoraTexto.resumir(BitacoraTexto.fragmentos(contenido));
+        return resumen.length() <= MAX_RESUMEN ? resumen : resumen.substring(0, MAX_RESUMEN);
+    }
+
+    void exigirTaller(Long tallerId) {
         Integer existe = db.queryForObject("SELECT COUNT(*) FROM talleres WHERE id=?", Integer.class, tallerId);
         if (existe == null || existe == 0)
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Taller no encontrado");

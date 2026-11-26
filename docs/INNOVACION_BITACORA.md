@@ -4,7 +4,7 @@
 
 Al terminar un taller, los apuntes quedan dispersos y las personas no pueden repasar fácilmente lo tratado. La bitácora vincula una transcripción o apuntes al **ID del taller**. Un administrador o coordinador publica el texto; la API genera un resumen extractivo y permite consultar preguntas mostrando el fragmento de origen. Web y Android leen el mismo registro en PostgreSQL a través de API Gateway y EC2.
 
-Esta versión **no usa un modelo generativo**: la API selecciona frases y busca términos normalizados. Es verificable, funciona sin clave de un proveedor externo y evita inventar respuestas. No interpreta sinónimos ni conceptos que no compartan palabras; cuando no encuentra coincidencia, lo indica. El dictado web depende del reconocimiento de voz disponible en el navegador y puede requerir un servicio del propio navegador. La web también puede **grabar y descargar audio localmente** con MediaRecorder. SyncPass **no envía ni guarda el audio** en la API; solo guarda el texto cuando el docente pulsa Guardar. No se implementó transcripción automática de archivos de audio ni grabación Android.
+La web permite grabar o seleccionar audio y solicitar transcripción a Gemini con autorización explícita. El resumen generado queda como borrador editable hasta que el equipo lo publica. El modo extractivo sigue disponible si falta el proveedor. Las preguntas en ambos clientes buscan términos en el texto publicado y muestran la cita original. Android consulta el material publicado por el equipo desde la web. Véase [IA_CONTEXTO.md](IA_CONTEXTO.md).
 
 ## Arquitectura y archivos
 

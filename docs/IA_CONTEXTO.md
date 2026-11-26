@@ -4,7 +4,16 @@
 
 La innovación implementada es una **bitácora consultable por taller**. Un coordinador o administrador marca si la sesión se grabó y publica apuntes o una transcripción revisada. `PUT /api/eventos/{id}/bitacora` guarda el texto en PostgreSQL y calcula un resumen extractivo. `POST /api/eventos/{id}/bitacora/preguntas` busca el fragmento que comparte más términos con la pregunta y devuelve la respuesta junto con su cita. Web y Android consultan el mismo `tallerId` por la API. Una pregunta sin coincidencia recibe una respuesta de insuficiencia; el sistema no inventa contenido.
 
-**Esta versión no llama a un modelo generativo.** El algoritmo de `BitacoraTexto.java` selecciona frases y normaliza términos; no comprende sinónimos ni transcribe grabaciones. En la web, el audio se puede grabar y descargar en el equipo, y el dictado usa la capacidad del navegador cuando está disponible. El audio no se carga al servidor. La etiqueta correcta para la defensa es *asistente contextual extractivo*, no chatbot generativo ni transcripción automática.
+La edición web admite grabar o seleccionar audio y transcribirlo con Gemini. El administrador o coordinador autoriza el envío al proveedor y revisa el resultado antes de publicarlo. Puede generar y editar un borrador de resumen. Si falta la clave o falla el proveedor al resumir, el servidor prepara un borrador extractivo. Las preguntas de web y Android usan el texto publicado y conservan citas literales verificables.
+
+| Operación bajo `/api/eventos/{id}/bitacora` | Resultado |
+| --- | --- |
+| `POST /transcripcion` | Recibe audio multipart de hasta 4 MB con autorización expresa. Devuelve texto editable y, si el proveedor falla, permite seguir con apuntes manuales. |
+| `POST /borrador` | Devuelve un resumen y el origen `gemini` o `extractivo`. Crear un borrador no modifica PostgreSQL. |
+| `PUT` | Publica el texto y el resumen revisado o calcula uno extractivo. |
+| `GET` / `POST /preguntas` | Comparten el resultado y las citas entre navegador y Android. |
+
+El backend es el único que llama al proveedor. En local se configura `GEMINI_API_KEY` en el `.env` privado para Docker Compose. En EC2 se configura en `/etc/syncpass/syncpass.env` y se reinicia `syncpass-api`. `GEMINI_MODEL` permite cambiar el modelo. Los audios pueden contener voces de terceros. Usa grabaciones autorizadas y cortas, y verifica las condiciones del proveedor antes de usar grabaciones reales. SyncPass no guarda el audio al publicar. [Referencia REST de Gemini](https://ai.google.dev/api/generate-content).
 
 ## Contexto, fuentes y límites
 
@@ -34,4 +43,4 @@ Ejemplo de instrucción de ingeniería reproducible:
 4. Abrir el mismo taller en Android y comparar resumen y fuente.
 5. Probar `401` sin token y `403` al intentar publicar con un rol sin permiso.
 
-Una futura versión generativa necesitaría un proveedor configurado solo en el backend, consentimiento para enviar el contenido, límite de costo, validación de citas y rechazo de respuestas no respaldadas. No se declara implementada ni se requieren claves de GCP para ejecutar la versión actual.
+Para comprobar Gemini en vivo, usa un audio ficticio corto y confirma que el borrador indica origen `gemini`. Repite sin clave para comprobar el resumen extractivo. El material publicado y las preguntas siguen disponibles sin la clave.

@@ -23,6 +23,8 @@ services:
       COGNITO_ISSUER: ${COGNITO_ISSUER:?Define COGNITO_ISSUER}
       COGNITO_CLIENT_ID: ${COGNITO_CLIENT_ID:?Define COGNITO_CLIENT_ID}
       CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:3000}
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+      GEMINI_MODEL: ${GEMINI_MODEL:-gemini-3.5-flash-lite}
     ports:
       - "127.0.0.1:${LOCAL_API_PORT:-18080}:8080"
     depends_on:

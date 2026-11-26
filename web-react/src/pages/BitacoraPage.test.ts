@@ -12,7 +12,7 @@ vi.mock('wouter', () => ({ Link: ({ children, href }: { children: React.ReactNod
 const api = vi.mocked(request);
 const originalCreateObjectURL = URL.createObjectURL;
 const originalRevokeObjectURL = URL.revokeObjectURL;
-beforeEach(() => api.mockReset());
+beforeEach(() => { api.mockReset(); });
 afterEach(() => { cleanup(); vi.unstubAllGlobals(); URL.createObjectURL = originalCreateObjectURL; URL.revokeObjectURL = originalRevokeObjectURL; });
 
 it('publica una bitácora y consulta una respuesta con fuente por el mismo tallerId', async () => {
@@ -37,6 +37,27 @@ it('exige consentimiento antes de activar el micrófono', async () => {
   render(React.createElement(BitacoraPage, { tallerId: '42' }));
   fireEvent.click(screen.getByRole('button', { name: 'Grabar audio local' }));
   expect(await screen.findByText('Confirma el consentimiento de las personas antes de grabar.')).toBeTruthy();
+});
+
+it('prepara un borrador sin publicar y guarda la versión revisada', async () => {
+  api.mockImplementation(async (path) => {
+    if (path.endsWith('/borrador')) return { resumen: 'Separar papel.', origen: 'gemini' };
+    return { contenido: 'Separamos papel.', resumen: 'Separar papel.', fragmentos: ['Separamos papel.'] };
+  });
+  render(React.createElement(BitacoraPage, { tallerId: '42' }));
+  await waitFor(() => expect(screen.getByLabelText('Transcripción o apuntes')).toHaveProperty('value', 'Separamos papel.'));
+  fireEvent.click(screen.getByLabelText(/Autorizo enviar/));
+  fireEvent.click(screen.getByRole('button', { name: 'Preparar borrador' }));
+  const resumen = await screen.findByLabelText('Resumen para revisar');
+  expect(api).toHaveBeenCalledWith('/api/eventos/42/bitacora/borrador', expect.objectContaining({
+    body: { contenido: 'Separamos papel.', autorizaProveedor: true },
+  }));
+  expect(api.mock.calls.some(([, options]) => options?.method === 'PUT')).toBe(false);
+  fireEvent.change(resumen, { target: { value: 'Clasificar el papel.' } });
+  fireEvent.click(screen.getByRole('button', { name: 'Publicar bitácora' }));
+  await waitFor(() => expect(api).toHaveBeenCalledWith('/api/eventos/42/bitacora', expect.objectContaining({
+    method: 'PUT', body: { contenido: 'Separamos papel.', resumenRevisado: 'Clasificar el papel.' },
+  })));
 });
 
 it('permite descargar una grabación local sin enviarla a la API', async () => {

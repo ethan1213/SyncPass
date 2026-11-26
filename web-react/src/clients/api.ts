@@ -1,7 +1,8 @@
 import {API_URL} from '../config/auth';
 type RequestOptions = {method?: string; body?: unknown; token?: string; signal?: AbortSignal};
 export async function request(path: string,{method='GET',body,token,signal}: RequestOptions={}){
- const res=await fetch(API_URL+path,{method,signal,headers:{...(body?{'Content-Type':'application/json'}:{}),...(token?{Authorization:'Bearer '+token}:{})},body:body?JSON.stringify(body):undefined});
+ const multipart = body instanceof FormData;
+ const res=await fetch(API_URL+path,{method,signal,headers:{...(body && !multipart?{'Content-Type':'application/json'}:{}),...(token?{Authorization:'Bearer '+token}:{})},body:multipart?body:body?JSON.stringify(body):undefined});
  if(!res.ok){const data=await res.json().catch(()=>({}));throw new Error(data.message || ({401:'Tu sesión expiró. Inicia sesión.',403:'Tu perfil no tiene permiso.',409:'El registro cambió o ya existe. Recarga y revisa los datos.'}[res.status]) || 'No se pudo completar la operación ('+res.status+').');}
  return res.status===204?null:res.json();
 }

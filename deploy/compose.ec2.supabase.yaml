@@ -8,6 +8,8 @@ services:
       COGNITO_ISSUER: ${COGNITO_ISSUER:?Define el issuer del user pool}
       COGNITO_CLIENT_ID: ${COGNITO_CLIENT_ID:?Define el cliente SPA publico}
       CORS_ORIGINS: ${CORS_ORIGINS:?Define los origenes de Vercel y localhost}
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+      GEMINI_MODEL: ${GEMINI_MODEL:-gemini-3.5-flash-lite}
     expose:
       - "8080"
     healthcheck:

@@ -12,7 +12,7 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@SpringBootTest(properties={"spring.datasource.url=jdbc:h2:mem:bitacora;MODE=PostgreSQL;DB_CLOSE_DELAY=-1","spring.datasource.username=sa","spring.datasource.password=","syncpass.issuer=https://cognito-idp.us-east-1.amazonaws.com/test","syncpass.client-id=client"})
+@SpringBootTest(properties={"spring.datasource.url=jdbc:h2:mem:bitacora;MODE=PostgreSQL;DB_CLOSE_DELAY=-1","spring.datasource.username=sa","spring.datasource.password=","syncpass.issuer=https://cognito-idp.us-east-1.amazonaws.com/test","syncpass.client-id=client","GEMINI_API_KEY="})
 @AutoConfigureMockMvc
 class BitacoraControllerTest {
  @Autowired MockMvc mvc;
@@ -43,5 +43,32 @@ class BitacoraControllerTest {
    .content("{\"pregunta\":\"¿Qué aprendimos de astronomía?\"}"))
    .andExpect(status().isOk()).andExpect(jsonPath("$.fragmento").value(0));
   mvc.perform(get(path)).andExpect(status().isUnauthorized());
+ }
+
+ @Test void draftRequiresStaffAndPublicationIsSeparate() throws Exception {
+  var path="/api/eventos/"+workshop()+"/bitacora";
+  var body=json.writeValueAsString(java.util.Map.of(
+   "contenido","El cartón se deposita seco.", "autorizaProveedor",true));
+  mvc.perform(post(path+"/borrador").with(role("participante")).contentType(MediaType.APPLICATION_JSON).content(body))
+   .andExpect(status().isForbidden());
+  mvc.perform(post(path+"/borrador").with(role("coordinador")).contentType(MediaType.APPLICATION_JSON).content(body))
+   .andExpect(status().isOk()).andExpect(jsonPath("$.origen").value("extractivo"));
+  mvc.perform(get(path).with(role("participante"))).andExpect(status().isNotFound());
+  var aprobado=json.writeValueAsString(java.util.Map.of(
+   "contenido","El cartón se deposita seco.", "resumenRevisado","Depositar el cartón seco."));
+  mvc.perform(put(path).with(role("coordinador")).contentType(MediaType.APPLICATION_JSON).content(aprobado))
+   .andExpect(status().isOk());
+  mvc.perform(get(path).with(role("participante")))
+   .andExpect(status().isOk()).andExpect(jsonPath("$.resumen").value("Depositar el cartón seco."));
+ }
+
+ @Test void audioRequiresAuthorizationAndConfiguredProvider() throws Exception {
+  var path="/api/eventos/"+workshop()+"/bitacora/transcripcion";
+  var audio=new org.springframework.mock.web.MockMultipartFile("audio","demo.wav","audio/wav",new byte[]{1});
+  mvc.perform(multipart(path).file(audio).with(role("participante")).param("autorizaProveedor","true"))
+   .andExpect(status().isForbidden());
+  mvc.perform(multipart(path).file(audio).with(role("admin"))).andExpect(status().isBadRequest());
+  mvc.perform(multipart(path).file(audio).with(role("admin")).param("autorizaProveedor","true"))
+   .andExpect(status().isServiceUnavailable());
  }
 }
