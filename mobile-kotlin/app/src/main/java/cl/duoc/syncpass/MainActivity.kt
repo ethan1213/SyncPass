@@ -36,7 +36,11 @@ import cl.duoc.syncpass.data.SyncPassRepository
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
-    private val repository by lazy { SyncPassRepository(applicationContext) }
+    // La demo local no mezcla su cola Room con registros pendientes del entorno AWS.
+    private val repository by lazy {
+        val local = BuildConfig.DEBUG && BuildConfig.API_BASE_URL.startsWith("http://127.0.0.1:")
+        SyncPassRepository(applicationContext, databaseName = if (local) "syncpass-local.db" else "syncpass.db")
+    }
     private val connectivity by lazy { getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager }
     private val networkCallback = object : ConnectivityManager.NetworkCallback() {
         override fun onAvailable(network: Network) { runOnUiThread { syncPending() } }

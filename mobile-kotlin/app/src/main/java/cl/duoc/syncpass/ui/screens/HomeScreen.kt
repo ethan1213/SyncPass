@@ -59,12 +59,15 @@ fun HomeScreen(
     val message = state.message
     val owner = AuthSession.participantId
     val lifecycleOwner = LocalLifecycleOwner.current
+    val token = AuthSession.accessToken
     LaunchedEffect(owner, AuthSession.syncVersion) { vm.refreshPending(owner) }
+    LaunchedEffect(token) { vm.refreshInscripciones(token) }
     DisposableEffect(lifecycleOwner, owner) {
         val observer = LifecycleEventObserver { _, event ->
             if (event == Lifecycle.Event.ON_RESUME) {
                 vm.refreshCatalog()
                 if (owner != null) vm.refreshPending(owner)
+                vm.refreshInscripciones(token)
             }
         }
         lifecycleOwner.lifecycle.addObserver(observer)
@@ -181,7 +184,7 @@ fun HomeScreen(
                     else {
                         Text("Mi panel · ${AuthSession.roles.joinToString().ifBlank { "sin asignar" }}",
                             fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onBackground)
-                        TicketConfirmacion(message, state.ticket)
+                        TicketConfirmacion(message, state.ticket, onDescartar = vm::descartarTicket)
                         val qr = remember(owner) { makeQr("SP1:$owner") }
                         qr?.let { Image(it, contentDescription = "Mi QR de acreditación", modifier = Modifier.size(220.dp)) }
                         Text(if (state.waiting)
@@ -212,6 +215,8 @@ fun HomeScreen(
                 TarjetaTaller(
                     taller = taller,
                     canScan = AuthSession.roles.any { it in listOf("admin","coordinador","monitor") },
+                    pendiente = state.inscripcionesPendientes.contains(taller.id.toLong()),
+                    asistido = state.inscripcionesAsistidas.contains(taller.id.toLong()),
                     onAcreditar = { onNavigateToScanner(taller.id.toLong()) },
                     onEncuestar = { onNavigateToSurvey(taller.id.toLong()) },
                     onBitacora = { onNavigateToBitacora(taller.id.toLong()) }
@@ -275,6 +280,8 @@ private fun TarjetaAccesoEscaner(onNavigateToScanner: () -> Unit) {
 private fun TarjetaTaller(
     taller: TallerComunitario,
     canScan: Boolean,
+    pendiente: Boolean,
+    asistido: Boolean,
     onAcreditar: () -> Unit,
     onEncuestar: () -> Unit,
     onBitacora: () -> Unit
@@ -329,6 +336,14 @@ private fun TarjetaTaller(
                     .fillMaxWidth()
                     .padding(vertical = 6.dp)
             )
+
+            // RF12: a qué altura estoy con ESTE taller en particular, no solo el total.
+            when {
+                asistido -> Text("✔ Ya asististe", fontSize = 12.sp, fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.primary)
+                pendiente -> Text("⏳ Pendiente de asistir", fontSize = 12.sp, fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.secondary)
+            }
 
             Spacer(modifier = Modifier.height(4.dp))
 

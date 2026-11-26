@@ -38,6 +38,8 @@ y hay una lámina por vista y por formato:
 Para verlos todos juntos: `mockups.html` en el navegador, o el documento
 `SyncPass-Mockups-y-BD.html`, que los lleva incrustados y se puede enviar solo.
 
+El visor permite elegir un rol y seguir sus acciones hacia las láminas correspondientes. El archivo único incluye botones propios para administrador, coordinador, monitor y participante; se puede abrir sin Internet. Los botones cambian de maqueta, no inician una sesión ni escriben datos. Para demostrar permisos y persistencia se abre después la aplicación real en `/mi-panel`. `web-react/public/mockups.html` es la copia que sirve Vercel.
+
 El visor incluye además el [mantenedor de proyectos](../img/mockups/crud-proyectos-web.svg),
 el de talleres, los borradores locales y las vistas por perfil. En la exposición,
 mostrar primero estos dibujos y después abrir la aplicación. El login web real

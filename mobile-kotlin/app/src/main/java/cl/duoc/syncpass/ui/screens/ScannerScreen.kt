@@ -107,7 +107,7 @@ fun ScannerScreen(repository: SyncPassRepository, tallerId: Long, onNavigateBack
                 modifier = Modifier.fillMaxWidth()
             )
 
-            TicketConfirmacion(state.message, state.ticket)
+            TicketConfirmacion(state.message, state.ticket, onDescartar = vm::descartarTicket)
 
             if (state.exigeGeocerca) {
                 Text("Este taller exige una ubicación GPS precisa dentro de su radio.")

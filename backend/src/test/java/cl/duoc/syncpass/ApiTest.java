@@ -20,6 +20,18 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 class ApiTest {
  @Autowired MockMvc mvc; @Autowired ObjectMapper json; @Autowired JdbcTemplate db;
+ @Test void corsAllowsConfiguredWebAndRejectsOtherOrigins() throws Exception {
+  mvc.perform(options("/api/auth/login")
+      .header("Origin", "http://localhost:3000")
+      .header("Access-Control-Request-Method", "POST")
+      .header("Access-Control-Request-Headers", "content-type"))
+    .andExpect(status().isOk())
+    .andExpect(header().string("Access-Control-Allow-Origin", "http://localhost:3000"));
+  mvc.perform(options("/api/auth/login")
+      .header("Origin", "https://example.invalid")
+      .header("Access-Control-Request-Method", "POST"))
+    .andExpect(status().isForbidden());
+ }
  @BeforeEach void reset(){db.update("DELETE FROM registros");db.update("DELETE FROM talleres");db.update("DELETE FROM proyectos_comunitarios");}
  String proyecto(){return "{\"title\":\"Proyecto demo\",\"descripcion\":\"Trabajo territorial\",\"area\":\"Tecnología\",\"unidadVecinal\":\"UV Demo\",\"fechaInicio\":\"2026-10-30\",\"fechaTermino\":\"2026-11-30\",\"estado\":\"activo\"}";}
  @Test void projectCrudRequiresRoleAndValidDates()throws Exception{
@@ -55,6 +67,22 @@ class ApiTest {
   mvc.perform(get("/api/eventos/"+id)).andExpect(status().isNotFound());
  }
  String batch(long id,String recordId,String type,int rating)throws Exception{return json.writeValueAsString(Map.of("registros",List.of(Map.of("id",recordId,"tipo",type,"tallerId",id,"participante","PART-DEMO","rating",rating,"timestamp",Instant.now().minusSeconds(1).toString()))));}
+ @Test void repeatedAttendanceForSameOwnerIsAcknowledgedWithoutDuplicate() throws Exception {
+  long id=create();
+  var auth=jwt().jwt(j->j.subject("monitor-demo").claim("cognito:groups",List.of("monitor")))
+    .authorities(new SimpleGrantedAuthority("ROLE_monitor"));
+  for(int i=0;i<2;i++) {
+   String recordId=UUID.randomUUID().toString();
+   var row=json.createObjectNode().put("id",recordId).put("tipo","asistencia")
+     .put("tallerId",id).put("participante","SP1:11111111-2222-4333-8444-555555555555")
+     .put("timestamp",Instant.now().minusSeconds(1).toString());
+   var body=json.createObjectNode().set("registros",json.createArrayNode().add(row));
+   mvc.perform(post("/api/sync/batch").with(auth).contentType(MediaType.APPLICATION_JSON)
+     .content(body.toString())).andExpect(status().isOk())
+     .andExpect(jsonPath("acceptedIds[0]").value(recordId));
+  }
+  assertEquals(1,db.queryForObject("SELECT COUNT(*) FROM registros WHERE tipo='asistencia'",Integer.class));
+ }
  @Test void retryDoesNotDuplicateAndParticipantCannotMarkAttendance()throws Exception{
   long id=create();String recordId=UUID.randomUUID().toString();String body=batch(id,recordId,"encuesta",5);
   var auth=jwt().jwt(j->j.subject("owner").claim("cognito:groups",List.of("participante"))).authorities(new SimpleGrantedAuthority("ROLE_participante"));

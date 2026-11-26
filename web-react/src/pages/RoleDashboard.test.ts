@@ -20,6 +20,13 @@ it('muestra las vistas del rol admin', () => {
   expect(screen.getByText('Gestionar proyectos')).toBeTruthy();
 });
 
+it('muestra al participante sus talleres y no los mantenedores', () => {
+  useUserRolesMock.mockReturnValue(['participante']);
+  render(React.createElement(RoleDashboard));
+  expect(screen.getByText('Mis talleres pendientes')).toBeTruthy();
+  expect(screen.queryByText('Gestionar proyectos')).toBeNull();
+});
+
 it('indica perfil pendiente cuando no hay rol conocido', () => {
   useUserRolesMock.mockReturnValue([]);
   render(React.createElement(RoleDashboard));

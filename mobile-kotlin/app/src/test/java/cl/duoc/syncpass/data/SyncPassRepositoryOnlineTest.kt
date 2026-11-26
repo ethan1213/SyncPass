@@ -104,7 +104,17 @@ class SyncPassRepositoryOnlineTest {
         repository = SyncPassRepository(context, api, { online })
     }
 
-    @After fun cleanup() { context.deleteDatabase("syncpass.db") }
+    @After fun cleanup() {
+        context.deleteDatabase("syncpass.db")
+        context.deleteDatabase("syncpass-local-test.db")
+    }
+
+    @Test fun localAndCloudDatabasesKeepSeparateQueues() = runBlocking {
+        val local = SyncPassRepository(context, api, { true }, databaseName = "syncpass-local-test.db")
+        local.queue(PendingRecord(owner = "coord-1", tipo = "encuesta", tallerId = 1, rating = 5))
+        assertEquals(1, local.pending("coord-1").size)
+        assertTrue(repository.pending("coord-1").isEmpty())
+    }
 
     @Test fun loginSuccessReturnsTokensAndForwardsCredentials() = runBlocking {
         val result = repository.login("usuario", "clave")
@@ -191,6 +201,24 @@ class SyncPassRepositoryOnlineTest {
         val restante = repository.pending("coord-1")
         assertEquals(1, restante.size)
         assertEquals(1L, restante.first().tallerId)
+    }
+
+    @Test fun syncKeepsRecordsFromAnotherCatalogForLater() = runBlocking {
+        api.talleresResult = listOf(TallerDto(id = 1, title = "Taller local", descripcion = null,
+            area = null, unidadVecinal = null, comuna = null, direccion = null,
+            fechaHora = null, docenteLider = null, cuposMaximos = 10))
+        repository.talleres()
+        val local = PendingRecord(owner = "coord-1", tipo = "asistencia", tallerId = 1,
+            participante = "SP1:11111111-2222-4333-8444-555555555555")
+        val otroCatalogo = PendingRecord(owner = "coord-1", tipo = "asistencia", tallerId = 4,
+            participante = "SP1:11111111-2222-4333-8444-555555555555")
+        repository.queue(local)
+        repository.queue(otroCatalogo)
+        api.syncResult = SyncResult(acceptedIds = listOf(local.id))
+
+        assertEquals(1, repository.sync("coord-1", "token-xyz"))
+        assertEquals(listOf(local.id), api.syncCalls.single().registros.map { it.id })
+        assertEquals(listOf(otroCatalogo.id), repository.pending("coord-1").map { it.id })
     }
 
     @Test fun flushEntriesOnlineSendsGuestEntryAndRemovesIt() = runBlocking {

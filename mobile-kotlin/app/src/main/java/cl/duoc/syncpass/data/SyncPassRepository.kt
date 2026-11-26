@@ -230,12 +230,13 @@ class SyncPassRepository(
     context: Context,
     injectedApi: SyncPassApi? = null,
     private val injectedOnline: (() -> Boolean)? = null,
+    databaseName: String = "syncpass.db",
 ) {
     private val appContext = context.applicationContext
     private val preferences = context.applicationContext.getSharedPreferences("syncpass_guest", Context.MODE_PRIVATE)
     private val syncMutex = Mutex()
     private val entryMutex = Mutex()
-    private val db = Room.databaseBuilder(context.applicationContext, SyncPassDb::class.java, "syncpass.db")
+    private val db = Room.databaseBuilder(context.applicationContext, SyncPassDb::class.java, databaseName)
         .addMigrations(catalogMigration, geoMigration, entryQueueMigration, dominioMigration).build()
     private val api = injectedApi ?: Retrofit.Builder().baseUrl(BuildConfig.API_BASE_URL)
         .client(OkHttpClient.Builder().build()).addConverterFactory(GsonConverterFactory.create()).build()
@@ -419,7 +420,11 @@ class SyncPassRepository(
     suspend fun sync(owner: String, accessToken: String): Int = syncMutex.withLock {
         requireNetwork()
         var total = 0
-        for (batch in db.pending().forOwner(owner).chunked(100)) {
+        val catalogoActual = db.talleres().all().map { it.id }.toSet()
+        val enviables = db.pending().forOwner(owner).filter {
+            catalogoActual.isEmpty() || it.tallerId in catalogoActual
+        }
+        for (batch in enviables.chunked(100)) {
             val result = api.sync("Bearer $accessToken", SyncBatch(batch.map {
                 PendingPayload(it.id, it.tipo, it.tallerId, it.participante, it.rating,
                     it.comentario, it.utilidad, it.timestamp, it.latitud, it.longitud, it.precisionMetros)

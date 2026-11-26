@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,7 +24,12 @@ enum class TicketEstado { NINGUNO, GUARDADO_LOCAL, ENVIADO, ERROR }
  * aceptó. Pedido explícito: que no pase inadvertido como antes.
  */
 @Composable
-fun TicketConfirmacion(mensaje: String, estado: TicketEstado, modifier: Modifier = Modifier) {
+fun TicketConfirmacion(
+    mensaje: String,
+    estado: TicketEstado,
+    modifier: Modifier = Modifier,
+    onDescartar: (() -> Unit)? = null
+) {
     if (estado == TicketEstado.NINGUNO || mensaje.isBlank()) return
     val (fondo, icono) = when (estado) {
         TicketEstado.GUARDADO_LOCAL -> Color(0xFF8D6E00) to "⏳"
@@ -48,6 +54,10 @@ fun TicketConfirmacion(mensaje: String, estado: TicketEstado, modifier: Modifier
                 textAlign = TextAlign.Center,
                 color = Color.White
             )
+            // No desaparece sola: el usuario la cierra cuando ya la leyó.
+            if (onDescartar != null) {
+                TextButton(onClick = onDescartar) { Text("Entendido", color = Color.White) }
+            }
         }
     }
 }

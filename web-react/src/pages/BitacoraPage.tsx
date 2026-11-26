@@ -208,7 +208,8 @@ export default function BitacoraPage({ tallerId }: BitacoraPageProps) {
         <input id="pregunta-bitacora" value={pregunta} onChange={(e) => setPregunta(e.target.value)} maxLength={300} style={{ width: '100%', padding: 12 }} placeholder="¿Qué se explicó sobre…?" />
         <button className="btn btn-primary" disabled={ocupado || !fragmentos.length} type="submit">Buscar respuesta</button></form>
       {respuesta && <div className="alert alert-info" role="status"><strong>Respuesta basada en la bitácora:</strong> {respuesta.respuesta}
-        {respuesta.fragmento > 0 && <p>Fuente: fragmento {respuesta.fragmento} del contenido guardado.</p>}</div>}
+        {respuesta.fragmento > 0 && <p>Fuente: fragmento {respuesta.fragmento} del contenido guardado.</p>}
+        {respuesta.cita && <blockquote>{respuesta.cita}</blockquote>}</div>}
     </section>
   </main>;
 }

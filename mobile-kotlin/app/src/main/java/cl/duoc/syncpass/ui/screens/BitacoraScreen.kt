@@ -62,6 +62,10 @@ fun BitacoraScreen(repository: SyncPassRepository, tallerId: Long, onBack: () ->
                             text = "Fuente: fragmento ${respuesta.fragmento}",
                             style = MaterialTheme.typography.labelMedium
                         )
+                        if (!respuesta.cita.isNullOrBlank()) Text(
+                            text = "“${respuesta.cita}”",
+                            style = MaterialTheme.typography.bodyMedium
+                        )
                     }
                 }
             }

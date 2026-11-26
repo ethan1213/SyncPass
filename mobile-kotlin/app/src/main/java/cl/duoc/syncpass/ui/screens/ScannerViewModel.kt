@@ -74,11 +74,13 @@ class ScannerViewModel(private val repository: SyncPassRepository) : ViewModel()
         if (actual.busy) return
         _state.update { it.copy(busy = true) }
         viewModelScope.launch {
+            val nombreTaller = runCatching { repository.cachedTaller(tallerId)?.title }.getOrNull()
             runCatching { repository.acreditar(owner!!, tallerId, actual.code) }
                 .onSuccess {
                     _state.update {
                         it.copy(busy = false, code = "",
-                            message = "Asistencia guardada en el dispositivo. Se envía al recuperar la conexión.",
+                            message = "Asistencia guardada para \"${nombreTaller ?: "este taller"}\". " +
+                                "Se envía automáticamente al recuperar la conexión.",
                             ticket = TicketEstado.GUARDADO_LOCAL)
                     }
                     AuthSession.refreshed()
@@ -88,4 +90,7 @@ class ScannerViewModel(private val repository: SyncPassRepository) : ViewModel()
                 }
         }
     }
+
+    /** El usuario cierra la confirmación a mano: ya no desaparece sola. */
+    fun descartarTicket() = _state.update { it.copy(ticket = TicketEstado.NINGUNO) }
 }

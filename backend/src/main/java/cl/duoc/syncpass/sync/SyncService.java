@@ -72,6 +72,11 @@ public class SyncService {
                 continue;
             }
 
+            if (registro.tipo().equals("asistencia") && yaAcreditada(registro, sub)) {
+                aceptados.add(registro.id().toString());
+                continue;
+            }
+
             if (registro.tipo().equals("asistencia")) validarAsistencia(registro);
 
             String participante = registro.tipo().equals("encuesta") ? sub : registro.participante();
@@ -90,6 +95,19 @@ public class SyncService {
         if (previo.isEmpty()) return false;
         if (!sub.equals(previo.get(0).get("owner")))
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Ese registro pertenece a otra cuenta");
+        return true;
+    }
+
+    /** Una segunda lectura del mismo QR por el mismo equipo confirma el envío sin duplicar asistencia. */
+    private boolean yaAcreditada(Registro registro, String sub) {
+        if (registro.participante() == null || !registro.participante().matches(QR_PARTICIPANTE)) return false;
+        var previo = db.queryForList("""
+            SELECT owner FROM registros
+             WHERE tipo='asistencia' AND taller_id=? AND participante=?
+            """, registro.tallerId(), registro.participante());
+        if (previo.isEmpty()) return false;
+        if (!sub.equals(previo.get(0).get("owner")))
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "La asistencia ya fue acreditada por otra cuenta");
         return true;
     }
 

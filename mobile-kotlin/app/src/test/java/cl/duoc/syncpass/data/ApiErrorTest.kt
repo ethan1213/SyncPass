@@ -48,6 +48,13 @@ class ApiErrorTest {
         assertEquals("No se pudo completar la solicitud (400).", mensajeDeError(error))
     }
 
+    @Test fun conflictWithoutBodyHasReadableMessage() {
+        val body = "".toResponseBody("application/json".toMediaTypeOrNull())
+        val error = HttpException(Response.error<Any>(409, body))
+        assertEquals("Este registro ya existe o fue modificado. Actualiza y vuelve a intentarlo.",
+            mensajeDeError(error))
+    }
+
     @Test fun anyOtherThrowableGetsGenericNetworkMessage() {
         assertEquals("No se pudo conectar con la API. Revisa la conexión e inténtalo otra vez.",
             mensajeDeError(RuntimeException("boom")))

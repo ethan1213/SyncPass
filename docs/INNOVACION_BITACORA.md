@@ -10,9 +10,9 @@ Esta versión **no usa un modelo generativo**: la API selecciona frases y busca 
 
 | Capa | Responsabilidad | Archivo |
 | --- | --- | --- |
-| Web | Edición por admin/coordinador, dictado o grabación local opcional con consentimiento, resumen y preguntas | `web-react/src/pages/BitacoraPage.jsx` |
-| Navegación web | Enlace desde el detalle y ruta protegida | `web-react/src/pages/TallerDetailPage.jsx`, `web-react/src/App.jsx` |
-| API | Permisos, validación, resumen y respuestas con cita | `backend/src/main/java/cl/duoc/syncpass/BitacoraController.java` |
+| Web | Edición por admin/coordinador, dictado o grabación local opcional con consentimiento, resumen y preguntas | `web-react/src/pages/BitacoraPage.tsx` |
+| Navegación web | Enlace desde el detalle y ruta protegida | `web-react/src/pages/TallerDetailPage.tsx`, `web-react/src/App.tsx` |
+| API | Permisos, validación, resumen y respuestas con cita | `backend/src/main/java/cl/duoc/syncpass/bitacora/BitacoraController.java` |
 | Base | Una bitácora por taller, borrado en cascada con el taller | `backend/src/main/resources/db/migration/V4__bitacoras.sql` |
 | Android | Consulta de resumen y preguntas con el mismo tallerId | `mobile-kotlin/app/src/main/java/cl/duoc/syncpass/ui/screens/BitacoraScreen.kt` |
 | Red Android | DTO y Retrofit hacia API Gateway | `mobile-kotlin/app/src/main/java/cl/duoc/syncpass/data/SyncPassRepository.kt` |
@@ -43,3 +43,5 @@ El contenido admite hasta 20 000 caracteres; la pregunta, hasta 300. El resumen 
 En el entorno local, Flyway V4, la prueba de permisos/persistencia/respuesta en Spring y la compilación web y Android son las comprobaciones mínimas. Falta desplegar el JAR nuevo, aplicar la migración a Supabase y repetir la prueba cruzada con un teléfono. La bitácora requiere red en Android; no tiene caché Room propia. El dictado de Chrome debe probarse en el navegador y con permiso de micrófono.
 
 Para una segunda versión con **audio compartido y transcripción automática**, diseñar consentimiento revocable, borrado y retención, cifrado/almacenamiento privado, tamaño máximo, costo de transcripción, permisos y revisión humana. Para respuestas generativas, exigir citas verificables y rechazo cuando la fuente no respalde la respuesta. No presentar esas capacidades como implementadas en este MVP.
+
+La explicación del contexto, la fuente, los permisos y el uso de IA durante el desarrollo está en [`IA_CONTEXTO.md`](IA_CONTEXTO.md).

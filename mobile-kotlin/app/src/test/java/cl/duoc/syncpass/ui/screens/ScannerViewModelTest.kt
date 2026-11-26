@@ -131,7 +131,7 @@ class ScannerViewModelTest {
             viewModel.guardar(3, permisoUbicacion = true)
             viewModel.state.first { !it.busy && it.message.isNotBlank() }
         }
-        assertTrue(viewModel.state.value.message.contains("guardada en el dispositivo"))
+        assertTrue(viewModel.state.value.message.contains("Asistencia guardada"))
         assertEquals("", viewModel.state.value.code)
         assertEquals(1, repository.pending("coordinador-1").size)
     }

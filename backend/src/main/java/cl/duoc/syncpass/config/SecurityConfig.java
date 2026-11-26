@@ -1,6 +1,7 @@
 package cl.duoc.syncpass.config;
 import java.util.*;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.*;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -22,11 +23,11 @@ public class SecurityConfig {
    return jwt -> "access".equals(jwt.getClaimAsString("token_use")) && clientId.equals(jwt.getClaimAsString("client_id"))
      ? OAuth2TokenValidatorResult.success() : OAuth2TokenValidatorResult.failure(new OAuth2Error("invalid_token"));
  }
- @Bean SecurityFilterChain filter(HttpSecurity http) throws Exception {
+ @Bean SecurityFilterChain filter(HttpSecurity http, @Qualifier("cors") CorsConfigurationSource corsConfigurationSource) throws Exception {
    var groups = new JwtGrantedAuthoritiesConverter();
    groups.setAuthoritiesClaimName("cognito:groups"); groups.setAuthorityPrefix("ROLE_");
    var converter = new JwtAuthenticationConverter(); converter.setJwtGrantedAuthoritiesConverter(groups);
-   return http.csrf(c -> c.disable()).cors(c -> {}).sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+   return http.csrf(c -> c.disable()).cors(c -> c.configurationSource(corsConfigurationSource)).sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
     .authorizeHttpRequests(a -> a.requestMatchers("/actuator/health").permitAll()
       .requestMatchers(HttpMethod.GET,"/api/eventos","/api/eventos/*").permitAll()
       .requestMatchers(HttpMethod.GET,"/api/eventos/*/grabacion").permitAll()

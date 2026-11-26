@@ -32,7 +32,7 @@ flowchart LR
 
 **Orden real del login:** cliente → API Gateway → Caddy → Spring Boot → Cognito. La API devuelve tokens; en llamadas protegidas, Spring Security comprueba firma, emisor, vencimiento, `token_use=access`, `client_id` y grupo. Gateway publica la ruta HTTPS; el control de roles está en Spring. La web no llama directamente a Cognito.
 
-En local, navegador → `http://localhost:18080` → JAR Docker → PostgreSQL Docker. Gateway, Caddy y Supabase se sustituyen solo para ejecutar en el equipo; el código de API es el mismo. Android local usa `adb reverse` y una compilación debug con URL local. Cognito todavía requiere Internet.
+En local, navegador → `http://localhost:18080` → JAR Docker → PostgreSQL Docker. Gateway, Caddy y Supabase se sustituyen solo para ejecutar en el equipo; el código de API es el mismo. Android local usa `adb reverse` y una compilación debug con URL local. Esa compilación usa `syncpass-local.db`; la compilación de nube usa `syncpass.db`, para que un lote antiguo del laboratorio no se envíe por accidente a PostgreSQL local. Cognito todavía requiere Internet.
 
 ## C3 — Componentes Android
 
@@ -49,7 +49,7 @@ flowchart TD
 
 `MainActivity` aloja `NavHost`; no es un ViewController de UIKit. `ui/screens/*Screen.kt` contiene vistas Compose, `*ViewModel.kt` sus estados y acciones, `data/SyncPassRepository.kt` centraliza las dos fuentes, y Room define `TallerDao`, `PendingDao` e `IngresoDao`. La cámara (CameraX/ML Kit) y la ubicación (`LocationManager`) son dos APIs nativas usadas por la app. Los permisos se piden desde la pantalla porque dependen del ciclo de vida de Android; el resultado se entrega al ViewModel.
 
-**Sin conexión:** el repositorio lee el catálogo de Room y guarda asistencias o encuestas pendientes. Al recuperar red, `ConnectivityMonitor` emite el cambio y el ViewModel solicita el envío. La API devuelve aceptación o rechazo; las filas aceptadas se eliminan de la cola. El ingreso es idempotente por taller y participante para evitar duplicados en reintentos. El login nuevo requiere Internet; la sesión Android actual permanece en memoria y se pierde si el proceso se cierra (a propósito: la pauta exige que acceder requiera cuenta siempre, no mantener una sesión recordada entre reinicios).
+**Sin conexión:** el repositorio lee el catálogo de Room y guarda asistencias o encuestas pendientes. Al recuperar red, `ConnectivityMonitor` emite el cambio y el ViewModel solicita el envío. La API devuelve aceptación o rechazo; las filas aceptadas se eliminan de la cola. El ingreso es idempotente por taller y participante para evitar duplicados en reintentos; una segunda acreditación del mismo QR por la misma cuenta también se confirma sin insertar una fila duplicada. Los registros de talleres ausentes del catálogo actual permanecen pendientes y no bloquean el lote. El login nuevo requiere Internet; la sesión Android actual permanece en memoria y se pierde si el proceso se cierra (a propósito: la pauta exige que acceder requiera cuenta siempre, no mantener una sesión recordada entre reinicios).
 
 ## C3 — Componentes del backend
 

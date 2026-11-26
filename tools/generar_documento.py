@@ -88,6 +88,16 @@ JS = """
       });
     });
   });
+  // Recorrido de maqueta: cambia de lámina según las acciones disponibles del rol.
+  document.querySelectorAll('[data-recorrido-seccion]').forEach(function (boton) {
+    boton.addEventListener('click', function () {
+      var seccion = boton.dataset.recorridoSeccion;
+      var indice = Number(boton.dataset.recorridoIndice);
+      mostrar(seccion);
+      var destino = document.querySelectorAll('#' + seccion + ' article.vista')[indice];
+      if (destino) destino.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
 """
 
 
@@ -145,6 +155,18 @@ def seccion(id_seccion, titulo, bajada, articulos):
         partes.append('  <article class="vista">')
         partes.append('    <h3><span class="num">%s</span> %s</h3>' % (num, nombre))
         partes.append('    <p class="apoyo">%s</p>' % texto)
+        if id_seccion == "roles":
+            acciones = (
+                [("Proyectos", "crud", 1), ("Talleres", "crud", 0), ("Quórum", "mockups", 4)],
+                [("Proyectos", "crud", 1), ("Talleres", "crud", 0), ("Quórum", "mockups", 4)],
+                [("Escáner QR", "mockups", 2), ("Encuesta", "mockups", 3), ("Sincronización", "mockups", 5)],
+                [("Talleres", "mockups", 0), ("Encuesta", "mockups", 3), ("Sincronización", "mockups", 5)],
+            )[i - 1]
+            partes.append('    <nav class="dibujo-tabs" aria-label="Recorrido de este perfil">')
+            for etiqueta, destino, indice in acciones:
+                partes.append('      <button type="button" data-recorrido-seccion="%s" data-recorrido-indice="%s">Ver %s →</button>' % (destino, indice, etiqueta))
+            partes.append('    </nav>')
+            partes.append('    <p><a href="https://web-react-nu-nine.vercel.app/mi-panel" target="_blank" rel="noopener">Abrir el panel real (requiere iniciar sesión)</a></p>')
         partes.append(cuerpo)
         partes.append("  </article>")
     partes.append("</section>")
@@ -249,6 +271,8 @@ def inyectar(html):
 
     if "/* ---- Dibujos" not in html:
         html = html.replace("</style>", CSS + "</style>", 1)
+    html = re.sub(r'<script>\s*// Pestañas escritorio / tablet / móvil de cada dibujo\..*?</script>',
+                  lambda _: "<script>" + JS + "</script>", html, flags=re.S)
     if "Pestañas escritorio / tablet / móvil" not in html:
         html = html.replace("</body>", "<script>" + JS + "</script>\n</body>", 1)
     return html

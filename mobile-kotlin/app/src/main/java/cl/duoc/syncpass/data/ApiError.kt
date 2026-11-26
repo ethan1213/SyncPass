@@ -13,7 +13,8 @@ fun mensajeDeError(error: Throwable): String = when (error) {
     is OfflineException -> error.message ?: "Sin conexión."
     is IllegalStateException -> error.message ?: "No se pudo completar la acción."
     is HttpException -> mensajeDelCuerpo(error)
-        ?: "No se pudo completar la solicitud (${error.code()})."
+        ?: if (error.code() == 409) "Este registro ya existe o fue modificado. Actualiza y vuelve a intentarlo."
+           else "No se pudo completar la solicitud (${error.code()})."
     else -> "No se pudo conectar con la API. Revisa la conexión e inténtalo otra vez."
 }
 

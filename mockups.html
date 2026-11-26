@@ -112,6 +112,7 @@
         Ver la documentación escrita
       </a>
       <p class="ayuda" id="pie"></p>
+      <a class="button is-link is-outlined" id="ruta-real" href="/mi-panel">Abrir esta función en SyncPass</a>
     </div>
     <div class="grupo-vistas" id="flujo-contenedor">
       <h2>Seguir navegando desde aquí</h2>
@@ -195,6 +196,14 @@
       tablet: 'Tablet: la misma página a 820 px. El menú lateral pasa a pestañas y las grillas bajan a dos columnas.',
       movil: 'Móvil: la app Android nativa en Kotlin con Jetpack Compose. Una columna y botones de 48 dp.'
     };
+    var RUTAS = {
+      panel: '/', login: '/login', escaner: '/acreditar', encuesta: '/encuesta',
+      quorum: '/panel', sync: '/sincronizacion',
+      'rol-admin': '/mi-panel', 'rol-coordinador': '/mi-panel',
+      'rol-monitor': '/mi-panel', 'rol-participante': '/mi-panel',
+      'crud-proyectos': '/proyectos', 'crud-talleres': '/talleres',
+      'crud-local': '/borradores'
+    };
 
     var modo = 'web';
     var vista = 'panel';
@@ -213,6 +222,10 @@
       document.getElementById('abrir').href = src;
       document.getElementById('doc').href = info.doc;
       document.getElementById('pie').textContent = info.texto;
+      var ruta = document.getElementById('ruta-real');
+      ruta.hidden = !RUTAS[vista];
+      if (RUTAS[vista]) ruta.href = location.protocol === 'file:'
+        ? 'https://web-react-nu-nine.vercel.app' + RUTAS[vista] : RUTAS[vista];
       document.getElementById('nota').textContent = esBD(vista)
         ? 'Los modelos y el despliegue no cambian con el dispositivo: el mismo esquema sirve a la web, a la tablet y a la app móvil.'
         : NOTA_MODO[modo];
@@ -254,7 +267,13 @@
     }
 
     function setModo(m) { modo = m; pintar(); }
-    function setVista(v) { vista = v; pintar(); }
+    function setVista(v) {
+      if (!VISTAS[v]) return;
+      vista = v;
+      pintar();
+      history.replaceState(null, '', '#vista=' + encodeURIComponent(v));
+      document.getElementById('dibujo').scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    }
 
     Object.keys(VISTAS).forEach(function (clave) {
       var info = VISTAS[clave];
@@ -267,6 +286,8 @@
       document.getElementById('nav-' + info.grupo).appendChild(boton);
     });
 
+    var inicial = decodeURIComponent(location.hash.replace(/^#vista=/, ''));
+    if (VISTAS[inicial]) vista = inicial;
     pintar();
   </script>
 </body>

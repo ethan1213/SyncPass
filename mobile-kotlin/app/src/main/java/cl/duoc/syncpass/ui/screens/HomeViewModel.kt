@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import cl.duoc.syncpass.data.AuthSession
 import cl.duoc.syncpass.data.SyncPassRepository
 import cl.duoc.syncpass.data.TallerDto
+import cl.duoc.syncpass.data.mensajeDeError
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -17,7 +18,10 @@ data class HomeUiState(
     val offline: Boolean = false,
     val waiting: Boolean = false,
     val entries: Int = 0,
-    val ticket: TicketEstado = TicketEstado.NINGUNO
+    val ticket: TicketEstado = TicketEstado.NINGUNO,
+    /** RF12: talleres marcados "voy a asistir" y ya "asistio", para el badge en cada tarjeta. */
+    val inscripcionesPendientes: Set<Long> = emptySet(),
+    val inscripcionesAsistidas: Set<Long> = emptySet()
 )
 
 class HomeViewModel(private val repository: SyncPassRepository) : ViewModel() {
@@ -67,7 +71,9 @@ class HomeViewModel(private val repository: SyncPassRepository) : ViewModel() {
         val pendientes = if (owner == null) emptyList()
             else runCatching { repository.pending(owner) }.getOrNull().orEmpty()
         if (enCola == 0 && pendientes.isEmpty()) {
-            _state.update { it.copy(pending = pendientes.size, entries = 0, waiting = false, ticket = TicketEstado.NINGUNO) }
+            // No se toca "ticket"/"message": si acaba de mostrarse una confirmacion,
+            // un ciclo posterior sin nada que enviar no debe taparla al instante.
+            _state.update { it.copy(pending = pendientes.size, entries = 0, waiting = false) }
             return
         }
         _state.update { it.copy(waiting = true,
@@ -82,7 +88,7 @@ class HomeViewModel(private val repository: SyncPassRepository) : ViewModel() {
         if (owner != null && token != null && pendientes.isNotEmpty()) {
             runCatching { repository.sync(owner, token) }
                 .onSuccess { avisos += "$it registro(s) sincronizado(s)"; AuthSession.refreshed() }
-                .onFailure { avisos += (it.message ?: "no se pudo sincronizar el lote") }
+                .onFailure { avisos += mensajeDeError(it) }
         }
 
         val quedanEntries = runCatching { repository.pendingEntries() }.getOrDefault(0)
@@ -92,15 +98,32 @@ class HomeViewModel(private val repository: SyncPassRepository) : ViewModel() {
         _state.update { it.copy(pending = quedanPending, entries = quedanEntries,
             waiting = quedanEntries + quedanPending > 0,
             message = avisos.joinToString(" · ").ifBlank { "Conexión recuperada." },
-            ticket = if (huboEnvioExitoso) TicketEstado.ENVIADO else TicketEstado.NINGUNO) }
+            ticket = if (huboEnvioExitoso) TicketEstado.ENVIADO
+                     else if (avisos.isNotEmpty()) TicketEstado.ERROR
+                     else it.ticket) }
+    }
+
+    /** El usuario cierra la confirmación a mano: ya no desaparece sola. */
+    fun descartarTicket() = _state.update { it.copy(ticket = TicketEstado.NINGUNO) }
+
+    /** RF12: para el badge "pendiente"/"asistido" en cada tarjeta del catálogo. */
+    fun refreshInscripciones(token: String?) = viewModelScope.launch {
+        if (token == null) return@launch
+        runCatching { repository.misInscripciones(token) }.onSuccess { mias ->
+            _state.update { it.copy(
+                inscripcionesPendientes = mias.filter { i -> i.estado == "pendiente" }.map { i -> i.tallerId }.toSet(),
+                inscripcionesAsistidas = mias.filter { i -> i.estado == "asistio" }.map { i -> i.tallerId }.toSet()) }
+        }
     }
 
     fun refreshCatalog() = viewModelScope.launch {
         val snapshot = repository.catalog()
+        // No se toca "message"/"ticket" al volver en línea: si hay una confirmación
+        // recien mostrada (guardado/enviado), refrescar el catálogo no debe taparla.
         _state.update { it.copy(
             talleres = if (snapshot.rows.isEmpty() && snapshot.fromCache) it.talleres else snapshot.rows,
             offline = snapshot.fromCache,
-            message = if (snapshot.fromCache) "Sin conexión. Se muestra el catálogo guardado." else "") }
+            message = if (snapshot.fromCache) "Sin conexión. Se muestra el catálogo guardado." else it.message) }
     }
 
     fun refreshPending(owner: String?) = viewModelScope.launch {

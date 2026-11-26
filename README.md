@@ -13,6 +13,7 @@ SyncPass registra talleres comunitarios, asistencia y encuestas para actividades
 - [Guion de exposición](docs/DEMO_VIERNES_30.md) y [requisitos](docs/REQUISITOS_SYNCPASS.md)
 - [Plan de verificación web, API y móvil](docs/PLAN_VERIFICACION_COMUNICACION.md) y [informe técnico PDF](output/pdf/SyncPass_Informe_Tecnico_y_Plan_de_Verificacion.pdf)
 - [Bitácora consultable de talleres](docs/INNOVACION_BITACORA.md): resumen extractivo y preguntas con cita, para web y Android.
+- [Contexto y límites del asistente de talleres](docs/IA_CONTEXTO.md): fuentes, permisos, comprobación de citas y uso de IA durante la ingeniería.
 - [Defensa técnica de capas, MVVM, Controller, Service, Repository y CSR](docs/DEFENSA_ARQUITECTURA.md).
 
 La web de Vercel puede abrir aunque el laboratorio esté detenido. Las operaciones que usan la API requieren que EC2 esté encendida; el [procedimiento de arranque](docs/OPERACION_LAB.md) explica cómo comprobarlo y obtener su IP.
@@ -74,6 +75,8 @@ La entrada web es `main.tsx`. El proyecto está 100% en TypeScript (`.tsx`/`.ts`
 ## Ejecutar en un equipo
 
 **Demostración local sin laboratorio AWS:** con Docker Desktop iniciado, ejecutar `powershell -NoProfile -ExecutionPolicy Bypass -File deploy/start-local.ps1` desde la raíz. El script crea un `.env` privado si falta, compila y levanta PostgreSQL, API y web, espera el health check y carga tres talleres ficticios solo si la tabla está vacía. Abre `http://localhost:3000` y comprueba `http://localhost:18080/actuator/health`. Para detenerlo: `docker compose down` (conserva el volumen PostgreSQL). El login sigue necesitando internet para hablar con Cognito; la API y la base locales no requieren EC2 ni Supabase. Consulta [arquitectura](docs/ARQUITECTURA.md), [alcance](docs/ALCANCE.md) y [evidencia académica](docs/EVIDENCIA_ANDROID.md).
+
+El APK de depuración compilado con `-PsyncpassApiUrl=http://127.0.0.1:18080/` usa `syncpass-local.db` en el teléfono y requiere `adb reverse tcp:18080 tcp:18080` mientras esté conectado por USB. El APK de nube usa `syncpass.db`. Así, las marcaciones pendientes de un laboratorio no se envían a la base local. Instalar un APK nuevo reinicia la sesión en memoria; inicia sesión otra vez en el teléfono sin copiar la contraseña al chat ni al repositorio.
 
 **Web:** instalar Node.js, entrar a `web-react/`, copiar `.env.example` a `.env.local` y configurar `VITE_API_URL` con la API local o API Gateway. Luego ejecutar `npm ci` y `npm run dev`. Vite abre el servidor de desarrollo en el puerto configurado por `vite.config.js`. `npm run build` genera `web-react/dist/`.
 
