@@ -10,6 +10,10 @@
 
 ## Índice de Pantallas Diseñadas
 
+El [anexo de pantallas](MOCKUPS_ANEXO.md) cubre registro, perfiles, QR personal,
+acceso invitado, preinscripción, bitácora y página no encontrada. Distingue
+láminas SVG, wireframes de texto y pantallas que realmente están conectadas.
+
 1. [Vista 1: Home / Panel de Actividades Comunitarias](#vista-1-home--panel-de-actividades-comunitarias)
 2. [Vista 2: Iniciar Sesión (Login Monitores y Docentes)](#vista-2-iniciar-sesión-login-monitores-y-docentes)
 3. [Vista 3: Escáner QR de Acreditación Rápida en Terreno](#vista-3-escáner-qr-de-acreditación-rápida-en-terreno)
@@ -58,7 +62,7 @@ ya está implementado; su prueba física entre dispositivos sigue pendiente.
 
 > **Implementado — Talleres:** `web-react/src/pages/TalleresAdminPage.tsx`, ruta
 > `/talleres` protegida por `RequireAuth` (rol admin/coordinador). Crear, listar,
-> editar y eliminar contra `/api/talleres`, con combo de proyecto asociado y
+> editar y eliminar contra `/api/eventos`, con combo de proyecto asociado y
 > sub-formulario de geocerca (latitud/longitud/radioMetros). `crud-talleres-web.svg`/
 > `-tablet.svg` se actualizaron el 19-11-2026 para incluir ambos campos.
 > También se agregaron los dos campos de dominio (roles permitidos y zona
@@ -72,8 +76,8 @@ ya está implementado; su prueba física entre dispositivos sigue pendiente.
 > "Marcar que voy" (`POST /api/eventos/{id}/inscripcion`).
 > **Implementado — Android:** `ui/screens/MisInscripcionesScreen.kt`, accesible
 > desde el botón "Mis talleres pendientes" en el panel de inicio con sesión.
-> **Pendiente:** boceto SVG dedicado (no se generó uno nuevo por tiempo; esta
-> nota cumple la trazabilidad exigida sin necesitar el dibujo).
+> **Diseño:** [wireframe de preinscripción](MOCKUPS_ANEXO.md#preinscripción)
+> disponible en texto; la lámina SVG dedicada sigue pendiente.
 <!-- /dibujos -->
 
 
@@ -193,7 +197,8 @@ ya está implementado; su prueba física entre dispositivos sigue pendiente.
 > **Implementado:** `web-react/src/pages/ScannerPage.tsx`, ruta `/acreditar` protegida por
 > `RequireAuth` (rol monitor/coordinador). No usa cámara: recibe el código ya leído
 > (teclado, lector USB o pegado manual), a diferencia del Android que sí abre CameraX.
-> **Pendiente:** lectura de cámara web (`getUserMedia`) para no depender de un lector externo.
+> **Implementado:** el lector ZXing pide cámara en un contexto seguro y ofrece
+> una entrada manual cuando la cámara no está disponible.
 
 ### 3.2 Boceto Mobile (Android Kotlin - Escaneo en Acceso)
 ```text
