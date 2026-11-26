@@ -3,6 +3,7 @@ package cl.duoc.syncpass.ui.screens
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider
 import cl.duoc.syncpass.data.AuthSession
+import cl.duoc.syncpass.data.FakeSyncPassApi
 import cl.duoc.syncpass.data.SyncPassRepository
 import cl.duoc.syncpass.data.fakeJwt
 import kotlinx.coroutines.Dispatchers
@@ -12,6 +13,9 @@ import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.setMain
 import kotlinx.coroutines.withTimeout
+import okhttp3.ResponseBody.Companion.toResponseBody
+import retrofit2.HttpException
+import retrofit2.Response
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
@@ -57,6 +61,21 @@ class BitacoraViewModelTest {
             viewModel.state.first { !it.busy && it.status.isNotBlank() }
         }
         assertTrue(viewModel.state.value.status.isNotBlank())
+    }
+
+    @Test fun unpublishedBitacoraCanBeRefreshedAfterPublication() = runBlocking {
+        AuthSession.signedIn(fakeJwt("participante-1"), null)
+        val api = FakeSyncPassApi()
+        api.errorOnBitacora = HttpException(Response.error<Any>(404, "".toResponseBody()))
+        viewModel = BitacoraViewModel(SyncPassRepository(context, api, { true }))
+        viewModel.cargar(2)
+        withTimeout(5000) { viewModel.state.first { !it.busy } }
+        assertTrue(viewModel.state.value.status.contains("cuando el equipo publique"))
+        assertNull(viewModel.state.value.bitacora)
+        api.errorOnBitacora = null
+        viewModel.cargar(2)
+        val published = withTimeout(5000) { viewModel.state.first { it.bitacora != null } }
+        assertEquals("resumen", published.bitacora?.resumen)
     }
 
     @Test fun preguntarWithoutTokenIsNoOp() {

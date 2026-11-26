@@ -65,7 +65,7 @@ public class TallerService {
         validar(input);
         var actual = obtener(id);
         if (!Objects.equals(actual.version, input.version))
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "El taller cambió; recarga antes de editar");
+            throw new cl.duoc.syncpass.config.StaleVersionException();
         if (input.cuposMaximos < actual.inscritos)
             throw new ResponseStatusException(HttpStatus.CONFLICT,
                 "Ya hay " + actual.inscritos + " personas acreditadas: no puedes dejar menos cupos que eso");

@@ -80,7 +80,7 @@ export default function TalleresAdminPage({ talleres, onRefresh }: TalleresAdmin
     } catch (e) {
       const err = e as Error;
       setError(err.message);
-      if (isStaleVersionConflict(err.message)) onRefresh().catch(() => {});
+      if (isStaleVersionConflict(err)) onRefresh().catch(() => {});
     } finally {
       setBusy(false);
     }

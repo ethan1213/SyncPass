@@ -8,9 +8,12 @@ type Tokens={accessToken:string;idToken:string;refreshToken:string;expiresIn:num
 type Session=Tokens&{expiresAt:number};
 type UserClaims={sub?:string;nickname?:string;email?:string;[key:string]:unknown};
 type Registration={username:string;email:string;nickname:string;password:string};
+type RegistrationResult={userConfirmed:boolean;destination:string};
+type LoginInput={username:string;password:string};
+type RefreshInput={refreshToken:string};
 type SessionContext={configured:boolean;isLoading:boolean;error:string|null;user:UserClaims|null;isAuthenticated:boolean;
  loginWithRedirect:()=>void;login:(username:string,password:string)=>Promise<void>;
- register:(data:Registration)=>Promise<{userConfirmed:boolean;destination:string}>;
+ register:(data:Registration)=>Promise<RegistrationResult>;
  confirm:(username:string,code:string)=>Promise<unknown>;resend:(username:string)=>Promise<unknown>;
  logout:()=>Promise<void>;getAccessTokenSilently:()=>Promise<string>};
 export const SessionContext=createContext<SessionContext|null>(null);
@@ -23,8 +26,8 @@ export function SessionProvider({children}:{children:ReactNode}){
  const [session,setSession]=useState(load);
  const [error,setError]=useState<string|null>(null);
  const store=(s:Session|null)=>{save(s);setSession(s);};
- async function login(username:string,password:string){setError(null);store(withExpiry(await request('/api/auth/login',{method:'POST',body:{username,password}})));}
- const register=(data:Registration)=>request('/api/auth/register',{method:'POST',body:data});
+ async function login(username:string,password:string){setError(null);store(withExpiry(await request<Tokens, LoginInput>('/api/auth/login',{method:'POST',body:{username,password}})));}
+ const register=(data:Registration)=>request<RegistrationResult, Registration>('/api/auth/register',{method:'POST',body:data});
  const confirm=(username:string,code:string)=>request('/api/auth/confirm',{method:'POST',body:{username,code}});
  const resend=(username:string)=>request('/api/auth/resend',{method:'POST',body:{username}});
  async function logout(){
@@ -36,7 +39,7 @@ export function SessionProvider({children}:{children:ReactNode}){
   let current=load();
   if(!current)throw new Error('Inicia sesión para continuar.');
   if(current.expiresAt-Date.now()<60000){
-   try{current=withExpiry(await request('/api/auth/refresh',{method:'POST',body:{refreshToken:current.refreshToken}}));store(current);}
+   try{current=withExpiry(await request<Tokens, RefreshInput>('/api/auth/refresh',{method:'POST',body:{refreshToken:current.refreshToken}}));store(current);}
    catch{store(null);throw new Error('Tu sesión expiró. Inicia sesión.');}
   }
   return current.accessToken;

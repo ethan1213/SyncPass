@@ -44,7 +44,8 @@ class ApiTest {
   var row=(com.fasterxml.jackson.databind.node.ObjectNode)json.readTree(created.getResponse().getContentAsString());long id=row.get("id").asLong();
   row.put("title","Proyecto editado");
   mvc.perform(put("/api/proyectos/"+id).with(staff).contentType(MediaType.APPLICATION_JSON).content(row.toString())).andExpect(status().isOk()).andExpect(jsonPath("version").value(1));
-  mvc.perform(put("/api/proyectos/"+id).with(staff).contentType(MediaType.APPLICATION_JSON).content(row.toString())).andExpect(status().isConflict());
+  mvc.perform(put("/api/proyectos/"+id).with(staff).contentType(MediaType.APPLICATION_JSON).content(row.toString()))
+   .andExpect(status().isConflict()).andExpect(jsonPath("$.code").value("STALE_VERSION"));
   mvc.perform(delete("/api/proyectos/"+id).with(staff)).andExpect(status().isNoContent());
   mvc.perform(get("/api/proyectos/"+id).with(staff)).andExpect(status().isNotFound());
  }
@@ -62,7 +63,11 @@ class ApiTest {
  @Test void crudAndStaleVersion()throws Exception{
   long id=create();var data=json.readTree(taller());((com.fasterxml.jackson.databind.node.ObjectNode)data).put("version",0).put("title","Taller actualizado");
   mvc.perform(put("/api/eventos/"+id).with(jwt().authorities(new SimpleGrantedAuthority("ROLE_admin"))).contentType(MediaType.APPLICATION_JSON).content(data.toString())).andExpect(status().isOk()).andExpect(jsonPath("version").value(1));
-  mvc.perform(put("/api/eventos/"+id).with(jwt().authorities(new SimpleGrantedAuthority("ROLE_admin"))).contentType(MediaType.APPLICATION_JSON).content(data.toString())).andExpect(status().isConflict());
+  ((com.fasterxml.jackson.databind.node.ObjectNode)data).put("title","Edición obsoleta");
+  mvc.perform(put("/api/eventos/"+id).with(jwt().authorities(new SimpleGrantedAuthority("ROLE_admin"))).contentType(MediaType.APPLICATION_JSON).content(data.toString()))
+   .andExpect(status().isConflict()).andExpect(jsonPath("$.code").value("STALE_VERSION"));
+  mvc.perform(get("/api/eventos/"+id)).andExpect(status().isOk())
+   .andExpect(jsonPath("$.title").value("Taller actualizado"));
   mvc.perform(delete("/api/eventos/"+id).with(jwt().authorities(new SimpleGrantedAuthority("ROLE_admin")))).andExpect(status().isNoContent());
   mvc.perform(get("/api/eventos/"+id)).andExpect(status().isNotFound());
  }

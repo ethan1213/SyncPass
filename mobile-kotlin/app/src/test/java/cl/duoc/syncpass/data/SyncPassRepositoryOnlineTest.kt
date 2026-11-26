@@ -24,7 +24,7 @@ private fun httpError(code: Int): HttpException =
  * Fake de [SyncPassApi]: cada metodo devuelve lo que el test deja preparado
  * o lanza [errors] si corresponde, sin tocar la red real.
  */
-private class FakeSyncPassApi : SyncPassApi {
+internal class FakeSyncPassApi : SyncPassApi {
     var loginResult: LoginResult = LoginResult("access", "id", "refresh", 3600)
     var registerResult: RegisterResult = RegisterResult(userConfirmed = false, destination = "e@x.cl")
     var talleresResult: List<TallerDto> = emptyList()
@@ -40,6 +40,8 @@ private class FakeSyncPassApi : SyncPassApi {
     var errorOnJoinGuest: Throwable? = null
     var errorOnJoinAccount: Throwable? = null
     var errorOnTalleres: Throwable? = null
+    var errorOnBitacora: Throwable? = null
+    var rejectedSync: Map<String, Int> = emptyMap()
 
     val loginCalls = mutableListOf<LoginRequest>()
     val registerCalls = mutableListOf<RegisterRequest>()
@@ -72,9 +74,13 @@ private class FakeSyncPassApi : SyncPassApi {
     }
     override suspend fun sync(authorization: String, batch: SyncBatch): SyncResult {
         syncCalls += batch
+        batch.registros.firstNotNullOfOrNull { rejectedSync[it.id] }?.let { throw httpError(it) }
         return syncResult
     }
-    override suspend fun bitacora(tallerId: Long, authorization: String): BitacoraDto = bitacoraResult
+    override suspend fun bitacora(tallerId: Long, authorization: String): BitacoraDto {
+        errorOnBitacora?.let { throw it }
+        return bitacoraResult
+    }
     override suspend fun preguntarBitacora(tallerId: Long, authorization: String, pregunta: PreguntaBitacora): RespuestaBitacora =
         respuestaResult
     override suspend fun marcarPendiente(tallerId: Long, authorization: String): InscripcionDto = marcarPendienteResult
@@ -219,6 +225,18 @@ class SyncPassRepositoryOnlineTest {
         assertEquals(1, repository.sync("coord-1", "token-xyz"))
         assertEquals(listOf(local.id), api.syncCalls.single().registros.map { it.id })
         assertEquals(listOf(otroCatalogo.id), repository.pending("coord-1").map { it.id })
+    }
+
+    @Test fun syncRetains404And409WithoutBlockingValidRecords() = runBlocking {
+        val ausente = PendingRecord(owner = "coord-1", tipo = "encuesta", tallerId = 1, rating = 5)
+        val conflicto = PendingRecord(owner = "coord-1", tipo = "encuesta", tallerId = 2, rating = 5)
+        val valido = PendingRecord(owner = "coord-1", tipo = "encuesta", tallerId = 3, rating = 5)
+        listOf(ausente, conflicto, valido).forEach { repository.queue(it) }
+        api.rejectedSync = mapOf(ausente.id to 404, conflicto.id to 409)
+        api.syncResult = SyncResult(listOf(valido.id))
+
+        assertEquals(1, repository.sync("coord-1", "token"))
+        assertEquals(setOf(ausente.id, conflicto.id), repository.pending("coord-1").map { it.id }.toSet())
     }
 
     @Test fun flushEntriesOnlineSendsGuestEntryAndRemovesIt() = runBlocking {

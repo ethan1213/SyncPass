@@ -424,17 +424,29 @@ class SyncPassRepository(
         val enviables = db.pending().forOwner(owner).filter {
             catalogoActual.isEmpty() || it.tallerId in catalogoActual
         }
-        for (batch in enviables.chunked(100)) {
-            val result = api.sync("Bearer $accessToken", SyncBatch(batch.map {
+        suspend fun enviar(batch: List<PendingRecord>) {
+            val payload = SyncBatch(batch.map {
                 PendingPayload(it.id, it.tipo, it.tallerId, it.participante, it.rating,
                     it.comentario, it.utilidad, it.timestamp, it.latitud, it.longitud, it.precisionMetros)
-            }))
+            })
+            val result = try {
+                api.sync("Bearer $accessToken", payload)
+            } catch (error: HttpException) {
+                if (error.code() != 404 && error.code() != 409) throw error
+                if (batch.size > 1) {
+                    val mitad = batch.size / 2
+                    enviar(batch.take(mitad))
+                    enviar(batch.drop(mitad))
+                }
+                return
+            }
             val accepted = result.acceptedIds.toSet()
             for (row in batch) if (row.id in accepted) {
                 db.pending().delete(row.id, owner)
                 total++
             }
         }
+        for (batch in enviables.chunked(100)) enviar(batch)
         total
     }
 }

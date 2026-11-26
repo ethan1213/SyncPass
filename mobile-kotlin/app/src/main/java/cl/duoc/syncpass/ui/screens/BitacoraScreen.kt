@@ -30,7 +30,10 @@ fun BitacoraScreen(repository: SyncPassRepository, tallerId: Long, onBack: () ->
         Text("Bitácora del taller", style = MaterialTheme.typography.headlineMedium)
         Text("Resumen y preguntas basados en el contenido publicado para este taller.")
 
-        if (state.status.isNotBlank()) Text(state.status, color = MaterialTheme.colorScheme.error)
+        if (state.status.isNotBlank()) Text(state.status)
+        if (state.bitacora == null && !state.busy) {
+            OutlinedButton(onClick = { vm.cargar(tallerId) }) { Text("Actualizar bitácora") }
+        }
 
         state.bitacora?.let { bitacora ->
             Card {

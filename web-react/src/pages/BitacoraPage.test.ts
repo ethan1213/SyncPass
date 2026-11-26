@@ -2,12 +2,12 @@ import React from 'react';
 import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 import BitacoraPage from './BitacoraPage';
-import { request } from '../clients/api';
+import { ApiHttpError, request } from '../clients/api';
 
 const token = async () => 'token-demo';
 vi.mock('../auth/SessionProvider', () => ({ useSession: () => ({ getAccessTokenSilently: token }) }));
 vi.mock('../hooks/useRoles', () => ({ useUserRoles: () => ['admin'] }));
-vi.mock('../clients/api', () => ({ request: vi.fn() }));
+vi.mock('../clients/api', async (original) => ({ ...await original<typeof import('../clients/api')>(), request: vi.fn() }));
 vi.mock('wouter', () => ({ Link: ({ children, href }: { children: React.ReactNode; href: string }) => React.createElement('a', { href }, children) }));
 const api = vi.mocked(request);
 const originalCreateObjectURL = URL.createObjectURL;
@@ -37,6 +37,16 @@ it('exige consentimiento antes de activar el micrófono', async () => {
   render(React.createElement(BitacoraPage, { tallerId: '42' }));
   fireEvent.click(screen.getByRole('button', { name: 'Grabar audio local' }));
   expect(await screen.findByText('Confirma el consentimiento de las personas antes de grabar.')).toBeTruthy();
+});
+
+it('muestra un estado vacío cuando el equipo aún no publica la bitácora', async () => {
+  api.mockImplementation(async (path) => {
+    if (path.endsWith('/bitacora')) throw new ApiHttpError(404, 'Recurso ausente');
+    return { grabado: false };
+  });
+  render(React.createElement(BitacoraPage, { tallerId: '42' }));
+  expect(await screen.findByText('Este taller aún no tiene bitácora.')).toBeTruthy();
+  expect(screen.getByRole<HTMLButtonElement>('button', { name: 'Buscar respuesta' }).disabled).toBe(true);
 });
 
 it('prepara un borrador sin publicar y guarda la versión revisada', async () => {

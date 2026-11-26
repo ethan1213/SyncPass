@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import retrofit2.HttpException
 
 data class BitacoraUiState(
     val bitacora: BitacoraDto? = null,
@@ -29,17 +30,21 @@ class BitacoraViewModel(private val repository: SyncPassRepository) : ViewModel(
     fun onQuestion(valor: String) = _state.update { it.copy(question = valor.take(300)) }
 
     fun cargar(tallerId: Long) {
+        if (_state.value.busy) return
         val token = AuthSession.accessToken
         if (token == null) {
             _state.update { it.copy(status = "Inicia sesión para consultar la bitácora.") }
             return
         }
-        _state.update { it.copy(busy = true) }
+        _state.update { it.copy(busy = true, answer = null, status = "Cargando bitácora...") }
         viewModelScope.launch {
             runCatching { repository.bitacora(tallerId, token) }
                 .onSuccess { datos -> _state.update { it.copy(bitacora = datos, status = "", busy = false) } }
                 .onFailure { error ->
-                    _state.update { it.copy(busy = false, status = mensajeDeError(error)) }
+                    val estado = if (error is HttpException && error.code() == 404)
+                        "Lo aprendido aparecerá aquí cuando el equipo publique la bitácora."
+                    else mensajeDeError(error)
+                    _state.update { it.copy(bitacora = null, busy = false, status = estado) }
                 }
         }
     }

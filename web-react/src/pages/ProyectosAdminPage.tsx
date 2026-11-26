@@ -40,7 +40,7 @@ export default function ProyectosAdminPage() {
     } catch (e) {
       const err = e as Error;
       setError(err.message);
-      if (isStaleVersionConflict(err.message)) refresh().catch(() => {});
+      if (isStaleVersionConflict(err)) refresh().catch(() => {});
     } finally {
       setBusy(false);
     }

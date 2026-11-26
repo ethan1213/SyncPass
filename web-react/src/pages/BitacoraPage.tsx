@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type FormEvent } from 'react';
 import { Link } from 'wouter';
-import { request } from '../clients/api';
+import { ApiHttpError, request } from '../clients/api';
 import { useSession } from '../auth/SessionProvider';
 import { useUserRoles } from '../hooks/useRoles';
 
@@ -69,7 +69,7 @@ export default function BitacoraPage({ tallerId }: BitacoraPageProps) {
     let active = true;
     getAccessTokenSilently().then((token) => request(`/api/eventos/${tallerId}/bitacora`, { token }))
       .then((data) => { if (active) { setContenido(data.contenido); setResumen(data.resumen); setFragmentos(data.fragmentos); } })
-      .catch((error) => { if (active) setMensaje(error.message.includes('404') ? 'Este taller aún no tiene bitácora.' : error.message); });
+      .catch((error) => { if (active) setMensaje(error instanceof ApiHttpError && error.status === 404 ? 'Este taller aún no tiene bitácora.' : error.message); });
     request(`/api/eventos/${tallerId}/grabacion`)
       .then((state) => { if (active) setGrabado(state.grabado); })
       .catch(() => {});
@@ -137,7 +137,7 @@ export default function BitacoraPage({ tallerId }: BitacoraPageProps) {
       setMensaje('Transcripción lista para revisar. Prepara el resumen y publica cuando termines.');
     } catch (error) {
       const detalle = (error as Error).message;
-      setMensaje(detalle.includes('503') ? 'Gemini no está disponible. Puedes pegar los apuntes o usar el dictado.' : detalle);
+      setMensaje(error instanceof ApiHttpError && error.status === 503 ? 'Gemini no está disponible. Puedes pegar los apuntes o usar el dictado.' : detalle);
     } finally {
       setOcupado(false);
     }

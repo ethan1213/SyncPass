@@ -48,7 +48,7 @@ public class ProyectoService {
         validarFechas(input);
         var actual = obtener(id);
         if (!Objects.equals(actual.version, input.version))
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "El proyecto cambió; recarga antes de editar");
+            throw new cl.duoc.syncpass.config.StaleVersionException();
         input.id = id;
         return repository.saveAndFlush(input);
     }

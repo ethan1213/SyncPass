@@ -12,10 +12,16 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class ApiErrors {
 
-    @ExceptionHandler({DataIntegrityViolationException.class, ObjectOptimisticLockingFailureException.class})
+    @ExceptionHandler({StaleVersionException.class, ObjectOptimisticLockingFailureException.class})
+    ResponseEntity<?> staleVersion() {
+        return ResponseEntity.status(409).body(Map.of("code", "STALE_VERSION",
+            "message", "Otra sesión guardó cambios. Abre la versión actual y revisa tus cambios antes de guardar."));
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
     ResponseEntity<?> conflict(Exception ex) {
         return ResponseEntity.status(409).body(Map.of("code", "CONFLICT",
-            "message", "El registro está relacionado con otros datos o fue modificado. Recarga y revisa la operación."));
+            "message", "El registro está duplicado o relacionado con otros datos. Revisa la operación."));
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

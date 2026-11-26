@@ -79,6 +79,7 @@ class HomeViewModel(private val repository: SyncPassRepository) : ViewModel() {
         _state.update { it.copy(waiting = true,
             message = "Conexión recuperada. Enviando ${enCola + pendientes.size} registro(s)...") }
         val avisos = mutableListOf<String>()
+        var falloEnvio = false
 
         val cola = runCatching { repository.flushEntries(token) }.getOrNull()
         if (cola != null && cola.enviados > 0) avisos += "${cola.enviados} asistencia(s) enviada(s)"
@@ -87,8 +88,18 @@ class HomeViewModel(private val repository: SyncPassRepository) : ViewModel() {
 
         if (owner != null && token != null && pendientes.isNotEmpty()) {
             runCatching { repository.sync(owner, token) }
-                .onSuccess { avisos += "$it registro(s) sincronizado(s)"; AuthSession.refreshed() }
-                .onFailure { avisos += mensajeDeError(it) }
+                .onSuccess {
+                    if (it > 0) {
+                        avisos += "$it registro(s) sincronizado(s)"
+                        AuthSession.refreshed()
+                    }
+                    if (it < pendientes.size)
+                        avisos += "Conservamos ${pendientes.size - it} registro(s) pendientes. Revisa el taller y vuelve a intentar."
+                }
+                .onFailure {
+                    falloEnvio = true
+                    avisos += mensajeDeError(it)
+                }
         }
 
         val quedanEntries = runCatching { repository.pendingEntries() }.getOrDefault(0)
@@ -98,9 +109,13 @@ class HomeViewModel(private val repository: SyncPassRepository) : ViewModel() {
         _state.update { it.copy(pending = quedanPending, entries = quedanEntries,
             waiting = quedanEntries + quedanPending > 0,
             message = avisos.joinToString(" · ").ifBlank { "Conexión recuperada." },
-            ticket = if (huboEnvioExitoso) TicketEstado.ENVIADO
-                     else if (avisos.isNotEmpty()) TicketEstado.ERROR
-                     else it.ticket) }
+            ticket = when {
+                falloEnvio -> TicketEstado.ERROR
+                quedanEntries + quedanPending > 0 -> TicketEstado.GUARDADO_LOCAL
+                huboEnvioExitoso -> TicketEstado.ENVIADO
+                avisos.isNotEmpty() -> TicketEstado.ERROR
+                else -> it.ticket
+            }) }
     }
 
     /** El usuario cierra la confirmación a mano: ya no desaparece sola. */
