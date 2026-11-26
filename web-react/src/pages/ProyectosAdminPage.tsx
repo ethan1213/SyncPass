@@ -23,7 +23,7 @@ export default function ProyectosAdminPage() {
   const [loading, setLoading] = useState(true);
   async function refresh() {
     const token = await getAccessTokenSilently();
-    setRows(await request('/api/proyectos', { token }));
+    setRows((await request<Proyecto[]>('/api/proyectos', { token })) ?? []);
   }
   useEffect(() => { refresh().catch((e) => setError(e.message)).finally(() => setLoading(false)); }, []);
   async function save(e: FormEvent) {

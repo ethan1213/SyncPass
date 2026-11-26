@@ -19,7 +19,7 @@ export default function PanelQuorumPage({ talleres }: PanelQuorumPageProps) {
   async function load() {
     setError('');
     try {
-      setCounts(await request('/api/quorum', { token: await getAccessTokenSilently() }));
+      setCounts((await request<QuorumCount[]>('/api/quorum', { token: await getAccessTokenSilently() })) ?? []);
     } catch (e) {
       setError((e as Error).message);
     }
