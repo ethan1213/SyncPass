@@ -12,6 +12,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.*
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.repeatOnLifecycle
+import kotlinx.coroutines.delay
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -62,6 +64,14 @@ fun HomeScreen(
     val token = AuthSession.accessToken
     LaunchedEffect(owner, AuthSession.syncVersion) { vm.refreshPending(owner) }
     LaunchedEffect(token) { vm.refreshInscripciones(token) }
+    LaunchedEffect(lifecycleOwner) {
+        lifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+            while (true) {
+                delay(20_000)
+                vm.refreshCatalog().join()
+            }
+        }
+    }
     DisposableEffect(lifecycleOwner, owner) {
         val observer = LifecycleEventObserver { _, event ->
             if (event == Lifecycle.Event.ON_RESUME) {

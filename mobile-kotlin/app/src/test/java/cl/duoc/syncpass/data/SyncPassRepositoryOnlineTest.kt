@@ -239,6 +239,20 @@ class SyncPassRepositoryOnlineTest {
         assertEquals(setOf(ausente.id, conflicto.id), repository.pending("coord-1").map { it.id }.toSet())
     }
 
+    @Test fun refreshedCatalogReplacesOldRowsAndRemainsVisibleOffline() = runBlocking {
+        val original = TallerDto(id = 1, title = "Primera edición", descripcion = null,
+            area = null, unidadVecinal = null, comuna = null, direccion = null,
+            fechaHora = null, docenteLider = null, cuposMaximos = 10)
+        api.talleresResult = listOf(original, original.copy(id = 2))
+        assertEquals(2, repository.catalog().rows.size)
+        api.talleresResult = listOf(original.copy(title = "Edición desde web"))
+        assertFalse(repository.catalog().fromCache)
+        online = false
+        val cache = repository.catalog()
+        assertTrue(cache.fromCache)
+        assertEquals(listOf("Edición desde web"), cache.rows.map { it.title })
+    }
+
     @Test fun flushEntriesOnlineSendsGuestEntryAndRemovesIt() = runBlocking {
         online = false
         repository.joinGuest(3, "Vecino")

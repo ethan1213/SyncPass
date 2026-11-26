@@ -8,6 +8,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import cl.duoc.syncpass.data.SyncPassRepository
@@ -19,6 +22,7 @@ import cl.duoc.syncpass.ui.syncPassViewModel
 fun BitacoraScreen(repository: SyncPassRepository, tallerId: Long, onBack: () -> Unit) {
     val vm = syncPassViewModel(repository) { BitacoraViewModel(it) }
     val state by vm.state.collectAsState()
+    var mostrarFuentes by remember(tallerId) { mutableStateOf(false) }
 
     LaunchedEffect(tallerId) { vm.cargar(tallerId) }
 
@@ -31,8 +35,8 @@ fun BitacoraScreen(repository: SyncPassRepository, tallerId: Long, onBack: () ->
         Text("Resumen y preguntas basados en el contenido publicado para este taller.")
 
         if (state.status.isNotBlank()) Text(state.status)
-        if (state.bitacora == null && !state.busy) {
-            OutlinedButton(onClick = { vm.cargar(tallerId) }) { Text("Actualizar bitácora") }
+        OutlinedButton(onClick = { vm.cargar(tallerId) }, enabled = !state.busy) {
+            Text("Actualizar bitácora")
         }
 
         state.bitacora?.let { bitacora ->
@@ -40,6 +44,12 @@ fun BitacoraScreen(repository: SyncPassRepository, tallerId: Long, onBack: () ->
                 Column(Modifier.padding(16.dp)) {
                     Text("Resumen de la sesión", style = MaterialTheme.typography.titleLarge)
                     Text(bitacora.resumen)
+                    TextButton(onClick = { mostrarFuentes = !mostrarFuentes }) {
+                        Text(if (mostrarFuentes) "Ocultar fuentes" else "Ver apuntes publicados y fuentes")
+                    }
+                    if (mostrarFuentes) bitacora.fragmentos.forEachIndexed { indice, fuente ->
+                        Text("${indice + 1}. $fuente", modifier = Modifier.padding(bottom = 8.dp))
+                    }
                 }
             }
 

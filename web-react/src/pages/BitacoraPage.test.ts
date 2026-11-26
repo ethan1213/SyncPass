@@ -49,6 +49,24 @@ it('muestra un estado vacío cuando el equipo aún no publica la bitácora', asy
   expect(screen.getByRole<HTMLButtonElement>('button', { name: 'Buscar respuesta' }).disabled).toBe(true);
 });
 
+it('carga material de prueba al editor y lo publica solo cuando se confirma', async () => {
+  api.mockImplementation(async (path, options) => {
+    if (path.endsWith('/grabacion')) return { grabado: false };
+    if (options?.method === 'PUT') return {
+      resumen: 'Verificación en dos pasos.',
+      fragmentos: ['Se activó la verificación en dos pasos.'],
+    };
+    throw new ApiHttpError(404, 'Aún no publicada');
+  });
+  render(React.createElement(BitacoraPage, { tallerId: '42' }));
+  fireEvent.click(await screen.findByRole('button', { name: 'Cargar apuntes de prueba' }));
+  expect(screen.getByLabelText('Transcripción o apuntes')).toHaveProperty('value', expect.stringContaining('Bitácora de prueba'));
+  expect(api.mock.calls.some(([, options]) => options?.method === 'PUT')).toBe(false);
+  fireEvent.click(screen.getByRole('button', { name: 'Guardar y resumir' }));
+  expect(await screen.findByText('Verificación en dos pasos.')).toBeTruthy();
+  expect(screen.getByText('Ver apuntes publicados y fuentes')).toBeTruthy();
+});
+
 it('prepara un borrador sin publicar y guarda la versión revisada', async () => {
   api.mockImplementation(async (path) => {
     if (path.endsWith('/borrador')) return { resumen: 'Separar papel.', origen: 'gemini' };

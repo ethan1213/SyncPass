@@ -71,4 +71,24 @@ class BitacoraControllerTest {
   mvc.perform(multipart(path).file(audio).with(role("admin")).param("autorizaProveedor","true"))
    .andExpect(status().isServiceUnavailable());
  }
+
+ @Test void secondAccountSeesPublishedWorkshopAndUpdatedSummary() throws Exception {
+  long id=workshop();
+  var path="/api/eventos/"+id+"/bitacora";
+  var first=jwt().jwt(j->j.subject("usuario-web")).authorities(new SimpleGrantedAuthority("ROLE_coordinador"));
+  var second=jwt().jwt(j->j.subject("usuario-android")).authorities(new SimpleGrantedAuthority("ROLE_coordinador"));
+  mvc.perform(get("/api/eventos").with(second)).andExpect(status().isOk())
+   .andExpect(jsonPath("$[?(@.id == "+id+")].title").value(org.hamcrest.Matchers.hasItem("Taller de reciclaje")));
+  mvc.perform(get(path).with(second)).andExpect(status().isNotFound());
+  for (String material : java.util.List.of("papel", "cartón")) {
+   String fuente="El material aceptado es "+material+".";
+   var body=json.writeValueAsString(java.util.Map.of("contenido",fuente,"resumenRevisado","Material: "+material));
+   mvc.perform(put(path).with(first).contentType(MediaType.APPLICATION_JSON).content(body)).andExpect(status().isOk());
+   mvc.perform(get(path).with(second)).andExpect(status().isOk())
+    .andExpect(jsonPath("$.resumen").value("Material: "+material));
+   mvc.perform(post(path+"/preguntas").with(second).contentType(MediaType.APPLICATION_JSON)
+    .content("{\"pregunta\":\"¿Qué material se acepta?\"}"))
+    .andExpect(status().isOk()).andExpect(jsonPath("$.cita").value(fuente));
+  }
+ }
 }

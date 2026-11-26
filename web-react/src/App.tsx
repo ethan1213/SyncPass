@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react';
+import { useCallback, useEffect, useState, useRef } from 'react';
 import { Link, Route, Switch, useLocation } from 'wouter';
 import Navbar from './components/organisms/Navbar';
 import Footer from './components/organisms/Footer';
@@ -40,25 +40,55 @@ export default function App() {
   const { user, isLoading, getAccessTokenSilently } = useSession();
   const owner = user?.sub;
   const [talleres, setTalleres] = useState<Taller[]>([]);
+  const [catalogoCargado, setCatalogoCargado] = useState(false);
   const [unsyncedItems, setQueue] = useState<QueueRecord[]>([]);
   const [error, setError] = useState('');
   const [isOfflineMode, setOffline] = useState(!navigator.onLine);
   const syncing = useRef(false);
+  const catalogRequest = useRef(0);
+  const backgroundRefresh = useRef(false);
 
-  async function refresh() {
+  const refresh = useCallback(async () => {
+    const numero = ++catalogRequest.current;
     const rows = await apiGetEventos();
+    if (numero !== catalogRequest.current) return;
     setTalleres(normalize(rows));
-    await cacheCatalog(rows);
+    setCatalogoCargado(true);
     setError('');
-  }
+    await cacheCatalog(rows).catch(() => {});
+  }, []);
 
   useEffect(() => {
-    refresh().catch(async () => {
-      const rows = await cachedCatalog<TallerRaw[]>();
-      if (rows) setTalleres(normalize(rows));
-      setError(rows ? 'Mostrando el catálogo guardado; no se pudo actualizar.' : 'La API no está disponible. No se pudieron cargar los talleres.');
-    });
-  }, []);
+    let activo = true;
+    async function actualizar() {
+      if (backgroundRefresh.current || document.hidden) return;
+      backgroundRefresh.current = true;
+      const numero = catalogRequest.current + 1;
+      try {
+        await refresh();
+      } catch {
+        const rows = await cachedCatalog<TallerRaw[]>().catch(() => null);
+        if (!activo || numero !== catalogRequest.current) return;
+        if (rows) setTalleres(normalize(rows));
+        setError(rows ? 'Mostrando el catálogo guardado; no se pudo actualizar.' : 'La API no está disponible. No se pudieron cargar los talleres.');
+        setCatalogoCargado(true);
+      } finally {
+        backgroundRefresh.current = false;
+      }
+    }
+    void actualizar();
+    const timer = window.setInterval(actualizar, 20000);
+    window.addEventListener('focus', actualizar);
+    window.addEventListener('online', actualizar);
+    document.addEventListener('visibilitychange', actualizar);
+    return () => {
+      activo = false;
+      window.clearInterval(timer);
+      window.removeEventListener('focus', actualizar);
+      window.removeEventListener('online', actualizar);
+      document.removeEventListener('visibilitychange', actualizar);
+    };
+  }, [refresh]);
 
   useEffect(() => {
     setQueue([]);
@@ -123,8 +153,10 @@ export default function App() {
         ) : (
           <Switch>
             <Route path="/"><HomePage talleres={talleres} onSelectTaller={(t) => navigate('/taller/' + t.id)} /></Route>
-            <Route path="/taller/:id">{(params) => <TallerDetailPage taller={talleres.find((t) => String(t.id) === params.id)} />}</Route>
-            <Route path="/bitacora/:id">{(params) => protect(<BitacoraPage tallerId={params.id} />)}</Route>
+            <Route path="/taller/:id">{(params) => catalogoCargado
+              ? <TallerDetailPage taller={talleres.find((t) => String(t.id) === params.id)} />
+              : <p className="contenedor" role="status">Cargando taller…</p>}</Route>
+            <Route path="/bitacora/:id">{(params) => protect(<BitacoraPage key={params.id} tallerId={params.id} />)}</Route>
             <Route path="/mi-panel">{protect(<RoleDashboard />)}</Route>
             <Route path="/mi-qr">{protect(<MyQrPage />)}</Route>
             <Route path="/mis-talleres">{protect(<MisTalleresPendientesPage />)}</Route>

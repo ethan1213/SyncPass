@@ -52,6 +52,8 @@ export default function BitacoraPage({ tallerId }: BitacoraPageProps) {
   const [respuesta, setRespuesta] = useState<Respuesta | null>(null);
   const [mensaje, setMensaje] = useState('');
   const [ocupado, setOcupado] = useState(false);
+  const [cargando, setCargando] = useState(true);
+  const [recarga, setRecarga] = useState(0);
   const [dictando, setDictando] = useState(false);
   const [grabando, setGrabando] = useState(false);
   const [audioUrl, setAudioUrl] = useState('');
@@ -67,9 +69,18 @@ export default function BitacoraPage({ tallerId }: BitacoraPageProps) {
 
   useEffect(() => {
     let active = true;
+    setCargando(true);
     getAccessTokenSilently().then((token) => request(`/api/eventos/${tallerId}/bitacora`, { token }))
       .then((data) => { if (active) { setContenido(data.contenido); setResumen(data.resumen); setFragmentos(data.fragmentos); } })
-      .catch((error) => { if (active) setMensaje(error instanceof ApiHttpError && error.status === 404 ? 'Este taller aún no tiene bitácora.' : error.message); });
+      .catch((error) => {
+        if (!active) return;
+        if (error instanceof ApiHttpError && error.status === 404) {
+          setResumen('');
+          setFragmentos([]);
+          setMensaje('Este taller aún no tiene bitácora.');
+        } else setMensaje(error.message);
+      })
+      .finally(() => { if (active) setCargando(false); });
     request(`/api/eventos/${tallerId}/grabacion`)
       .then((state) => { if (active) setGrabado(state.grabado); })
       .catch(() => {});
@@ -80,7 +91,7 @@ export default function BitacoraPage({ tallerId }: BitacoraPageProps) {
       recorder.current?.stream?.getTracks().forEach((track) => track.stop());
       if (audioUrlRef.current) URL.revokeObjectURL(audioUrlRef.current);
     };
-  }, [tallerId, getAccessTokenSilently]);
+  }, [tallerId, getAccessTokenSilently, recarga]);
 
   async function guardar() {
     if (!contenido.trim()) return setMensaje('Escribe el contenido antes de guardar.');
@@ -243,11 +254,16 @@ export default function BitacoraPage({ tallerId }: BitacoraPageProps) {
       <p className="texto-apoyo">Puedes dictar, grabar o seleccionar un archivo. Revisa la transcripción y publica la bitácora para compartirla con Android.</p>
       <label style={{ display: 'block', marginBottom: 12 }}><input type="checkbox" checked={consentimiento} onChange={(event) => setConsentimiento(event.target.checked)} /> Confirmo que las personas presentes autorizaron el uso del micrófono para esta bitácora.</label>
       <label htmlFor="contenido-bitacora">Transcripción o apuntes</label>
-      <textarea id="contenido-bitacora" rows={10} maxLength={20000} disabled={ocupado} value={contenido} onChange={(e) => { setContenido(e.target.value); setBorrador(''); }} style={{ width: '100%', padding: 12 }} />
+      <textarea id="contenido-bitacora" rows={10} maxLength={20000} disabled={ocupado || cargando} value={contenido} onChange={(e) => { setContenido(e.target.value); setBorrador(''); }} style={{ width: '100%', padding: 12 }} />
+      {!cargando && !contenido.trim() && <button type="button" className="btn btn-secondary" disabled={ocupado}
+        onClick={() => {
+          setContenido('Bitácora de prueba. El equipo practicó el uso de contraseñas únicas y activó la verificación en dos pasos. Para detectar un correo sospechoso, se comparó el dominio del remitente con el sitio oficial. Cada participante preparó una lista de dos medidas para proteger sus cuentas.');
+          setMensaje('Apuntes de ejemplo cargados en el formulario. Revisa y publica cuando estén listos.');
+        }}>Cargar apuntes de prueba</button>}
       <div className="acciones-fila">
         <button type="button" className="btn btn-secondary" onClick={dictar} disabled={grabando}>{dictando ? 'Detener dictado' : 'Dictar en Chrome'}</button>
         <button type="button" className="btn btn-secondary" onClick={grabar} disabled={dictando}>{grabando ? 'Detener grabación' : 'Grabar audio local'}</button>
-        <button type="button" className="btn btn-primary" disabled={ocupado || dictando || grabando} onClick={guardar}>{borrador.trim() ? 'Publicar bitácora' : 'Guardar y resumir'}</button>
+        <button type="button" className="btn btn-primary" disabled={ocupado || cargando || dictando || grabando} onClick={guardar}>{borrador.trim() ? 'Publicar bitácora' : 'Guardar y resumir'}</button>
       </div>
       {audioUrl && <p><a href={audioUrl} download={`syncpass-taller-${tallerId}.webm`} className="btn btn-secondary">Descargar grabación</a></p>}
       <fieldset disabled={ocupado || dictando || grabando}>
@@ -263,7 +279,16 @@ export default function BitacoraPage({ tallerId }: BitacoraPageProps) {
       </fieldset>
     </section>}
     <section className="seccion-bloque"><h2>Resumen de la sesión</h2>
-      <p>{resumen || 'Cuando el equipo publique la bitácora, el resumen aparecerá aquí.'}</p>
+      {!canEdit && <button type="button" className="btn btn-secondary" disabled={ocupado || cargando} onClick={() => {
+        setRespuesta(null);
+        setMensaje('');
+        setRecarga((cuenta) => cuenta + 1);
+      }}>Actualizar bitácora</button>}
+      <p style={{ whiteSpace: 'pre-wrap' }}>{resumen || 'Cuando el equipo publique la bitácora, el resumen aparecerá aquí.'}</p>
+      {fragmentos.length > 0 && <details>
+        <summary>Ver apuntes publicados y fuentes</summary>
+        <ol>{fragmentos.map((fragmento, indice) => <li key={indice}>{fragmento}</li>)}</ol>
+      </details>}
     </section>
     <section className="seccion-bloque"><h2>Preguntar sobre el taller</h2>
       <form onSubmit={consultar}><label htmlFor="pregunta-bitacora">Tu pregunta</label>

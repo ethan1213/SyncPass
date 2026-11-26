@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.Job
 
 data class HomeUiState(
     val talleres: List<TallerDto> = emptyList(),
@@ -27,6 +28,7 @@ data class HomeUiState(
 class HomeViewModel(private val repository: SyncPassRepository) : ViewModel() {
     private val _state = MutableStateFlow(HomeUiState())
     val state = _state.asStateFlow()
+    private var actualizacionCatalogo: Job? = null
 
     init {
         // Primero lo que ya esta en el telefono: la pantalla nunca arranca vacia.
@@ -131,14 +133,14 @@ class HomeViewModel(private val repository: SyncPassRepository) : ViewModel() {
         }
     }
 
-    fun refreshCatalog() = viewModelScope.launch {
-        val snapshot = repository.catalog()
-        // No se toca "message"/"ticket" al volver en línea: si hay una confirmación
-        // recien mostrada (guardado/enviado), refrescar el catálogo no debe taparla.
-        _state.update { it.copy(
-            talleres = if (snapshot.rows.isEmpty() && snapshot.fromCache) it.talleres else snapshot.rows,
-            offline = snapshot.fromCache,
-            message = if (snapshot.fromCache) "Sin conexión. Se muestra el catálogo guardado." else it.message) }
+    fun refreshCatalog(): Job {
+        actualizacionCatalogo?.takeIf { it.isActive }?.let { return it }
+        return viewModelScope.launch {
+            val snapshot = repository.catalog()
+            _state.update { it.copy(
+                talleres = if (snapshot.rows.isEmpty() && snapshot.fromCache) it.talleres else snapshot.rows,
+                offline = snapshot.fromCache) }
+        }.also { actualizacionCatalogo = it }
     }
 
     fun refreshPending(owner: String?) = viewModelScope.launch {

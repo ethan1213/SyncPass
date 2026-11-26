@@ -16,6 +16,7 @@ services:
     mem_limit: 256m
   api:
     build: ./backend
+    init: true
     environment:
       DATABASE_URL: jdbc:postgresql://db:5432/syncpass
       DATABASE_USER: syncpass
@@ -34,7 +35,7 @@ services:
       test: ["CMD-SHELL", "wget -q -O /dev/null http://localhost:8080/actuator/health || exit 1"]
       interval: 20s
       timeout: 5s
-      start_period: 60s
+      start_period: 180s
       retries: 6
     restart: unless-stopped
     mem_limit: 512m

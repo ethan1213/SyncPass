@@ -21,3 +21,27 @@ SELECT id,
 FROM talleres
 WHERE title = 'Alfabetización digital comunitaria'
   AND NOT EXISTS (SELECT 1 FROM taller_bitacoras WHERE taller_id = talleres.id);
+
+-- Añade solo material ficticio. Volver a ejecutar el archivo conserva las publicaciones existentes.
+INSERT INTO taller_bitacoras (taller_id, contenido, resumen, actualizado_en)
+SELECT t.id, demo.contenido, demo.resumen, NOW()
+FROM talleres t
+JOIN (VALUES
+  ('Emprendimiento local',
+   'El costo variable de cada cuaderno fue de 1200 pesos.' || chr(10) ||
+   'Al vender cada cuaderno a 2000 pesos, el margen unitario fue de 800 pesos.' || chr(10) ||
+   'Con un costo fijo de 16000 pesos, se necesitan vender 20 cuadernos para alcanzar el punto de equilibrio.' || chr(10) ||
+   'La tarea acordada fue comparar tres proveedores antes de comprar materiales.',
+   'Costos: 1200 pesos variables por cuaderno y 16000 pesos fijos.' || chr(10) ||
+   'Precio: 2000 pesos y margen: 800 pesos por cuaderno.' || chr(10) ||
+   'Punto de equilibrio: 20 cuadernos. Próximo paso: comparar tres proveedores.'),
+  ('Bienestar digital',
+   'El objetivo fue reducir las interrupciones durante el estudio.' || chr(10) ||
+   'El grupo desactivó las notificaciones de redes sociales durante bloques de 25 minutos.' || chr(10) ||
+   'Después de cada bloque se recomendó una pausa de 5 minutos lejos de la pantalla.' || chr(10) ||
+   'Durante una semana se anotarán las interrupciones en una tabla para comparar resultados.',
+   'Estudio: bloques de 25 minutos con las notificaciones sociales desactivadas.' || chr(10) ||
+   'Pausas: 5 minutos lejos de la pantalla después de cada bloque.' || chr(10) ||
+   'Seguimiento: anotar las interrupciones durante una semana.')
+) AS demo(titulo, contenido, resumen) ON demo.titulo = t.title
+ON CONFLICT (taller_id) DO NOTHING;

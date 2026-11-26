@@ -16,7 +16,7 @@ Responsable: Ethan Astorga. La pauta Android y la pauta conjunta de Android/Reac
 
 ## Cómo repetir las pruebas
 
-La ejecución de esta revisión registró 31 pruebas de backend, 94 de React y 99 de Android sin fallos. Vitest midió 75,23 % de líneas web y JaCoCo 79,82 % de líneas en su reporte filtrado de Android. Ambos superan el 30 % exigido.
+La ejecución de esta revisión registró 32 pruebas de backend, 95 de React y 100 de Android sin fallos. Vitest midió 73,99 % de líneas web y JaCoCo 79,66 % de líneas en su reporte filtrado de Android. Ambos superan el 30 % exigido.
 
 - En `backend`, ejecutar `mvnw.cmd test`.
 - En `web-react`, ejecutar `npm ci`, `npm run coverage` y `npm run build`. Leer el porcentaje de líneas en `coverage/index.html`.
@@ -32,3 +32,10 @@ La ejecución de esta revisión registró 31 pruebas de backend, 94 de React y 9
 ## Evidencia física y nube
 
 Registrar por separado el arranque del APK, el inicio de sesión real, el dato publicado que cruza web y Android, la lectura de QR y GPS, y la ejecución con clave Gemini. Un resultado de JUnit, una respuesta pública de salud y una instalación correcta no prueban por sí solos esos recorridos.
+
+## Recorrido entre dos cuentas
+
+1. En web, una cuenta de administrador o coordinador crea un taller desde el mantenedor. La otra cuenta lo consulta en el catálogo Android. El catálogo se actualiza al volver a la pantalla y cada 20 segundos mientras está visible. Con red disponible, compara el título, fecha y cupos con la ficha web.
+2. En el taller, abre la bitácora web. Si está vacía, «Cargar apuntes de prueba» prepara texto ficticio en el formulario. «Guardar y resumir» publica el texto, que se guarda por ID de taller. Esta publicación usa el permiso del usuario ya autenticado.
+3. En el mismo taller en Android, pulsa «Actualizar bitácora». Abre «Ver apuntes publicados y fuentes» y compara las frases numeradas con la cita devuelta por la pregunta. Repite tras editar la bitácora en web.
+4. Para probar sin tocar Supabase, `deploy/local-seed.sql` deja tres ejemplos. En Emprendimiento local pregunta «¿Cuál fue el punto de equilibrio?». En Bienestar digital pregunta «¿Cuánto duró la pausa?». En ambos, una pregunta de astronomía debe indicar que los apuntes no contienen la información.
