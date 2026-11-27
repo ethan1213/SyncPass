@@ -44,3 +44,14 @@ Ejemplo de instrucción de ingeniería reproducible:
 5. Probar `401` sin token y `403` al intentar publicar con un rol sin permiso.
 
 Para comprobar Gemini en vivo, usa un audio ficticio corto y confirma que el borrador indica origen `gemini`. Repite sin clave para comprobar el resumen extractivo. El material publicado y las preguntas siguen disponibles sin la clave.
+
+### Bitácoras de demostración
+
+`deploy/local-seed.sql` agrega datos ficticios a PostgreSQL local y conserva las publicaciones existentes al reejecutarse. La web local usa el mismo catálogo que un APK compilado para el entorno local.
+
+| Taller | Pregunta de ensayo | Qué debe citar |
+| --- | --- | --- |
+| Huerto comunitario · Demo | ¿Cómo mezclaron hojas secas y restos vegetales? | Dos partes de hojas secas por una de restos vegetales. |
+| Primeros pasos con planillas · Demo | ¿Cuál fue el saldo con 45000 pesos de ingresos? | 17000 pesos de saldo con gastos de 28000 pesos. |
+
+Pregunta de control: «¿Qué se explicó de astronomía?». El mensaje debe indicar que los apuntes carecen de información suficiente. La suite `BitacoraGeminiTest` prueba el contrato del cliente generativo con HTTP simulado. La prueba con el proveedor real requiere acceso de red y una clave configurada en el backend.

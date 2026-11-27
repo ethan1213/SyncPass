@@ -12,6 +12,7 @@ import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
@@ -22,16 +23,22 @@ import org.springframework.web.server.ResponseStatusException;
 class BitacoraGemini {
     private static final Set<String> FORMATOS = Set.of(
         "audio/webm", "audio/wav", "audio/mpeg", "audio/mp3", "audio/m4a", "audio/ogg", "audio/flac");
-    private final HttpClient client = HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(5)).build();
+    private final HttpClient client;
     private final ObjectMapper json;
     private final String key;
     private final String model;
 
+    @Autowired
     BitacoraGemini(ObjectMapper json, @Value("${GEMINI_API_KEY:}") String key,
                    @Value("${GEMINI_MODEL:gemini-3.5-flash-lite}") String model) {
+        this(json, key, model, HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(5)).build());
+    }
+
+    BitacoraGemini(ObjectMapper json, String key, String model, HttpClient client) {
         this.json = json;
         this.key = key;
         this.model = model;
+        this.client = client;
     }
 
     boolean disponible() {

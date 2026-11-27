@@ -45,3 +45,42 @@ JOIN (VALUES
    'Seguimiento: anotar las interrupciones durante una semana.')
 ) AS demo(titulo, contenido, resumen) ON demo.titulo = t.title
 ON CONFLICT (taller_id) DO NOTHING;
+
+-- Talleres visibles para ensayar la demostración. Son datos ficticios del entorno local.
+WITH demostraciones (titulo, descripcion, area, fecha, contenido, resumen) AS (
+  VALUES
+  ('Huerto comunitario · Demo',
+   'Taller ficticio para probar el resumen y las respuestas con cita.',
+   'Medioambiente', '2026-11-30T15:00:00',
+   'Para iniciar el compost se mezclaron dos partes de hojas secas con una parte de restos vegetales.' || chr(10) ||
+   'El grupo aireará el compost cada siete días y revisará que su humedad sea parecida a una esponja escurrida.' || chr(10) ||
+   'Las semillas de lechuga se plantaron a medio centímetro de profundidad.' || chr(10) ||
+   'En la próxima sesión se comparará la germinación de las bandejas.',
+   'Compost: dos partes de hojas secas por una de restos vegetales. Airear cada siete días.' || chr(10) ||
+   'Siembra: lechuga a medio centímetro. Comparar la germinación en la próxima sesión.'),
+  ('Primeros pasos con planillas · Demo',
+   'Taller ficticio para ensayar preguntas y verificar que la fuente pertenece al mismo taller.',
+   'Tecnología', '2026-12-01T10:00:00',
+   'El grupo anotó ingresos y gastos en columnas separadas.' || chr(10) ||
+   'El saldo se obtuvo restando los gastos al total de ingresos.' || chr(10) ||
+   'Con ingresos de 45000 pesos y gastos de 28000 pesos, el saldo de ejemplo fue de 17000 pesos.' || chr(10) ||
+   'Como tarea, cada persona guardará una copia de la planilla antes de modificarla.',
+   'Organizar ingresos y gastos en columnas. Saldo de ejemplo: 17000 pesos.' || chr(10) ||
+   'Próximo paso: conservar una copia antes de editar la planilla.')
+), nuevos AS (
+  INSERT INTO talleres
+    (title, descripcion, area, unidad_vecinal, comuna, direccion, fecha_hora, docente_lider, cupos_maximos, version)
+  SELECT d.titulo, d.descripcion, d.area, 'Unidad Vecinal Demo', 'La Florida',
+    'Sede de demostración', d.fecha, 'Docente de ejemplo', 24, 0
+  FROM demostraciones d
+  WHERE NOT EXISTS (SELECT 1 FROM talleres t WHERE t.title = d.titulo)
+  RETURNING id, title
+), destinos AS (
+  SELECT id, title FROM nuevos
+  UNION ALL
+  SELECT id, title FROM talleres WHERE title IN (SELECT titulo FROM demostraciones)
+)
+INSERT INTO taller_bitacoras (taller_id, contenido, resumen, actualizado_en)
+SELECT t.id, d.contenido, d.resumen, NOW()
+FROM destinos t JOIN demostraciones d ON t.title = d.titulo
+ON CONFLICT (taller_id) DO NOTHING;
