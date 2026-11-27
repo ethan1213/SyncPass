@@ -19,7 +19,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 
-private class FakeApi : SyncPassApi {
+private class FakeApi : SyncPassApi by cl.duoc.syncpass.data.FakeSyncPassApi() {
     var misInscripcionesResult: List<InscripcionDto> = emptyList()
     var marcarPendienteResult: InscripcionDto = InscripcionDto(1, 1, "pendiente")
     var errorEnMarcar: Throwable? = null

@@ -19,6 +19,11 @@
   .time { color: #3b5848; font-weight: 700; font-variant-numeric: tabular-nums; }
   #flow { display: flex; flex-wrap: wrap; gap: 7px; align-items: center; margin: 18px 0; }
   #flow span { padding: 7px 10px; border: 1px solid #a3afa5; background: #e8eeea; }
+  #flow button { background: #e8eeea; }
+  #flow button[aria-pressed="true"] { background: #24513a; color: #fff; }
+  #node { border-left: 4px solid #24513a; background: #edf1eb; padding: 12px 16px; }
+  #node p { margin: 6px 0; }
+  #node a { overflow-wrap: anywhere; color: #24513a; }
   article p { max-width: 68ch; line-height: 1.45; }
   footer { margin-top: 15px; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
   .sources { margin-top: 19px; color: #3b5848; }
@@ -37,6 +42,11 @@
     <h2 id="title"></h2>
     <p id="voice"></p>
     <div id="flow" aria-label="Flujo de datos"></div>
+    <aside id="node" aria-label="Archivo y responsabilidad" hidden>
+      <strong id="node-title"></strong>
+      <p id="node-text"></p>
+      <a id="node-link" target="_blank" rel="noopener"></a>
+    </aside>
     <p><strong>Mostrar:</strong> <span id="action"></span></p>
     <a class="link" id="link" target="_blank" rel="noopener">Abrir pantalla ↗</a>
   </article>
@@ -49,13 +59,38 @@
 </main>
 <script>
 const web = 'https://web-react-nu-nine.vercel.app';
+const mobile = '../mobile-kotlin/app/src/main/java/cl/duoc/syncpass/';
+const backend = '../backend/src/main/java/cl/duoc/syncpass/';
+const nodes = {
+  React: ['Vite sirve la SPA. Wouter selecciona la página; React coordina el estado y reutiliza componentes.', '../web-react/src/App.tsx'],
+  Sesión: ['El contexto expone la sesión. RequireAuth decide si se muestra una ruta protegida; la autorización efectiva está en la API.', '../web-react/src/auth/SessionProvider.tsx'],
+  Hook: ['Lee los grupos del usuario y ayuda a presentar las opciones del perfil.', '../web-react/src/hooks/useRoles.ts'],
+  Átomo: ['El botón encapsula estilos y comportamiento repetido y se usa dentro de páginas y componentes compuestos.', '../web-react/src/components/atoms/Button.tsx'],
+  'Cliente HTTP': ['El cliente prepara la solicitud JSON, agrega el token cuando corresponde y normaliza los errores.', '../web-react/src/clients/api.ts'],
+  Android: ['El NavHost monta pantallas Compose de acceso, taller, QR, encuesta y bitácora.', mobile + 'MainActivity.kt'],
+  Login: ['La pantalla observa el estado y recoge el evento de navegación que emite el ViewModel al autenticarse.', mobile + 'ui/screens/LoginScreen.kt'],
+  ViewModel: ['Convierte acciones de pantalla en operaciones de repositorio y expone estado observable.', mobile + 'ui/screens/BitacoraViewModel.kt'],
+  Cámara: ['La pantalla de escaneo lee el QR con CameraX y ML Kit. La decisión de guardado pasa al flujo de acreditación.', mobile + 'ui/screens/ScannerScreen.kt'],
+  GPS: ['Android obtiene ubicación cuando se solicita para una geocerca; el servidor decide si se acepta.', mobile + 'data/DeviceLocation.kt'],
+  Repositorio: ['Coordina la red y Room. La cola usa UUID y solo se elimina después de la confirmación.', mobile + 'data/SyncPassRepository.kt'],
+  Room: ['Los DTO del catálogo y los registros pendientes se almacenan localmente para trabajar sin señal.', mobile + 'data/SyncPassLocal.kt'],
+  Retrofit: ['Define las rutas REST y los DTO de autenticación, taller, sincronización y bitácora.', mobile + 'data/SyncPassRemote.kt'],
+  Gateway: ['Es el punto HTTPS compartido por ambos clientes. Se puede comprobar el enrutamiento con el health público.', 'https://hluamat8vg.execute-api.us-east-1.amazonaws.com/actuator/health'],
+  'Spring Boot': ['Spring publica controladores REST y aplica filtros JWT y reglas de autorización por rol.', backend + 'config/SecurityConfig.java'],
+  Cognito: ['EC2 invoca Cognito en el flujo de identidad. Las operaciones de negocio se autorizan con JWT y grupos.', 'COGNITO.md'],
+  PostgreSQL: ['Supabase conserva el catálogo y las asistencias. Las migraciones de Spring definen el esquema.', '../backend/src/main/resources/db/migration/'],
+  'Bitácora': ['El servicio usa solamente los apuntes del taller solicitado. La respuesta extractiva identifica su cita.', backend + 'bitacora/BitacoraService.java'],
+  Vitest: ['Pruebas de componentes, páginas, cliente y sesión. El reporte indica el porcentaje de líneas.', 'VALIDACION_PRUEBA_3.md'],
+  JaCoCo: ['Pruebas JUnit/Robolectric y reporte filtrado de lógica de Android. El alcance del filtrado debe mencionarse.', 'VALIDACION_PRUEBA_3.md'],
+  Release: ['Gradle genera y firma AAB y APK. El README detalla cómo comparar la huella del certificado.', '../mobile-kotlin/README.md#firma-de-release'],
+};
 const capitulos = [
-  ['El caso', '00:00–00:10', 'En terreno, perder señal no debería impedir registrar una asistencia.', ['Monitor', 'Android', 'Room'], 'Abrir el visor y señalar el recorrido del monitor.', '/mockups.html'],
-  ['El taller', '00:10–00:26', 'La web y Android consultan el mismo catálogo. El equipo crea el taller desde el mantenedor web.', ['React', 'Gateway', 'Spring Boot', 'PostgreSQL'], 'Mostrar el mismo nombre e ID de taller en ambas pantallas.', '/talleres'],
-  ['QR sin red', '00:26–00:47', 'Con la sesión ya abierta, el teléfono puede guardar el registro de asistencia en Room.', ['Cámara', 'ViewModel', 'Repositorio', 'Room'], 'Desactivar la red, escanear y mostrar el pendiente. Usar un taller de demostración.', null],
-  ['Sincronización', '00:47–01:03', 'Cuando vuelve la señal, el repositorio envía la cola mediante Retrofit y retira los UUID que confirma la API.', ['Room', 'Retrofit', 'Gateway', 'Spring Boot', 'PostgreSQL'], 'Activar la red, mostrar el envío y actualizar el quórum del mismo taller.', '/panel'],
-  ['Resumen con fuente', '01:03–01:18', 'La bitácora responde con el texto publicado para ese taller y muestra la cita usada.', ['Apuntes', 'API', 'Fragmento', 'Cita'], 'Abrir una bitácora publicada, preguntar y desplegar la fuente.', null],
-  ['Verificación', '01:18–01:26', 'El informe registra qué pruebas se ejecutaron y separa la evidencia de laboratorio de la demostración física.', ['MockMvc', 'Vitest', 'Chromium', 'JaCoCo'], 'Mostrar cobertura web y Android. Indicar el entorno grabado.', null],
+  ['Problema y mockups', '00:00–00:09 · C1', 'SyncPass ayuda a registrar talleres comunitarios y asistencia aun cuando falla la conexión en terreno.', ['Android', 'React', 'Room'], 'Abrir primero las maquetas y mostrar el flujo del monitor.', '/mockups.html'],
+  ['Acceso y mantenedores', '00:09–00:25 · C2 y C3 web', 'La cuenta autorizada abre Proyectos y Talleres. Ambos clientes usan Gateway y el backend autentica mediante Cognito.', ['Sesión', 'Hook', 'Átomo', 'React', 'Cliente HTTP', 'Gateway', 'Spring Boot', 'Cognito', 'PostgreSQL'], 'Mostrar ambos mantenedores y el ID del taller que aparecerá en el teléfono.', '/proyectos'],
+  ['Teléfono y QR', '00:25–00:46 · C3 Android', 'La cámara interpreta el código. El repositorio puede guardar la asistencia en Room antes de enviar.', ['Android', 'Login', 'Cámara', 'GPS', 'ViewModel', 'Repositorio', 'Room'], 'Seleccionar el taller en el APK; grabar QR y un pendiente real si ya ensayaste ese flujo.', '/taller/2'],
+  ['Datos compartidos', '00:46–01:03 · C4', 'Al recuperar señal, Retrofit envía el pendiente; solo se retira después de la confirmación del backend.', ['Room', 'Repositorio', 'Retrofit', 'Gateway', 'Spring Boot', 'PostgreSQL'], 'Restaurar red y mostrar la confirmación y el dato en web con el mismo ID.', '/panel'],
+  ['Resumen con fuente', '01:03–01:15 · C4', 'El taller de Emprendimiento devuelve el punto de equilibrio de 20 cuadernos y la cita de sus apuntes.', ['Android', 'ViewModel', 'Repositorio', 'Retrofit', 'Bitácora'], 'Abrir el taller 2, consultar la pregunta de demostración y mostrar el fragmento 4.', '/bitacora/2'],
+  ['Pruebas y firma', '01:15–01:28 · Evidencias', 'Aquí están los reportes de cada cliente y la firma de release. El mapa técnico enlaza las piezas de código.', ['Vitest', 'JaCoCo', 'Release'], 'Mostrar porcentajes desde los informes y los archivos firmados. Identificar el build que aparece en la toma.', null],
 ];
 const el = (id) => document.getElementById(id);
 const buttons = capitulos.map(([name], index) => {
@@ -75,10 +110,23 @@ function mostrar(index) {
   el('action').textContent = accion;
   el('count').textContent = `${indice + 1} / ${capitulos.length}`;
   el('flow').replaceChildren();
+  el('node').hidden = true;
   pasos.forEach((paso, n) => {
     if (n) el('flow').append(document.createTextNode(' → '));
-    const item = document.createElement('span');
+    const item = document.createElement('button');
     item.textContent = paso;
+    item.type = 'button';
+    item.setAttribute('aria-pressed', 'false');
+    item.onclick = () => {
+      const [detalle, archivo] = nodes[paso];
+      for (const boton of el('flow').querySelectorAll('button')) boton.setAttribute('aria-pressed', 'false');
+      item.setAttribute('aria-pressed', 'true');
+      el('node-title').textContent = paso;
+      el('node-text').textContent = detalle;
+      el('node-link').href = archivo;
+      el('node-link').textContent = archivo.startsWith('https:') ? 'Comprobar servicio' : archivo;
+      el('node').hidden = false;
+    };
     el('flow').append(item);
   });
   el('link').hidden = !ruta;

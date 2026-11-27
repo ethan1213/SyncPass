@@ -14,6 +14,8 @@ import kotlinx.coroutines.Job
 
 data class HomeUiState(
     val talleres: List<TallerDto> = emptyList(),
+    val revisionCatalogo: Int = 0,
+    val resumenesDisponibles: Set<Long> = emptySet(),
     val pending: Int = 0,
     val message: String = "",
     val offline: Boolean = false,
@@ -139,8 +141,19 @@ class HomeViewModel(private val repository: SyncPassRepository) : ViewModel() {
             val snapshot = repository.catalog()
             _state.update { it.copy(
                 talleres = if (snapshot.rows.isEmpty() && snapshot.fromCache) it.talleres else snapshot.rows,
+                revisionCatalogo = if (snapshot.fromCache) it.revisionCatalogo else it.revisionCatalogo + 1,
                 offline = snapshot.fromCache) }
         }.also { actualizacionCatalogo = it }
+    }
+
+    suspend fun refreshResumen(tallerId: Long) {
+        runCatching { repository.recordingStatus(tallerId) }.onSuccess { estado ->
+            _state.update {
+                val disponibles = if (estado.resumenDisponible) it.resumenesDisponibles + tallerId
+                    else it.resumenesDisponibles - tallerId
+                it.copy(resumenesDisponibles = disponibles)
+            }
+        }
     }
 
     fun refreshPending(owner: String?) = viewModelScope.launch {

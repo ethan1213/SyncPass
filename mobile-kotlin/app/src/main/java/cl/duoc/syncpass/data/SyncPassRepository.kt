@@ -208,6 +208,14 @@ class SyncPassRepository(
         requireNetwork()
         return api.preguntarBitacora(tallerId, "Bearer $token", PreguntaBitacora(pregunta))
     }
+    suspend fun prepararResumen(tallerId: Long, token: String, contenido: String, autorizaProveedor: Boolean): BorradorBitacora {
+        requireNetwork()
+        return api.prepararResumen(tallerId, "Bearer $token", PeticionResumen(contenido, autorizaProveedor))
+    }
+    suspend fun publicarBitacora(tallerId: Long, token: String, contenido: String, resumen: String): BitacoraDto {
+        requireNetwork()
+        return api.publicarBitacora(tallerId, "Bearer $token", PublicacionBitacora(contenido, resumen))
+    }
     /** RF12: declara que se planea asistir. Exige red; no se encola offline (es una preferencia, no una acreditacion). */
     suspend fun marcarPendiente(tallerId: Long, token: String): InscripcionDto {
         requireNetwork()

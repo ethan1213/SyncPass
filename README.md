@@ -84,6 +84,8 @@ El APK de depuración compilado con `-PsyncpassApiUrl=http://127.0.0.1:18080/` u
 
 **Android:** abrir `mobile-kotlin/` en Android Studio y ejecutar `:app:assembleDebug` o usar `gradlew.bat :app:assembleDebug`. El APK de depuración queda en `mobile-kotlin/app/build/outputs/apk/debug/`. Ver [instrucciones y límites móviles](mobile-kotlin/README.md).
 
+**Entrega Android:** los comandos de firma de release, la verificación del AAB y del APK, y el patrón de login del profesor están en la [guía móvil de SyncPass](mobile-kotlin/README.md#firma-de-release).
+
 **Contenedores:** `compose.yaml` contiene una opción local con base PostgreSQL. El despliegue de la exposición usa el JAR como servicio `systemd` en EC2 y Supabase como base compartida.
 
 ## Publicación, pruebas y colaboración

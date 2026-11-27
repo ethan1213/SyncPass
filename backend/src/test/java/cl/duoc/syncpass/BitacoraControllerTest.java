@@ -42,6 +42,14 @@ class BitacoraControllerTest {
   mvc.perform(post(path+"/preguntas").with(role("participante")).contentType(MediaType.APPLICATION_JSON)
    .content("{\"pregunta\":\"¿Qué aprendimos de astronomía?\"}"))
    .andExpect(status().isOk()).andExpect(jsonPath("$.fragmento").value(0));
+  mvc.perform(post(path+"/preguntas").with(role("participante")).contentType(MediaType.APPLICATION_JSON)
+   .content("{\"pregunta\":\"¡Hola! ¿Qué tal?\"}"))
+   .andExpect(status().isOk()).andExpect(jsonPath("$.origen").value("conversacion"))
+   .andExpect(jsonPath("$.respuesta").value(org.hamcrest.Matchers.startsWith("¡Hola!")));
+  mvc.perform(post(path+"/preguntas").with(role("participante")).contentType(MediaType.APPLICATION_JSON)
+   .content("{\"pregunta\":\"¿Puedes resumir la sesión?\"}"))
+   .andExpect(status().isOk()).andExpect(jsonPath("$.origen").value("resumen_publicado"))
+   .andExpect(jsonPath("$.respuesta").value(org.hamcrest.Matchers.containsString("plástico")));
   mvc.perform(get(path)).andExpect(status().isUnauthorized());
  }
 

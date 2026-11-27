@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.test.core.app.ApplicationProvider
 import cl.duoc.syncpass.data.AuthSession
 import cl.duoc.syncpass.data.BitacoraDto
+import cl.duoc.syncpass.data.BorradorBitacora
 import cl.duoc.syncpass.data.FakeSyncPassApi
 import cl.duoc.syncpass.data.SyncPassRepository
 import cl.duoc.syncpass.data.fakeJwt
@@ -110,5 +111,56 @@ class BitacoraViewModelTest {
             viewModel.state.first { !it.busy }
         }
         assertNull(viewModel.state.value.answer)
+    }
+
+    @Test fun coordinacionGeneraSinProveedorYPublicaElResumenRevisado() = runBlocking {
+        AuthSession.signedIn(fakeJwt("docente", listOf("coordinador")), null)
+        val api = FakeSyncPassApi()
+        viewModel = BitacoraViewModel(SyncPassRepository(context, api, { true }))
+        viewModel.abrirEditor()
+        viewModel.editarApuntes("  El grupo acordó comparar tres proveedores.  ")
+        viewModel.generarResumen(2)
+
+        val borrador = withTimeout(5_000) { viewModel.state.first { it.editor?.origen != null } }
+        assertEquals("extractivo", borrador.editor?.origen)
+        val (tallerId, solicitud) = api.solicitudesResumen.single()
+        assertEquals(2L, tallerId)
+        assertEquals("El grupo acordó comparar tres proveedores.", solicitud.contenido)
+        assertEquals(false, solicitud.autorizaProveedor)
+        assertTrue(api.publicacionesBitacora.isEmpty())
+
+        viewModel.editarResumen("Comparar tres proveedores.")
+        viewModel.publicar(2)
+        val publicada = withTimeout(5_000) { viewModel.state.first { it.bitacora != null } }
+        assertEquals("Comparar tres proveedores.", publicada.bitacora?.resumen)
+        assertEquals(2L, api.publicacionesBitacora.single().first)
+        assertNull(publicada.editor)
+    }
+
+    @Test fun participanteNoPuedeAbrirEditorNiGenerarResumen() {
+        AuthSession.signedIn(fakeJwt("participante", listOf("participante")), null)
+        val api = FakeSyncPassApi()
+        viewModel = BitacoraViewModel(SyncPassRepository(context, api, { true }))
+        viewModel.abrirEditor()
+        viewModel.editarApuntes("Información de prueba")
+        viewModel.generarResumen(2)
+        viewModel.publicar(2)
+        assertNull(viewModel.state.value.editor)
+        assertTrue(api.solicitudesResumen.isEmpty())
+        assertTrue(api.publicacionesBitacora.isEmpty())
+    }
+
+    @Test fun elPermisoParaGeminiSeEnviaSoloAlActivarlo() = runBlocking {
+        AuthSession.signedIn(fakeJwt("admin", listOf("admin")), null)
+        val api = FakeSyncPassApi().apply { borradorResult = BorradorBitacora("Resumen de revisión.", "gemini") }
+        viewModel = BitacoraViewModel(SyncPassRepository(context, api, { true }))
+        viewModel.abrirEditor()
+        viewModel.editarApuntes("Apuntes de prueba.")
+        viewModel.autorizarProveedor(true)
+        viewModel.generarResumen(3)
+        val borrador = withTimeout(5_000) { viewModel.state.first { it.editor?.origen != null } }
+        assertEquals("gemini", borrador.editor?.origen)
+        assertTrue(api.solicitudesResumen.single().second.autorizaProveedor)
+        assertTrue(api.publicacionesBitacora.isEmpty())
     }
 }

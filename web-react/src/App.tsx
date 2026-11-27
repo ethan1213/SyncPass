@@ -19,6 +19,7 @@ import BitacoraPage from './pages/BitacoraPage';
 import MisTalleresPendientesPage from './pages/MisTalleresPendientesPage';
 import { ROLES } from './config/auth';
 import { useSession } from './auth/SessionProvider';
+import { useUserRoles } from './hooks/useRoles';
 import { apiGetEventos, apiSyncBatch } from './clients/api';
 import { listLocal, saveLocal, removeLocal, cachedCatalog, cacheCatalog } from './data/localDb';
 import type { ReactNode } from 'react';
@@ -38,6 +39,7 @@ const normalize = (rows: TallerRaw[]): Taller[] =>
 export default function App() {
   const [, navigate] = useLocation();
   const { user, isLoading, getAccessTokenSilently } = useSession();
+  const roles = useUserRoles();
   const owner = user?.sub;
   const [talleres, setTalleres] = useState<Taller[]>([]);
   const [catalogoCargado, setCatalogoCargado] = useState(false);
@@ -154,7 +156,8 @@ export default function App() {
           <Switch>
             <Route path="/"><HomePage talleres={talleres} onSelectTaller={(t) => navigate('/taller/' + t.id)} /></Route>
             <Route path="/taller/:id">{(params) => catalogoCargado
-              ? <TallerDetailPage taller={talleres.find((t) => String(t.id) === params.id)} />
+              ? <TallerDetailPage taller={talleres.find((t) => String(t.id) === params.id)}
+                  puedeGestionarBitacora={roles.includes(ROLES.admin) || roles.includes(ROLES.coordinator)} />
               : <p className="contenedor" role="status">Cargando taller…</p>}</Route>
             <Route path="/bitacora/:id">{(params) => protect(<BitacoraPage key={params.id} tallerId={params.id} />)}</Route>
             <Route path="/mi-panel">{protect(<RoleDashboard />)}</Route>

@@ -221,7 +221,11 @@ fun HomeScreen(
                 )
             }
 
-            items(talleres) { taller ->
+            items(talleres, key = { it.id }) { taller ->
+                val tallerId = taller.id.toLong()
+                LaunchedEffect(tallerId, token, state.revisionCatalogo, state.offline) {
+                    if (token != null && !state.offline) vm.refreshResumen(tallerId)
+                }
                 TarjetaTaller(
                     taller = taller,
                     canScan = AuthSession.roles.any { it in listOf("admin","coordinador","monitor") },
@@ -229,7 +233,10 @@ fun HomeScreen(
                     asistido = state.inscripcionesAsistidas.contains(taller.id.toLong()),
                     onAcreditar = { onNavigateToScanner(taller.id.toLong()) },
                     onEncuestar = { onNavigateToSurvey(taller.id.toLong()) },
-                    onBitacora = { onNavigateToBitacora(taller.id.toLong()) }
+                    onBitacora = if (token != null && tallerId in state.resumenesDisponibles)
+                        ({ onNavigateToBitacora(tallerId) }) else null,
+                    onGestionarBitacora = if (token != null && tallerId !in state.resumenesDisponibles &&
+                        puedeGestionarBitacora(AuthSession.roles)) ({ onNavigateToBitacora(tallerId) }) else null
                 )
             }
 
@@ -294,7 +301,8 @@ private fun TarjetaTaller(
     asistido: Boolean,
     onAcreditar: () -> Unit,
     onEncuestar: () -> Unit,
-    onBitacora: () -> Unit
+    onBitacora: (() -> Unit)?,
+    onGestionarBitacora: (() -> Unit)?
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -377,8 +385,11 @@ private fun TarjetaTaller(
                 Text("Encuesta", fontSize = 12.sp)
                 }
             }
-            if (AuthSession.accessToken != null) TextButton(onClick = onBitacora) {
+            if (onBitacora != null) TextButton(onClick = onBitacora) {
                 Text("Resumen y preguntas del taller")
+            }
+            if (onGestionarBitacora != null) TextButton(onClick = onGestionarBitacora) {
+                Text("Gestionar bitácora")
             }
         }
     }

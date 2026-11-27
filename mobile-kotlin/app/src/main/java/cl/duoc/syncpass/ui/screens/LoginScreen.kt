@@ -3,12 +3,17 @@ package cl.duoc.syncpass.ui.screens
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.repeatOnLifecycle
 import cl.duoc.syncpass.data.AuthSession
 import cl.duoc.syncpass.data.SyncPassRepository
 import cl.duoc.syncpass.ui.layout.AREA_TACTIL_MINIMA
@@ -27,7 +32,14 @@ fun LoginScreen(
     onLogin: () -> Unit
 ) {
     val vm = syncPassViewModel(repository) { LoginViewModel(it) }
-    val state by vm.state.collectAsState()
+    val state by vm.state.collectAsStateWithLifecycle()
+    val lifecycle = LocalLifecycleOwner.current.lifecycle
+    val navigateAfterLogin by rememberUpdatedState(onLogin)
+    LaunchedEffect(vm, lifecycle) {
+        lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+            vm.loginSuccess.collect { navigateAfterLogin() }
+        }
+    }
 
     Scaffold(topBar = {
         TopAppBar(
@@ -63,7 +75,7 @@ fun LoginScreen(
             AuthSession.error?.let { Text(it, color = MaterialTheme.colorScheme.error) }
 
             Button(
-                onClick = { vm.iniciarSesion(onLogin) },
+                onClick = vm::iniciarSesion,
                 enabled = state.puedeEnviar,
                 modifier = Modifier.fillMaxWidth().heightIn(min = AREA_TACTIL_MINIMA)
             ) {

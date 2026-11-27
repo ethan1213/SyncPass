@@ -34,6 +34,9 @@ internal class FakeSyncPassApi : SyncPassApi {
     var syncResult: SyncResult = SyncResult(emptyList())
     var bitacoraResult: BitacoraDto = BitacoraDto("contenido", "resumen", "2026-11-19", emptyList())
     var respuestaResult: RespuestaBitacora = RespuestaBitacora("respuesta", 0, "cita")
+    var borradorResult = BorradorBitacora("Resumen de prueba.", "extractivo")
+    val solicitudesResumen = mutableListOf<Pair<Long, PeticionResumen>>()
+    val publicacionesBitacora = mutableListOf<Pair<Long, PublicacionBitacora>>()
     var marcarPendienteResult: InscripcionDto = InscripcionDto(1, 1, "pendiente")
     var misInscripcionesResult: List<InscripcionDto> = emptyList()
 
@@ -83,6 +86,15 @@ internal class FakeSyncPassApi : SyncPassApi {
     }
     override suspend fun preguntarBitacora(tallerId: Long, authorization: String, pregunta: PreguntaBitacora): RespuestaBitacora =
         respuestaResult
+    override suspend fun prepararResumen(tallerId: Long, authorization: String, peticion: PeticionResumen): BorradorBitacora {
+        solicitudesResumen += tallerId to peticion
+        return borradorResult
+    }
+    override suspend fun publicarBitacora(tallerId: Long, authorization: String, publicacion: PublicacionBitacora): BitacoraDto {
+        publicacionesBitacora += tallerId to publicacion
+        return BitacoraDto(publicacion.contenido, publicacion.resumenRevisado, "2026-11-27",
+            listOf(publicacion.contenido))
+    }
     override suspend fun marcarPendiente(tallerId: Long, authorization: String): InscripcionDto = marcarPendienteResult
     override suspend fun misInscripciones(authorization: String): List<InscripcionDto> = misInscripcionesResult
 }

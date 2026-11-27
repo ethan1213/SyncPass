@@ -16,9 +16,24 @@ El APK instalable queda en `app/build/outputs/apk/debug/app-debug.apk`. Está fi
 
 Para probar contra Docker local, compila `.\gradlew.bat :app:assembleDebug -PsyncpassApiUrl=http://127.0.0.1:18080/`. En un teléfono USB autorizado ejecuta `adb reverse tcp:18080 tcp:18080` antes de abrir el APK; esta compilación debug usa HTTP únicamente para loopback. La compilación normal conserva API Gateway. Si usas emulador, pasa `-PsyncpassApiUrl=http://10.0.2.2:8080/`. Las pruebas locales y el reporte se generan con `.\gradlew.bat :app:testDebugUnitTest :app:createDebugUnitTestCoverageReport`; abre `app/build/reports/coverage/test/debug/index.html`.
 
+## Firma de release
+
+El módulo sigue la [guía de firma del profesor](https://app.claudioviajando.com/posts/guia-firmando-aab).
+
+1. Usa el almacén JKS de subida existente en `app/keystore/upload-keystore.jks` y el alias `upload`. Conserva una copia privada de la clave y de sus credenciales para futuras versiones.
+2. Gradle carga `storeFile`, `storePassword`, `keyAlias` y `keyPassword` desde `app/keystore/upload-keystore.properties`. La ruta `storeFile` es relativa a `app/`. La carpeta completa está excluida de Git.
+3. Desde `mobile-kotlin/`, ejecuta `.\gradlew.bat :app:bundleRelease :app:assembleRelease`. El AAB para Play Console queda en `app/build/outputs/bundle/release/app-release.aab`. El APK de instalación directa queda en `app/build/outputs/apk/release/app-release.apk`.
+4. Verifica el AAB con `jarsigner -verify app/build/outputs/bundle/release/app-release.aab`. Compara el SHA-256 de `keytool -printcert -jarfile app/build/outputs/bundle/release/app-release.aab` con el del alias `upload` de `keytool -list -v`. Para el APK usa `apksigner verify --print-certs app/build/outputs/apk/release/app-release.apk` desde las herramientas del SDK Android.
+
+En Google Play, la clave de subida firma el AAB. Play App Signing firma los APK distribuidos por la tienda. El APK de instalación directa usa la clave configurada para release. Una instalación debug con el mismo identificador tiene otro certificado y Android rechazará la actualización entre ambas. Antes de retirar una instalación anterior, sincroniza sus registros pendientes de Room.
+
+## Patrón de login del curso
+
+Se adaptó el patrón del [ejemplo del profesor](https://github.com/docentedev/android-guia-final/blob/85e17fde91/GUIA_LOGIN.md) al contrato de SyncPass. `LoginScreen` observa `LoginUiState` mientras la pantalla está activa. `LoginViewModel` valida los campos, solicita el acceso al repositorio y emite un evento de éxito de un solo uso. Compose consume ese evento y navega a Inicio. `SyncPassRepository` utiliza Retrofit hacia API Gateway y la sesión se conserva en memoria.
+
 ## Demostración
 
-Para las pruebas Robolectric usa JDK 21: el JBR de Android Studio instalado en este equipo es Java 25 y produjo `Unsupported class file major version 69`. El reporte oficial de AGP del 15-11-2026 midió 4 pruebas correctas y 0,81 % de líneas del módulo completo; el objetivo académico de 30 % sigue pendiente.
+Para ejecutar las pruebas Robolectric usa JDK 21. El JBR de Android Studio con Java 25 produjo `Unsupported class file major version 69` en este equipo.
 
 1. Abre la app, inicia sesión o crea una cuenta en Cognito y verifica el correo. Un usuario de los grupos `admin`, `coordinador` o `monitor` puede acreditar; el grupo `participante` puede mostrar su QR y responder encuestas.
 2. En Inicio aparece el catálogo descargado de la API; sin red se muestra la última copia guardada en Room. El QR personal contiene `SP1:` seguido del identificador anónimo de Cognito.

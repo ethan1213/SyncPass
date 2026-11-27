@@ -8,6 +8,7 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Path
 
 data class SyncBatch(val registros: List<PendingPayload>)
@@ -25,6 +26,9 @@ data class UsernameRequest(val username: String)
 data class BitacoraDto(val contenido: String, val resumen: String, val actualizadoEn: String, val fragmentos: List<String>)
 data class PreguntaBitacora(val pregunta: String)
 data class RespuestaBitacora(val respuesta: String, val fragmento: Int, val cita: String)
+data class PeticionResumen(val contenido: String, val autorizaProveedor: Boolean)
+data class BorradorBitacora(val resumen: String, val origen: String)
+data class PublicacionBitacora(val contenido: String, val resumenRevisado: String)
 data class GuestJoinRequest(val dispositivoId: String, val nombre: String,
     val latitud: Double? = null, val longitud: Double? = null, val precisionMetros: Float? = null)
 data class JoinLocation(val latitud: Double? = null, val longitud: Double? = null,
@@ -56,6 +60,12 @@ interface SyncPassApi {
         @retrofit2.http.Path("tallerId") tallerId: Long,
         @Header("Authorization") authorization: String,
         @Body pregunta: PreguntaBitacora): RespuestaBitacora
+    @POST("api/eventos/{tallerId}/bitacora/borrador") suspend fun prepararResumen(
+        @Path("tallerId") tallerId: Long, @Header("Authorization") authorization: String,
+        @Body peticion: PeticionResumen): BorradorBitacora
+    @PUT("api/eventos/{tallerId}/bitacora") suspend fun publicarBitacora(
+        @Path("tallerId") tallerId: Long, @Header("Authorization") authorization: String,
+        @Body publicacion: PublicacionBitacora): BitacoraDto
     @POST("api/eventos/{tallerId}/inscripcion") suspend fun marcarPendiente(
         @Path("tallerId") tallerId: Long, @Header("Authorization") authorization: String): InscripcionDto
     @GET("api/mis-inscripciones") suspend fun misInscripciones(

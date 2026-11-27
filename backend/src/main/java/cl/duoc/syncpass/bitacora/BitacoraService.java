@@ -1,7 +1,9 @@
 package cl.duoc.syncpass.bitacora;
 
+import java.text.Normalizer;
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Locale;
 import org.springframework.http.HttpStatus;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
@@ -15,14 +17,16 @@ public class BitacoraService {
     private static final int MAX_RESUMEN = 3000;
 
     private final JdbcTemplate db;
+    private final BitacoraGemini gemini;
 
-    public BitacoraService(JdbcTemplate db) {
+    public BitacoraService(JdbcTemplate db, BitacoraGemini gemini) {
         this.db = db;
+        this.gemini = gemini;
     }
 
     public record Bitacora(String contenido, String resumen, String actualizadoEn, List<String> fragmentos) {}
 
-    public record Respuesta(String respuesta, int fragmento, String cita) {}
+    public record Respuesta(String respuesta, int fragmento, String cita, String origen) {}
 
     @Transactional(readOnly = true)
     public Bitacora obtener(Long tallerId) {
@@ -57,14 +61,56 @@ public class BitacoraService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Bitácora no publicada");
     }
 
-    /** Responde citando el fragmento mas cercano; si no hay coincidencia, lo dice. */
-    @Transactional(readOnly = true)
+    /** La consulta a PostgreSQL termina antes de llamar al proveedor. */
     public Respuesta responder(Long tallerId, String pregunta) {
-        var fragmentos = obtener(tallerId).fragmentos();
+        var bitacora = obtener(tallerId);
+        String normalizada = Normalizer.normalize(pregunta.toLowerCase(Locale.ROOT), Normalizer.Form.NFD)
+            .replaceAll("\\p{M}", "").replaceAll("[^a-z0-9 ]", " ").replaceAll("\\s+", " ").strip();
+        if (normalizada.matches("hola( que tal| como estas)?|buenas( tardes| noches)?|buenos dias|hey"))
+            return conversacion("saludo");
+        if (normalizada.matches("(muchas )?gracias( por la ayuda)?|te agradezco"))
+            return conversacion("agradecimiento");
+        if (normalizada.matches("que puedo preguntar|que puedes hacer|en que puedes ayudarme|ayuda"))
+            return conversacion("ayuda");
+        if (normalizada.matches("(resume|resumeme|dame un resumen de|puedes resumir|explica) (el |este |la )?(taller|sesion|clase)|resumen"))
+            return new Respuesta(bitacora.resumen(), 0, "", "resumen_publicado");
+
+        var fragmentos = bitacora.fragmentos();
+        if (gemini.disponible()) {
+            try {
+                var seleccion = gemini.clasificarPregunta(pregunta, bitacora.resumen(), fragmentos);
+                if (seleccion.intencion().equals("respuesta"))
+                    return citar(fragmentos, seleccion.fragmentos(), "gemini");
+                if (seleccion.intencion().equals("sin_datos")) return sinDatos("gemini");
+                return conversacion(seleccion.intencion());
+            } catch (ResponseStatusException ex) {
+                if (ex.getStatusCode() != HttpStatus.SERVICE_UNAVAILABLE) throw ex;
+            }
+        }
         int mejor = BitacoraTexto.mejorFragmento(fragmentos, pregunta);
-        if (mejor < 0)
-            return new Respuesta("No encontré información suficiente en la bitácora para responder.", 0, "");
-        return new Respuesta(fragmentos.get(mejor), mejor + 1, fragmentos.get(mejor));
+        return mejor < 0 ? sinDatos("extractivo") : citar(fragmentos, List.of(mejor + 1), "extractivo");
+    }
+
+    private static Respuesta citar(List<String> fragmentos, List<Integer> indices, String origen) {
+        int primero = indices.getFirst();
+        String cita = fragmentos.get(primero - 1);
+        if (indices.size() == 1) return new Respuesta(cita, primero, cita, origen);
+        String respuesta = String.join("\n\n", indices.stream()
+            .map(n -> "Fragmento " + n + ": " + fragmentos.get(n - 1)).toList());
+        return new Respuesta(respuesta, primero, cita, origen);
+    }
+
+    private static Respuesta sinDatos(String origen) {
+        return new Respuesta("No encontré información suficiente en la bitácora para responder.", 0, "", origen);
+    }
+
+    private static Respuesta conversacion(String intencion) {
+        String texto = switch (intencion) {
+            case "saludo" -> "¡Hola! Puedo ayudarte a consultar el resumen y los apuntes de este taller.";
+            case "agradecimiento" -> "De nada. Si quieres, pregúntame por los temas, acuerdos o tareas de este taller.";
+            default -> "Puedes preguntarme qué se explicó, qué se acordó o pedir el resumen de este taller.";
+        };
+        return new Respuesta(texto, 0, "", "conversacion");
     }
 
     static String resumenExtractivo(String contenido) {

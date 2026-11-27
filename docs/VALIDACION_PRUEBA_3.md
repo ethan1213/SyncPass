@@ -2,6 +2,8 @@
 
 Responsable: Ethan Astorga. La pauta Android y la pauta conjunta de Android/React distinguen la calidad del código de la demostración en nube y la defensa individual.
 
+Revisión del 27-11-2026. Las tres copias del PDF conjunto tienen el mismo SHA-256. La pauta conjunta exige 30 % de líneas verificables por cliente y diagramas C1, C2 y C3. El proyecto incorpora C4 como apoyo para explicar el código. La firma de release está en una guía del profesor adicional a esos PDF.
+
 | Criterio | Ubicación y comprobación |
 | --- | --- |
 | EC2, Cognito, Supabase y API REST | [Arquitectura C1 a C4](ARQUITECTURA.md). Comprobar salud pública, catálogo, 401 sin token y operaciones con una sesión real. La infraestructura existente usa Gateway como entrada de ambos clientes. |
@@ -13,10 +15,23 @@ Responsable: Ethan Astorga. La pauta Android y la pauta conjunta de Android/Reac
 | Mockups y alcance | [Catálogo de vistas y estado por plataforma](MOCKUPS.md) y [alcance funcional](ALCANCE.md). Comparar las vistas que están en el catálogo con las rutas y pantallas ejecutables. Los pendientes marcados allí no equivalen a pantallas verificadas. |
 | IA | [Contexto y uso de IA en ingeniería](IA_CONTEXTO.md). La pauta evalúa la coherencia de los documentos y la defensa. La transcripción Gemini y los borradores revisados son una función adicional. |
 | Pruebas | Vitest con React Testing Library, JaCoCo con JUnit/Robolectric y JUnit con MockMvc. La pauta pide al menos 30 % en web y Android. |
+| Firma Android | AAB y APK 1.0.1 firmados con el certificado de subida y huellas coincidentes. El Samsung conserva el APK debug 1.0.0 con otra firma. Repetir la prueba de instalación en un dispositivo limpio o preservar primero la cola local. [Procedimiento](../mobile-kotlin/README.md#firma-de-release). |
 
 ## Cómo repetir las pruebas
 
-La última revisión registró 32 pruebas de backend, 95 de React y 101 de Android sin fallos. A las pruebas de React se añaden dos recorridos en Chromium. Vitest midió 73,99 % de líneas web y JaCoCo 79,82 % de líneas en su reporte filtrado de Android. Ambos superan el 30 % exigido.
+La revisión del 27-11-2026 ejecutó 96 pruebas web y regeneró el reporte con 73,90 % de líneas. Android registró 102 pruebas correctas y 79,87 % de líneas en el reporte JaCoCo filtrado a la lógica de negocio. Este porcentaje excluye pantallas Compose y clases generadas. Los dos reportes superan el mínimo del 30 % dentro de su alcance. La verificación previa de Chromium y del backend corresponde a ejecuciones anteriores.
+
+- [Informe Vitest](../web-react/coverage/index.html)
+- [Informe JaCoCo de lógica Android](../mobile-kotlin/app/build/reports/jacoco/jacocoFilteredTestReport/html/index.html)
+
+## Revisión cruzada con el portal
+
+| Material del profesor | Evidencia de SyncPass | Por cerrar |
+| --- | --- | --- |
+| [Guía de login](https://app.claudioviajando.com/posts/guia-login) | Compose observa `LoginUiState` y consume un evento de éxito. Retrofit llega a Gateway, Spring Boot y Cognito. | La sesión vive en memoria. La persistencia de sesión y Hilt del ejemplo pertenecen al diseño de referencia. |
+| [Guía de firma AAB](https://app.claudioviajando.com/posts/guia-firmando-aab) | El AAB y el APK de release se verificaron con `jarsigner` y `apksigner`. La carpeta del almacén no se rastrea en Git. | Instalación de release en un teléfono con el mismo certificado o limpio; publicación en Play solo si se solicita. |
+| [Testing con Vitest y React](https://app.claudioviajando.com/posts/testing-vitest-react) | Vitest y Testing Library prueban sesión, páginas, componentes y los dos CRUD. | Los tests con API simulada no sustituyen una captura autenticada de los mantenedores desplegados. |
+| [Android, Kotlin y Room](https://app.claudioviajando.com/posts/android-kotlin-y-room) | Room conserva catálogo y registros pendientes; el repositorio coordina la API y la cola local. | Mostrar en la misma toma un pendiente nuevo y su confirmación después de recuperar señal. |
 
 - En `backend`, ejecutar `mvnw.cmd test`.
 - En `web-react`, ejecutar `npm ci`, `npm run coverage` y `npm run build`. Leer el porcentaje de líneas en `coverage/index.html`. Para el navegador real, ejecutar `npx playwright install chromium` y `npm run test:browser`.

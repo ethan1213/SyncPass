@@ -1,6 +1,6 @@
 # SyncPass · Guion de grabación
 
-**Responsable:** Ethan Astorga. **Objetivo:** mostrar web, Android y el dato compartido en 86 segundos. Abrir el [recorrido interactivo](RECORRIDO_DEMO.html) en el navegador como apoyo de la grabación. La navegación por capítulos usa botones o las flechas izquierda y derecha. El formato de capítulos toma como referencia el modo Story de [Archify](https://github.com/tt-a1i/archify).
+**Responsable:** Ethan Astorga. **Objetivo:** mostrar web, Android y el dato compartido en hasta 88 segundos. Abrir el [recorrido interactivo](RECORRIDO_DEMO.html) en el navegador. Los botones de cada flujo abren el archivo correspondiente. Las flechas izquierda y derecha cambian de capítulo. El formato toma como referencia el modo Story de [Archify](https://github.com/tt-a1i/archify).
 
 ## Antes de pulsar grabar
 
@@ -14,12 +14,16 @@
 
 | Tiempo | Pantalla y acción | Narración breve |
 | --- | --- | --- |
-| 00:00–00:10 | Portada del recorrido y mockup de monitor | «SyncPass registra actividades en terreno, incluso cuando se corta Internet.» |
-| 00:10–00:26 | Abrir taller en web y mostrar el mismo ID en Android | «Los dos clientes consultan la misma API. La web gestiona el taller y Android consume ese catálogo.» |
-| 00:26–00:47 | Desactivar la red. Escanear con Android y mostrar confirmación y contador de pendientes | «La cámara lee el QR. El repositorio guarda la asistencia en Room para enviarla después.» |
-| 00:47–01:03 | Restablecer red, sincronizar y actualizar quórum web | «Retrofit envía el pendiente. El servidor confirma el identificador y el quórum refleja la asistencia.» |
-| 01:03–01:18 | Preguntar en la bitácora y mostrar su cita | «El resumen y la respuesta salen de los apuntes publicados para este taller.» |
-| 01:18–01:26 | Mostrar resultados de pruebas y cierre | «La arquitectura separa web, Android y API. El repositorio incluye pruebas reproducibles y cobertura.» |
+| 00:00–00:09 | Portada del recorrido y mockup de monitor | «SyncPass registra actividades en terreno, incluso cuando se corta Internet.» |
+| 00:09–00:25 | Sesión web, Proyectos, Talleres e ID del taller | «React gestiona dos mantenedores. Web y Kotlin consultan la misma API en Gateway con Spring Boot en EC2.» |
+| 00:25–00:46 | Android, cámara, modo avión y pendiente nuevo | «Compose delega al ViewModel y al repositorio; Room guarda la asistencia hasta que haya señal.» |
+| 00:46–01:03 | Volver a conectar, ver confirmación y refrescar el mismo taller web | «Retrofit envía el pendiente. La API confirma su UUID y el repositorio retira de Room el registro aceptado.» |
+| 01:03–01:15 | Pregunta del taller #2 y fuente | «El asistente devuelve 20 cuadernos como punto de equilibrio y cita el fragmento cuatro.» |
+| 01:15–01:28 | Cobertura y firma | «Vitest mide 73,90 % de líneas web y JaCoCo 79,87 % de la lógica Android. El AAB está firmado.» |
+
+Para grabar, deja las ventanas preparadas y corta por escenas. En Windows graba solo la ventana del navegador con el grabador de pantalla. En el Samsung activa No molestar y usa la grabación integrada o la captura por USB ya preparada. No grabes credenciales, microdatos de participantes ni menús de otras cuentas. Narra al final si así puedes concentrarte en los pasos.
+
+Para la cámara, el QR del taller `SPT:<id>` abre su ficha. Demuestra la **acreditación** con el QR `SP1:<id>` de un participante ficticio desde una segunda pantalla. Si puedes ensayar con GPS, utiliza un taller de prueba con geocerca válida para tu posición. Si hay un pendiente anterior, anota el contador base y comprueba que aumente en uno. Tras reconectar, la reconciliación automática puede retirar el pendiente antes de pulsar el botón. Muestra la confirmación y el taller correspondiente.
 
 La demostración de GPS se puede mostrar en el escaneo si se está físicamente en el radio del taller o si se prepara un escenario local adecuado. La transcripción Gemini requiere el JAR y la clave configurados. Mencionar solo los flujos observados en esa toma.
 

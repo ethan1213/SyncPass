@@ -26,6 +26,10 @@ coverage/
 build/
 local.properties
 *.apk
+*.aab
+*.jks
+*.keystore
+/mobile-kotlin/app/keystore/
 *.iml
 .idea/
 captures/

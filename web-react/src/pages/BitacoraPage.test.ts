@@ -46,7 +46,7 @@ it('muestra un estado vacío cuando el equipo aún no publica la bitácora', asy
   });
   render(React.createElement(BitacoraPage, { tallerId: '42' }));
   expect(await screen.findByText('Este taller aún no tiene bitácora.')).toBeTruthy();
-  expect(screen.getByRole<HTMLButtonElement>('button', { name: 'Buscar respuesta' }).disabled).toBe(true);
+  expect(screen.queryByRole('button', { name: 'Buscar respuesta' })).toBeNull();
 });
 
 it('carga material de prueba al editor y lo publica solo cuando se confirma', async () => {

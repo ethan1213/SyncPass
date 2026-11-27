@@ -1,3 +1,4 @@
+import java.util.Properties
 import org.gradle.testing.jacoco.tasks.JacocoReport
 import org.gradle.testing.jacoco.plugins.JacocoTaskExtension
 
@@ -9,6 +10,17 @@ plugins {
     id("jacoco")
 }
 
+val uploadProperties = Properties()
+val uploadPropertiesFile = file("keystore/upload-keystore.properties")
+if (uploadPropertiesFile.isFile) {
+    uploadPropertiesFile.inputStream().use { uploadProperties.load(it) }
+    listOf("storeFile", "storePassword", "keyAlias", "keyPassword").forEach { campo ->
+        require(!uploadProperties.getProperty(campo).isNullOrBlank()) {
+            "Falta $campo en app/keystore/upload-keystore.properties"
+        }
+    }
+}
+
 android {
     namespace = "cl.duoc.syncpass"
     compileSdk = 35
@@ -18,8 +30,8 @@ android {
         // Caso §5.1: compatibilidad desde Android 8.0 (API 26).
         minSdk = 26
         targetSdk = 35
-        versionCode = 1
-        versionName = "1.0.0"
+        versionCode = 2
+        versionName = "1.0.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -28,6 +40,17 @@ android {
 
         // URL de la API REST institucional. 10.0.2.2 es el host desde el emulador.
         buildConfigField("String", "API_BASE_URL", "\"https://hluamat8vg.execute-api.us-east-1.amazonaws.com/\"")
+    }
+
+    signingConfigs {
+        // Guía de firma del curso. Una release exige el almacén privado de subida.
+        create("upload") {
+            storeType = "JKS"
+            storeFile = file(uploadProperties.getProperty("storeFile", "keystore/upload-keystore.jks"))
+            storePassword = uploadProperties.getProperty("storePassword", "")
+            keyAlias = uploadProperties.getProperty("keyAlias", "upload")
+            keyPassword = uploadProperties.getProperty("keyPassword", "")
+        }
     }
 
     buildTypes {
@@ -43,6 +66,7 @@ android {
             }
         }
         release {
+            signingConfig = signingConfigs.getByName("upload")
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -81,6 +105,7 @@ android {
 dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.lifecycle.runtime.compose)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.androidx.activity.compose)
 

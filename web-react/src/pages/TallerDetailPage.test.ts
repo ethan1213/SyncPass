@@ -41,7 +41,7 @@ it('muestra un mensaje cuando no se encuentra el taller', () => {
 });
 
 it('muestra la ficha completa del taller y el resumen de asistencia', async () => {
-  api.mockResolvedValue({ grabado: true, mensaje: 'Grabación disponible.' });
+  api.mockResolvedValue({ grabado: true, resumenDisponible: true, mensaje: 'Grabación disponible.' });
   render(React.createElement(TallerDetailPage, { taller }));
   expect(screen.getByText('Huerto comunitario')).toBeTruthy();
   expect(screen.getByText('12 / 30')).toBeTruthy();
@@ -50,6 +50,18 @@ it('muestra la ficha completa del taller y el resumen de asistencia', async () =
   expect(screen.getByText('Pendiente')).toBeTruthy();
   expect(screen.getByText(/1 sincronizado\(s\)/)).toBeTruthy();
   await waitFor(() => expect(screen.getByText('Grabación disponible.')).toBeTruthy());
+  expect(screen.getByRole('link', { name: 'Resumen y preguntas del taller' })).toBeTruthy();
+});
+
+it('deja disponible la encuesta y reserva el acceso de edición cuando solo existe la grabación', async () => {
+  api.mockResolvedValue({ grabado: true, resumenDisponible: false, mensaje: 'Transcripción pendiente.' });
+  const view = render(React.createElement(TallerDetailPage, { taller }));
+  expect(await screen.findByText('Transcripción pendiente.')).toBeTruthy();
+  expect(screen.getByRole('link', { name: 'Aplicar encuesta en terreno' })).toBeTruthy();
+  expect(screen.queryByRole('link', { name: 'Resumen y preguntas del taller' })).toBeNull();
+  expect(screen.queryByRole('link', { name: 'Gestionar bitácora' })).toBeNull();
+  view.rerender(React.createElement(TallerDetailPage, { taller, puedeGestionarBitacora: true }));
+  expect(screen.getByRole('link', { name: 'Gestionar bitácora' })).toBeTruthy();
 });
 
 it('muestra aviso cuando no hay marcaciones registradas', () => {

@@ -49,7 +49,7 @@ class HomeViewModelTest {
     @Test fun refreshCatalogFallsBackToCacheWithoutNetwork() = runBlocking {
         viewModel.refreshCatalog()
         val estado = withTimeout(5_000) {
-            viewModel.state.first { it.offline }
+            viewModel.state.first { it.offline && it.message.isNotBlank() }
         }
         assertTrue(estado.offline)
         assertTrue(estado.message.isNotBlank())

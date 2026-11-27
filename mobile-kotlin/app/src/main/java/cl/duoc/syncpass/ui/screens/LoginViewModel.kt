@@ -5,8 +5,10 @@ import androidx.lifecycle.viewModelScope
 import cl.duoc.syncpass.data.AuthSession
 import cl.duoc.syncpass.data.SyncPassRepository
 import cl.duoc.syncpass.data.mensajeDeError
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -24,12 +26,14 @@ class LoginViewModel(private val repository: SyncPassRepository) : ViewModel() {
 
     private val _state = MutableStateFlow(LoginUiState())
     val state = _state.asStateFlow()
+    private val loginEvents = Channel<Unit>(capacity = 1)
+    val loginSuccess = loginEvents.receiveAsFlow()
 
     fun onUsername(valor: String) = _state.update { it.copy(username = valor, error = null) }
 
     fun onPassword(valor: String) = _state.update { it.copy(password = valor, error = null) }
 
-    fun iniciarSesion(onLogin: () -> Unit) {
+    fun iniciarSesion() {
         val actual = _state.value
         if (!actual.puedeEnviar) return
         _state.update { it.copy(busy = true, error = null) }
@@ -38,7 +42,7 @@ class LoginViewModel(private val repository: SyncPassRepository) : ViewModel() {
                 .onSuccess {
                     AuthSession.signedIn(it.accessToken, it.idToken)
                     _state.update { estado -> estado.copy(busy = false, password = "") }
-                    onLogin()
+                    loginEvents.send(Unit)
                 }
                 .onFailure { error ->
                     _state.update { it.copy(busy = false, error = mensajeDeError(error)) }

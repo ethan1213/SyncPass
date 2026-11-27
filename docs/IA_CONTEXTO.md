@@ -2,9 +2,11 @@
 
 ## Qué existe en la aplicación
 
-La innovación implementada es una **bitácora consultable por taller**. Un coordinador o administrador marca si la sesión se grabó y publica apuntes o una transcripción revisada. `PUT /api/eventos/{id}/bitacora` guarda el texto en PostgreSQL y calcula un resumen extractivo. `POST /api/eventos/{id}/bitacora/preguntas` busca el fragmento que comparte más términos con la pregunta y devuelve la respuesta junto con su cita. Web y Android consultan el mismo `tallerId` por la API. Una pregunta sin coincidencia recibe una respuesta de insuficiencia; el sistema no inventa contenido.
+La innovación implementada es una **bitácora consultable por taller**. Un coordinador o administrador marca si la sesión se grabó y publica apuntes o una transcripción revisada. `PUT /api/eventos/{id}/bitacora` guarda el texto en PostgreSQL y calcula un resumen extractivo cuando no se entrega uno revisado. Web y Android consultan el mismo `tallerId` por la API.
 
-La edición web admite grabar o seleccionar audio y transcribirlo con Gemini. El administrador o coordinador autoriza el envío al proveedor y revisa el resultado antes de publicarlo. Puede generar y editar un borrador de resumen. Si falta la clave o falla el proveedor al resumir, el servidor prepara un borrador extractivo. Las preguntas de web y Android usan el texto publicado y conservan citas literales verificables.
+Al preguntar, los saludos y las solicitudes directas del resumen tienen respuestas del sistema. Para preguntas abiertas, si Gemini está disponible, recibe únicamente la pregunta, el resumen publicado y los fragmentos numerados del taller. Devuelve una intención y hasta tres identificadores. El backend valida esos identificadores y construye la respuesta con los fragmentos originales. Si el modelo indica que falta información, el sistema lo señala. Si el proveedor no está configurado, falla o devuelve una selección inválida, se usa la búsqueda extractiva.
+
+La edición web admite grabar o seleccionar audio y transcribirlo con Gemini. El administrador o coordinador puede generar y editar un borrador de resumen en web y Android. En ese flujo autoriza el envío al proveedor y revisa el resultado antes de publicarlo. Si falta la clave o falla el proveedor al resumir, el servidor prepara un borrador extractivo. Los apuntes de talleres reales deben limitarse a contenido autorizado para su tratamiento.
 
 | Operación bajo `/api/eventos/{id}/bitacora` | Resultado |
 | --- | --- |

@@ -6,17 +6,29 @@ import type { Taller } from '../types';
 
 interface RecordingState {
   grabado: boolean | null;
+  resumenDisponible: boolean;
   mensaje: string;
 }
 
-function RecordingNotice({ id }: { id: number }) {
+function AccionesTaller({ id, puedeGestionarBitacora }: { id: number; puedeGestionarBitacora: boolean }) {
   const [status, setStatus] = useState<RecordingState | null>(null);
   useEffect(() => {
     let active = true;
     request(`/api/eventos/${id}/grabacion`).then((data) => { if (active) setStatus(data); }).catch(() => {});
     return () => { active = false; };
   }, [id]);
-  return status ? <p className="alert alert-info" role="status">{status.mensaje}</p> : null;
+  return <>
+    {status?.mensaje && (status.grabado || status.resumenDisponible) &&
+      <p className="alert alert-info" role="status">{status.mensaje}</p>}
+    <div className="acciones-fila">
+      {(status?.resumenDisponible || puedeGestionarBitacora) &&
+        <Link href={`/bitacora/${id}`} className="btn btn-secondary">
+          {status?.resumenDisponible ? 'Resumen y preguntas del taller' : 'Gestionar bitácora'}
+        </Link>}
+      <Link href="/acreditar" className="btn btn-primary">Acreditar asistencia por QR</Link>
+      <Link href="/encuesta" className="btn btn-secondary">Aplicar encuesta en terreno</Link>
+    </div>
+  </>;
 }
 
 function TallerJoinQr({ id }: { id: number }) {
@@ -36,6 +48,7 @@ function TallerJoinQr({ id }: { id: number }) {
 
 export interface TallerDetailPageProps {
   taller?: Taller;
+  puedeGestionarBitacora?: boolean;
 }
 
 /**
@@ -44,7 +57,7 @@ export interface TallerDetailPageProps {
  * la actividad, fecha/hora programada, cupos maximos, recinto/direccion, coordenadas
  * referenciales, y el registro de asistencia con su estado de sincronizacion.
  */
-export default function TallerDetailPage({ taller }: TallerDetailPageProps) {
+export default function TallerDetailPage({ taller, puedeGestionarBitacora = false }: TallerDetailPageProps) {
   if (!taller) {
     return (
       <div className="contenedor estado-bloque">
@@ -129,19 +142,7 @@ export default function TallerDetailPage({ taller }: TallerDetailPageProps) {
           </dl>
 
           <TallerJoinQr id={taller.id} />
-          <RecordingNotice id={taller.id} />
-
-          <div className="acciones-fila">
-            <Link href={`/bitacora/${taller.id}`} className="btn btn-secondary">
-              Resumen y preguntas del taller
-            </Link>
-            <Link href="/acreditar" className="btn btn-primary">
-              Acreditar asistencia por QR
-            </Link>
-            <Link href="/encuesta" className="btn btn-secondary">
-              Aplicar encuesta en terreno
-            </Link>
-          </div>
+          <AccionesTaller key={taller.id} id={taller.id} puedeGestionarBitacora={puedeGestionarBitacora} />
         </div>
       </div>
 
