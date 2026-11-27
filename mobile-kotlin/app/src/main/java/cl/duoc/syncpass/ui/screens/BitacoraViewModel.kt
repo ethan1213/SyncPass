@@ -39,7 +39,15 @@ class BitacoraViewModel(private val repository: SyncPassRepository) : ViewModel(
         _state.update { it.copy(busy = true, answer = null, status = "Cargando bitácora...") }
         viewModelScope.launch {
             runCatching { repository.bitacora(tallerId, token) }
-                .onSuccess { datos -> _state.update { it.copy(bitacora = datos, status = "", busy = false) } }
+                .onSuccess { datos ->
+                    // El servidor puede responder 200 con la bitácora aún sin contenido real:
+                    // mismo mensaje que un 404 en vez de dejar la pantalla en blanco.
+                    val vacia = datos.resumen.isBlank() && datos.fragmentos.isEmpty()
+                    _state.update { it.copy(
+                        bitacora = if (vacia) null else datos,
+                        status = if (vacia) "Lo aprendido aparecerá aquí cuando el equipo publique la bitácora." else "",
+                        busy = false) }
+                }
                 .onFailure { error ->
                     val estado = if (error is HttpException && error.code() == 404)
                         "Lo aprendido aparecerá aquí cuando el equipo publique la bitácora."

@@ -16,6 +16,8 @@ ffprobe -v error -show_entries format=duration,size -show_entries stream=width,h
 
 ## Guion de captura (máximo 90 segundos)
 
+Para una toma nueva, usar el [guion actualizado de 86 segundos](GUION_VIDEO_PRUEBA_3.md) y abrir el [recorrido por capítulos](RECORRIDO_DEMO.html) en el navegador. El siguiente guion queda como referencia de las capturas anteriores.
+
 | Tiempo | Pantalla real | Qué decir o mostrar |
 | --- | --- | --- |
 | 0–10 s | Mockups y portada | Problema: registrar talleres y asistencia cuando falla Internet. |

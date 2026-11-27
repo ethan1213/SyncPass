@@ -16,10 +16,10 @@ Responsable: Ethan Astorga. La pauta Android y la pauta conjunta de Android/Reac
 
 ## Cómo repetir las pruebas
 
-La ejecución de esta revisión registró 32 pruebas de backend, 95 de React y 100 de Android sin fallos. Vitest midió 73,99 % de líneas web y JaCoCo 79,66 % de líneas en su reporte filtrado de Android. Ambos superan el 30 % exigido.
+La última revisión registró 32 pruebas de backend, 95 de React y 101 de Android sin fallos. A las pruebas de React se añaden dos recorridos en Chromium. Vitest midió 73,99 % de líneas web y JaCoCo 79,82 % de líneas en su reporte filtrado de Android. Ambos superan el 30 % exigido.
 
 - En `backend`, ejecutar `mvnw.cmd test`.
-- En `web-react`, ejecutar `npm ci`, `npm run coverage` y `npm run build`. Leer el porcentaje de líneas en `coverage/index.html`.
+- En `web-react`, ejecutar `npm ci`, `npm run coverage` y `npm run build`. Leer el porcentaje de líneas en `coverage/index.html`. Para el navegador real, ejecutar `npx playwright install chromium` y `npm run test:browser`.
 - En `mobile-kotlin`, ejecutar `gradlew.bat :app:testDebugUnitTest :app:jacocoFilteredTestReport :app:assembleDebug`. Los informes quedan en `app/build/reports`.
 
 ## Casos de regresión

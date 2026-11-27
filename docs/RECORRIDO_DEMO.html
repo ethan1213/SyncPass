@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="es">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SyncPass · Recorrido de entrega</title>
+<style>
+  :root { color-scheme: light; font-family: system-ui, sans-serif; color: #182b21; background: #f2f0e8; }
+  body { margin: 0 auto; padding: clamp(18px, 4vw, 48px); max-width: 1100px; }
+  header { border-bottom: 1px solid #bcbfaf; padding-bottom: 14px; }
+  header p { margin: 0; color: #3b5848; }
+  h1 { font-size: clamp(34px, 5vw, 62px); margin: 4px 0; letter-spacing: -.06em; }
+  main { margin-top: 20px; }
+  nav { display: flex; flex-wrap: wrap; gap: 8px; }
+  button, .link { background: #faf9f5; border: 1px solid #a3afa5; padding: 9px 13px; color: #182b21; font: inherit; cursor: pointer; text-decoration: none; }
+  :focus-visible { outline: 3px solid #bf541c; outline-offset: 3px; }
+  button[aria-current="step"], .link { background: #24513a; color: white; border-color: #24513a; }
+  article { padding: clamp(16px, 3vw, 32px); background: #fdfcf7; border: 1px solid #bcbfaf; margin-top: 17px; }
+  h2 { font-size: clamp(25px, 3.5vw, 42px); margin: 4px 0 9px; letter-spacing: -.03em; }
+  .time { color: #3b5848; font-weight: 700; font-variant-numeric: tabular-nums; }
+  #flow { display: flex; flex-wrap: wrap; gap: 7px; align-items: center; margin: 18px 0; }
+  #flow span { padding: 7px 10px; border: 1px solid #a3afa5; background: #e8eeea; }
+  article p { max-width: 68ch; line-height: 1.45; }
+  footer { margin-top: 15px; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .sources { margin-top: 19px; color: #3b5848; }
+  .sources a { color: inherit; }
+  [hidden] { display: none; }
+</style>
+<header>
+  <p>Prueba 3 · Ethan Astorga</p>
+  <h1>SyncPass</h1>
+  <p>Un taller, dos clientes y una asistencia que se conserva sin señal.</p>
+</header>
+<main>
+  <nav id="steps" aria-label="Capítulos"></nav>
+  <article aria-live="polite">
+    <div class="time" id="time"></div>
+    <h2 id="title"></h2>
+    <p id="voice"></p>
+    <div id="flow" aria-label="Flujo de datos"></div>
+    <p><strong>Mostrar:</strong> <span id="action"></span></p>
+    <a class="link" id="link" target="_blank" rel="noopener">Abrir pantalla ↗</a>
+  </article>
+  <footer>
+    <button id="prev">← Anterior</button>
+    <button id="next">Siguiente →</button>
+    <span id="count"></span>
+  </footer>
+  <p class="sources"><a href="GUION_VIDEO_PRUEBA_3.md">Guion completo</a> · <a href="ARQUITECTURA.md">C4 y arquitectura</a> · <a href="VALIDACION_PRUEBA_3.md">Pruebas y cobertura</a></p>
+</main>
+<script>
+const web = 'https://web-react-nu-nine.vercel.app';
+const capitulos = [
+  ['El caso', '00:00–00:10', 'En terreno, perder señal no debería impedir registrar una asistencia.', ['Monitor', 'Android', 'Room'], 'Abrir el visor y señalar el recorrido del monitor.', '/mockups.html'],
+  ['El taller', '00:10–00:26', 'La web y Android consultan el mismo catálogo. El equipo crea el taller desde el mantenedor web.', ['React', 'Gateway', 'Spring Boot', 'PostgreSQL'], 'Mostrar el mismo nombre e ID de taller en ambas pantallas.', '/talleres'],
+  ['QR sin red', '00:26–00:47', 'Con la sesión ya abierta, el teléfono puede guardar el registro de asistencia en Room.', ['Cámara', 'ViewModel', 'Repositorio', 'Room'], 'Desactivar la red, escanear y mostrar el pendiente. Usar un taller de demostración.', null],
+  ['Sincronización', '00:47–01:03', 'Cuando vuelve la señal, el repositorio envía la cola mediante Retrofit y retira los UUID que confirma la API.', ['Room', 'Retrofit', 'Gateway', 'Spring Boot', 'PostgreSQL'], 'Activar la red, mostrar el envío y actualizar el quórum del mismo taller.', '/panel'],
+  ['Resumen con fuente', '01:03–01:18', 'La bitácora responde con el texto publicado para ese taller y muestra la cita usada.', ['Apuntes', 'API', 'Fragmento', 'Cita'], 'Abrir una bitácora publicada, preguntar y desplegar la fuente.', null],
+  ['Verificación', '01:18–01:26', 'El informe registra qué pruebas se ejecutaron y separa la evidencia de laboratorio de la demostración física.', ['MockMvc', 'Vitest', 'Chromium', 'JaCoCo'], 'Mostrar cobertura web y Android. Indicar el entorno grabado.', null],
+];
+const el = (id) => document.getElementById(id);
+const buttons = capitulos.map(([name], index) => {
+  const button = document.createElement('button');
+  button.textContent = name;
+  button.onclick = () => mostrar(index);
+  el('steps').append(button);
+  return button;
+});
+let indice = 0;
+function mostrar(index) {
+  indice = Math.max(0, Math.min(capitulos.length - 1, index));
+  const [titulo, tiempo, voz, pasos, accion, ruta] = capitulos[indice];
+  el('time').textContent = tiempo;
+  el('title').textContent = titulo;
+  el('voice').textContent = voz;
+  el('action').textContent = accion;
+  el('count').textContent = `${indice + 1} / ${capitulos.length}`;
+  el('flow').replaceChildren();
+  pasos.forEach((paso, n) => {
+    if (n) el('flow').append(document.createTextNode(' → '));
+    const item = document.createElement('span');
+    item.textContent = paso;
+    el('flow').append(item);
+  });
+  el('link').hidden = !ruta;
+  if (ruta) el('link').href = web + ruta;
+  else el('link').removeAttribute('href');
+  buttons.forEach((button, n) => n === indice ? button.setAttribute('aria-current', 'step') : button.removeAttribute('aria-current'));
+  el('prev').disabled = indice === 0;
+  el('next').disabled = indice === capitulos.length - 1;
+}
+el('prev').onclick = () => mostrar(indice - 1);
+el('next').onclick = () => mostrar(indice + 1);
+window.addEventListener('keydown', (event) => {
+  if (event.key === 'ArrowLeft') mostrar(indice - 1);
+  if (event.key === 'ArrowRight') mostrar(indice + 1);
+});
+mostrar(0);
+</script>
+</html>

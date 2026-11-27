@@ -5,6 +5,8 @@ Esta carpeta documenta exclusivamente la solución SyncPass. El punto de entrada
 | Documento | Para qué sirve |
 | --- | --- |
 | [ENTREGA_PRUEBA_3.md](ENTREGA_PRUEBA_3.md) | Matriz de la pauta, comparación con el docente y recorrido de entrega. |
+| [REVISION_PORTAL_DOCENTE.md](REVISION_PORTAL_DOCENTE.md) | Guías revisadas con sesión, mapa de documentación y prueba de navegador. |
+| [GUION_VIDEO_PRUEBA_3.md](GUION_VIDEO_PRUEBA_3.md) | Preparación y guion de 86 segundos. Abrir [RECORRIDO_DEMO.html](RECORRIDO_DEMO.html) en un navegador. |
 | [CASO.md](CASO.md) | Problema y objetivos entregados por el socio formador. |
 | [REQUISITOS_SYNCPASS.md](REQUISITOS_SYNCPASS.md) | Requisitos funcionales y no funcionales con estado real. |
 | [DEMO_VIERNES_30.md](DEMO_VIERNES_30.md) | Orden de exposición web y móvil. |

@@ -3,6 +3,7 @@ package cl.duoc.syncpass.ui.screens
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider
 import cl.duoc.syncpass.data.AuthSession
+import cl.duoc.syncpass.data.BitacoraDto
 import cl.duoc.syncpass.data.FakeSyncPassApi
 import cl.duoc.syncpass.data.SyncPassRepository
 import cl.duoc.syncpass.data.fakeJwt
@@ -76,6 +77,17 @@ class BitacoraViewModelTest {
         viewModel.cargar(2)
         val published = withTimeout(5000) { viewModel.state.first { it.bitacora != null } }
         assertEquals("resumen", published.bitacora?.resumen)
+    }
+
+    @Test fun cargarWithPublishedButEmptyBitacoraShowsFriendlyMessage() = runBlocking {
+        AuthSession.signedIn(fakeJwt("participante-1"), null)
+        val api = FakeSyncPassApi()
+        api.bitacoraResult = BitacoraDto("", "", "2026-11-26", emptyList())
+        viewModel = BitacoraViewModel(SyncPassRepository(context, api, { true }))
+        viewModel.cargar(3)
+        withTimeout(5000) { viewModel.state.first { !it.busy } }
+        assertTrue(viewModel.state.value.status.contains("cuando el equipo publique"))
+        assertNull(viewModel.state.value.bitacora)
     }
 
     @Test fun preguntarWithoutTokenIsNoOp() {

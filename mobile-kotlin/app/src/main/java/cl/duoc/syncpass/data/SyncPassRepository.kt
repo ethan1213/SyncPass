@@ -1,180 +1,12 @@
 package cl.duoc.syncpass.data
 
 import android.content.Context
-import androidx.room.Dao
-import androidx.room.Database
-import androidx.room.Entity
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.PrimaryKey
-import androidx.room.Query
-import androidx.room.Room
-import androidx.room.RoomDatabase
 import androidx.room.withTransaction
-import androidx.room.migration.Migration
-import androidx.sqlite.db.SupportSQLiteDatabase
-import cl.duoc.syncpass.BuildConfig
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
-import okhttp3.OkHttpClient
-import kotlinx.coroutines.flow.Flow
 import retrofit2.HttpException
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.Header
-import retrofit2.http.POST
-import retrofit2.http.Path
-import java.time.Instant
 import java.util.UUID
-
-@Entity(tableName = "talleres")
-data class TallerDto(
-    @PrimaryKey val id: Long, val title: String, val descripcion: String?, val area: String?,
-    val unidadVecinal: String?, val comuna: String?, val direccion: String?,
-    val fechaHora: String?, val docenteLider: String?, val cuposMaximos: Int,
-    val latitud: Double? = null, val longitud: Double? = null, val radioMetros: Int? = null,
-    val inscritos: Int = 0,
-    /** CSV de roles Cognito que pueden unirse; null = abierto a todos (RF12). */
-    val rolesPermitidos: String? = null,
-    /** Unidad vecinal exigida para unirse; null = sin restriccion de zona (RF12). */
-    val zonaRestringida: String? = null
-)
-
-@Entity(tableName = "pending")
-data class PendingRecord(
-    @PrimaryKey val id: String = UUID.randomUUID().toString(),
-    val owner: String, val tipo: String, val tallerId: Long,
-    val participante: String? = null, val rating: Int? = null,
-    val comentario: String? = null, val utilidad: String? = null,
-    val latitud: Double? = null, val longitud: Double? = null, val precisionMetros: Float? = null,
-    val timestamp: String = Instant.now().toString()
-)
-
-@Dao interface PendingDao {
-    @Query("SELECT * FROM pending WHERE owner = :owner ORDER BY timestamp")
-    suspend fun forOwner(owner: String): List<PendingRecord>
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun save(row: PendingRecord)
-    @Query("DELETE FROM pending WHERE id = :id AND owner = :owner")
-    suspend fun delete(id: String, owner: String)
-}
-
-/**
- * Asistencia tomada sin conexion. Se guarda tal cual en el telefono (con el GPS
- * del momento) y se reenvia a /ingreso cuando vuelve la senal; el servidor es
- * idempotente por taller+participante, asi que reintentar no duplica nada.
- */
-@Entity(tableName = "ingresos")
-data class PendingEntry(
-    @PrimaryKey val id: String = UUID.randomUUID().toString(),
-    val tallerId: Long, val modo: String, val dispositivoId: String,
-    val nombre: String? = null,
-    val latitud: Double? = null, val longitud: Double? = null, val precisionMetros: Float? = null,
-    val timestamp: String = Instant.now().toString()
-)
-
-@Dao interface IngresoDao {
-    @Query("SELECT * FROM ingresos ORDER BY timestamp")
-    suspend fun all(): List<PendingEntry>
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun save(row: PendingEntry)
-    @Query("DELETE FROM ingresos WHERE id = :id")
-    suspend fun delete(id: String)
-    @Query("SELECT COUNT(*) FROM ingresos")
-    suspend fun count(): Int
-    @Query("SELECT COUNT(*) FROM ingresos WHERE tallerId = :tallerId")
-    suspend fun countFor(tallerId: Long): Int
-}
-
-@Dao interface TallerDao {
-    @Query("SELECT * FROM talleres ORDER BY fechaHora")
-    suspend fun all(): List<TallerDto>
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun save(rows: List<TallerDto>)
-    @Query("DELETE FROM talleres")
-    suspend fun clear()
-}
-
-@Database(entities = [PendingRecord::class, TallerDto::class, PendingEntry::class],
-    version = 5, exportSchema = false)
-abstract class SyncPassDb : RoomDatabase() {
-    abstract fun pending(): PendingDao
-    abstract fun talleres(): TallerDao
-    abstract fun ingresos(): IngresoDao
-}
-
-private val catalogMigration = object : Migration(1, 2) {
-    override fun migrate(db: SupportSQLiteDatabase) {
-        db.execSQL("""CREATE TABLE IF NOT EXISTS `talleres` (
-            `id` INTEGER NOT NULL PRIMARY KEY, `title` TEXT NOT NULL,
-            `descripcion` TEXT, `area` TEXT, `unidadVecinal` TEXT, `comuna` TEXT,
-            `direccion` TEXT, `fechaHora` TEXT, `docenteLider` TEXT,
-            `cuposMaximos` INTEGER NOT NULL, `inscritos` INTEGER NOT NULL)""")
-    }
-}
-private val entryQueueMigration = object : Migration(3, 4) {
-    override fun migrate(db: SupportSQLiteDatabase) {
-        db.execSQL(
-            """
-            CREATE TABLE IF NOT EXISTS ingresos (
-              id TEXT NOT NULL PRIMARY KEY,
-              tallerId INTEGER NOT NULL,
-              modo TEXT NOT NULL,
-              dispositivoId TEXT NOT NULL,
-              nombre TEXT,
-              latitud REAL,
-              longitud REAL,
-              precisionMetros REAL,
-              timestamp TEXT NOT NULL
-            )
-            """.trimIndent()
-        )
-    }
-}
-
-private val dominioMigration = object : Migration(4, 5) {
-    override fun migrate(db: SupportSQLiteDatabase) {
-        db.execSQL("ALTER TABLE talleres ADD COLUMN rolesPermitidos TEXT")
-        db.execSQL("ALTER TABLE talleres ADD COLUMN zonaRestringida TEXT")
-    }
-}
-
-private val geoMigration = object : Migration(2, 3) {
-    override fun migrate(db: SupportSQLiteDatabase) {
-        db.execSQL("ALTER TABLE talleres ADD COLUMN latitud REAL")
-        db.execSQL("ALTER TABLE talleres ADD COLUMN longitud REAL")
-        db.execSQL("ALTER TABLE talleres ADD COLUMN radioMetros INTEGER")
-        db.execSQL("ALTER TABLE pending ADD COLUMN latitud REAL")
-        db.execSQL("ALTER TABLE pending ADD COLUMN longitud REAL")
-        db.execSQL("ALTER TABLE pending ADD COLUMN precisionMetros REAL")
-    }
-}
-
-data class SyncBatch(val registros: List<PendingPayload>)
-data class PendingPayload(val id: String, val tipo: String, val tallerId: Long,
-    val participante: String?, val rating: Int?, val comentario: String?,
-    val utilidad: String?, val timestamp: String,
-    val latitud: Double?, val longitud: Double?, val precisionMetros: Float?)
-data class SyncResult(val acceptedIds: List<String>)
-data class LoginRequest(val username: String, val password: String)
-data class LoginResult(val accessToken: String, val idToken: String, val refreshToken: String, val expiresIn: Int)
-data class RegisterRequest(val username: String, val email: String, val nickname: String, val password: String)
-data class RegisterResult(val userConfirmed: Boolean, val destination: String)
-data class ConfirmRequest(val username: String, val code: String)
-data class UsernameRequest(val username: String)
-data class BitacoraDto(val contenido: String, val resumen: String, val actualizadoEn: String, val fragmentos: List<String>)
-data class PreguntaBitacora(val pregunta: String)
-data class RespuestaBitacora(val respuesta: String, val fragmento: Int, val cita: String)
-data class GuestJoinRequest(val dispositivoId: String, val nombre: String,
-    val latitud: Double? = null, val longitud: Double? = null, val precisionMetros: Float? = null)
-data class JoinLocation(val latitud: Double? = null, val longitud: Double? = null,
-    val precisionMetros: Float? = null)
-data class JoinResult(val estado: String, val registroId: String, val participante: String, val invitado: Boolean)
-data class RecordingStatus(val grabado: Boolean, val resumenDisponible: Boolean, val mensaje: String)
-/** RF12: preinscripcion a un taller ("pendiente" hasta que una acreditacion real la pasa a "asistio"). */
-data class InscripcionDto(val id: Long, val tallerId: Long, val estado: String)
 
 /** Estado que devuelve la app cuando la asistencia quedo guardada sin conexion. */
 const val ESTADO_PENDIENTE = "pendiente_local"
@@ -190,38 +22,10 @@ class OfflineException(message: String =
     "Sin conexion. El registro queda guardado en el telefono y se enviara al recuperar la senal.")
     : java.io.IOException(message)
 
-interface SyncPassApi {
-    @POST("api/auth/login") suspend fun login(@Body request: LoginRequest): LoginResult
-    @POST("api/auth/register") suspend fun register(@Body request: RegisterRequest): RegisterResult
-    @POST("api/auth/confirm") suspend fun confirm(@Body request: ConfirmRequest)
-    @POST("api/auth/resend") suspend fun resend(@Body request: UsernameRequest)
-    @GET("api/eventos") suspend fun talleres(): List<TallerDto>
-    @POST("api/eventos/{tallerId}/ingreso/invitado") suspend fun joinGuest(
-        @Path("tallerId") tallerId: Long, @Body request: GuestJoinRequest): JoinResult
-    @GET("api/eventos/{tallerId}/grabacion") suspend fun recordingStatus(
-        @Path("tallerId") tallerId: Long): RecordingStatus
-    @POST("api/eventos/{tallerId}/ingreso/cuenta") suspend fun joinAccount(
-        @Path("tallerId") tallerId: Long, @Header("Authorization") authorization: String,
-        @Body location: JoinLocation): JoinResult
-    @POST("api/sync/batch") suspend fun sync(
-        @Header("Authorization") authorization: String, @Body batch: SyncBatch): SyncResult
-    @GET("api/eventos/{tallerId}/bitacora") suspend fun bitacora(
-        @retrofit2.http.Path("tallerId") tallerId: Long,
-        @Header("Authorization") authorization: String): BitacoraDto
-    @POST("api/eventos/{tallerId}/bitacora/preguntas") suspend fun preguntarBitacora(
-        @retrofit2.http.Path("tallerId") tallerId: Long,
-        @Header("Authorization") authorization: String,
-        @Body pregunta: PreguntaBitacora): RespuestaBitacora
-    @POST("api/eventos/{tallerId}/inscripcion") suspend fun marcarPendiente(
-        @Path("tallerId") tallerId: Long, @Header("Authorization") authorization: String): InscripcionDto
-    @GET("api/mis-inscripciones") suspend fun misInscripciones(
-        @Header("Authorization") authorization: String): List<InscripcionDto>
-}
-
 /**
  * [injectedApi] e [injectedOnline] son las dos semillas de inyeccion de
  * dependencias del repositorio: en produccion se omiten y se construyen el
- * Retrofit real contra [BuildConfig.API_BASE_URL] y el [ConnectivityMonitor]
+ * Retrofit real mediante [crearApiRemota] y el [ConnectivityMonitor]
  * del sistema; las pruebas unitarias pasan un fake de [SyncPassApi] y fuerzan
  * el estado de conexion para ejercitar las ramas en linea (login/registro/
  * catalogo/sync) sin tocar la red ni depender del shadow de Robolectric.
@@ -236,11 +40,8 @@ class SyncPassRepository(
     private val preferences = context.applicationContext.getSharedPreferences("syncpass_guest", Context.MODE_PRIVATE)
     private val syncMutex = Mutex()
     private val entryMutex = Mutex()
-    private val db = Room.databaseBuilder(context.applicationContext, SyncPassDb::class.java, databaseName)
-        .addMigrations(catalogMigration, geoMigration, entryQueueMigration, dominioMigration).build()
-    private val api = injectedApi ?: Retrofit.Builder().baseUrl(BuildConfig.API_BASE_URL)
-        .client(OkHttpClient.Builder().build()).addConverterFactory(GsonConverterFactory.create()).build()
-        .create(SyncPassApi::class.java)
+    private val db = abrirBaseLocal(context, databaseName)
+    private val api = injectedApi ?: crearApiRemota()
     private val connectivity = ConnectivityMonitor(context)
     private fun connected(): Boolean = injectedOnline?.invoke() ?: connectivity.isOnline()
 
