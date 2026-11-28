@@ -106,6 +106,26 @@ class ApiTest {
   var id=Jwt.withTokenValue("test").header("alg","RS256").subject("user").claim("client_id","our-client").claim("token_use","id").build();
   assertTrue(validator.validate(id).hasErrors());
  }
+ @Test void personalNotesSyncOnceAndRemainPrivate() throws Exception {
+  long id=create();
+  var first=jwt().jwt(j->j.subject("nota-owner")).authorities(new SimpleGrantedAuthority("ROLE_participante"));
+  var second=jwt().jwt(j->j.subject("otra-cuenta")).authorities(new SimpleGrantedAuthority("ROLE_participante"));
+  var noteId=UUID.randomUUID().toString();
+  var row=json.createObjectNode().put("id",noteId).put("tipo","apunte")
+    .put("tallerId",id).put("comentario","Revisar apuntes el viernes.")
+    .put("participante","otra-cuenta").put("timestamp",Instant.now().minusSeconds(1).toString());
+  var body=json.createObjectNode().set("registros",json.createArrayNode().add(row));
+  for(int i=0;i<2;i++) mvc.perform(post("/api/sync/batch").with(first)
+      .contentType(MediaType.APPLICATION_JSON).content(body.toString()))
+    .andExpect(status().isOk()).andExpect(jsonPath("acceptedIds[0]").value(noteId));
+  var path="/api/eventos/"+id+"/mis-apuntes";
+  mvc.perform(get(path).with(first)).andExpect(status().isOk())
+    .andExpect(jsonPath("$.length()").value(1))
+    .andExpect(jsonPath("$[0].texto").value("Revisar apuntes el viernes."));
+  mvc.perform(get(path).with(second)).andExpect(status().isOk()).andExpect(jsonPath("$.length()").value(0));
+  mvc.perform(get(path)).andExpect(status().isUnauthorized());
+  assertEquals(0,db.queryForObject("SELECT COUNT(*) FROM registros WHERE tipo='asistencia'",Integer.class));
+ }
  @Test void qrAttendanceRequiresAccurateLocationInsideWorkshopRadius() throws Exception {
   var site=(com.fasterxml.jackson.databind.node.ObjectNode)json.readTree(taller());
   site.put("latitud",-33.45).put("longitud",-70.67).put("radioMetros",100);

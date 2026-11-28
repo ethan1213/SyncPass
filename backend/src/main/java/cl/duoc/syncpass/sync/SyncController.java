@@ -27,6 +27,12 @@ public class SyncController {
         return Map.of("acceptedIds", service.recibir(lote, jwt.getSubject(), grupos));
     }
 
+    @GetMapping("/eventos/{id}/mis-apuntes")
+    @PreAuthorize("hasAnyRole('admin','coordinador','monitor','participante')")
+    public List<SyncService.Apunte> apuntes(@PathVariable long id, @AuthenticationPrincipal Jwt jwt) {
+        return service.apuntes(id, jwt.getSubject());
+    }
+
     @GetMapping("/quorum")
     @PreAuthorize("hasAnyRole('admin','coordinador','monitor')")
     public List<Map<String, Object>> quorum() {

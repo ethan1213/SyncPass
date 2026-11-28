@@ -36,7 +36,7 @@ public class SyncService {
     }
 
     public record Registro(@NotNull UUID id,
-                           @NotBlank @Pattern(regexp = "asistencia|encuesta") String tipo,
+                           @NotBlank @Pattern(regexp = "asistencia|encuesta|apunte") String tipo,
                            @NotNull @Positive Long tallerId,
                            @Size(max = 100) String participante,
                            @Min(1) @Max(5) Integer rating,
@@ -66,6 +66,8 @@ public class SyncService {
 
             if (registro.tipo().equals("encuesta") && registro.rating() == null)
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Falta calificación");
+            if (registro.tipo().equals("apunte") && (registro.comentario() == null || registro.comentario().isBlank()))
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El apunte está vacío");
 
             if (yaRecibido(registro, sub)) {
                 aceptados.add(registro.id().toString());
@@ -79,7 +81,11 @@ public class SyncService {
 
             if (registro.tipo().equals("asistencia")) validarAsistencia(registro);
 
-            String participante = registro.tipo().equals("encuesta") ? sub : registro.participante();
+            String participante = switch (registro.tipo()) {
+                case "encuesta" -> sub;
+                case "apunte" -> registro.id().toString();
+                default -> registro.participante();
+            };
             if (participante == null || participante.isBlank())
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Falta participante");
 
@@ -87,6 +93,18 @@ public class SyncService {
             aceptados.add(registro.id().toString());
         }
         return aceptados;
+    }
+
+    public record Apunte(String id, String texto) {}
+
+    @Transactional(readOnly = true)
+    public List<Apunte> apuntes(long tallerId, String owner) {
+        return db.query("""
+            SELECT id, comentario FROM registros
+            WHERE tipo='apunte' AND taller_id=? AND owner=?
+            ORDER BY registrado_en DESC, id
+            """, (fila, indice) -> new Apunte(fila.getString("id"), fila.getString("comentario")),
+            tallerId, owner);
     }
 
     /** Reenvio del mismo registro: se acepta si es del mismo dueño, se rechaza si no. */
