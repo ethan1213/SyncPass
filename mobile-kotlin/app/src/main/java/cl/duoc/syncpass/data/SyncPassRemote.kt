@@ -29,6 +29,7 @@ data class RespuestaBitacora(val respuesta: String, val fragmento: Int, val cita
 data class PeticionResumen(val contenido: String, val autorizaProveedor: Boolean)
 data class BorradorBitacora(val resumen: String, val origen: String)
 data class PublicacionBitacora(val contenido: String, val resumenRevisado: String)
+data class ApunteRemoto(val id: String, val texto: String)
 data class GuestJoinRequest(val dispositivoId: String, val nombre: String,
     val latitud: Double? = null, val longitud: Double? = null, val precisionMetros: Float? = null)
 data class JoinLocation(val latitud: Double? = null, val longitud: Double? = null,
@@ -70,6 +71,8 @@ interface SyncPassApi {
         @Path("tallerId") tallerId: Long, @Header("Authorization") authorization: String): InscripcionDto
     @GET("api/mis-inscripciones") suspend fun misInscripciones(
         @Header("Authorization") authorization: String): List<InscripcionDto>
+    @GET("api/eventos/{tallerId}/mis-apuntes") suspend fun misApuntes(
+        @Path("tallerId") tallerId: Long, @Header("Authorization") authorization: String): List<ApunteRemoto>
 }
 
 internal fun crearApiRemota(): SyncPassApi = Retrofit.Builder()

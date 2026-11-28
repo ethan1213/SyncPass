@@ -23,6 +23,7 @@ sealed class Screen(val route: String, val title: String) {
     /** Encuesta de satisfaccion en terreno (1 a 5 estrellas). */
     object Survey : Screen("survey", "Encuesta de satisfacción")
     object Bitacora : Screen("bitacora", "Bitácora del taller")
+    object Apuntes : Screen("apuntes", "Mis apuntes")
 
     /** RF12: talleres marcados "voy a asistir" (preinscripcion en el servidor). */
     object MisInscripciones : Screen("mis-inscripciones", "Mis talleres pendientes")

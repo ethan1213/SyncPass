@@ -200,6 +200,10 @@ class SyncPassRepository(
     }
 
     suspend fun pending(owner: String) = db.pending().forOwner(owner)
+    suspend fun misApuntes(tallerId: Long, token: String): List<ApunteRemoto> {
+        requireNetwork()
+        return api.misApuntes(tallerId, "Bearer $token")
+    }
     suspend fun bitacora(tallerId: Long, token: String): BitacoraDto {
         requireNetwork()
         return api.bitacora(tallerId, "Bearer $token")

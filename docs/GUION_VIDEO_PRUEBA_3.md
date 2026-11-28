@@ -16,14 +16,14 @@
 | --- | --- | --- |
 | 00:00–00:09 | Portada del recorrido y mockup de monitor | «SyncPass registra actividades en terreno, incluso cuando se corta Internet.» |
 | 00:09–00:25 | Sesión web, Proyectos, Talleres e ID del taller | «React gestiona dos mantenedores. Web y Kotlin consultan la misma API en Gateway con Spring Boot en EC2.» |
-| 00:25–00:46 | Android, cámara, modo avión y pendiente nuevo | «Compose delega al ViewModel y al repositorio; Room guarda la asistencia hasta que haya señal.» |
-| 00:46–01:03 | Volver a conectar, ver confirmación y refrescar el mismo taller web | «Retrofit envía el pendiente. La API confirma su UUID y el repositorio retira de Room el registro aceptado.» |
+| 00:25–00:46 | Android, QR de prueba y pendiente nuevo en Room | «Compose delega al ViewModel y al repositorio. La asistencia y los apuntes se guardan primero en el teléfono.» |
+| 00:46–01:03 | Pulsar sincronizar, ver confirmación y refrescar el mismo taller web | «Retrofit envía el pendiente. La API confirma su UUID y el repositorio retira de Room el registro aceptado.» |
 | 01:03–01:15 | Pregunta del taller #2 y fuente | «El asistente devuelve 20 cuadernos como punto de equilibrio y cita el fragmento cuatro.» |
 | 01:15–01:28 | Cobertura y firma | «Vitest mide 73,90 % de líneas web y JaCoCo 79,87 % de la lógica Android. El AAB está firmado.» |
 
 Para grabar, deja las ventanas preparadas y corta por escenas. En Windows graba solo la ventana del navegador con el grabador de pantalla. En el Samsung activa No molestar y usa la grabación integrada o la captura por USB ya preparada. No grabes credenciales, microdatos de participantes ni menús de otras cuentas. Narra al final si así puedes concentrarte en los pasos.
 
-Para la cámara, el QR del taller `SPT:<id>` abre su ficha. Demuestra la **acreditación** con el QR `SP1:<id>` de un participante ficticio desde una segunda pantalla. Si puedes ensayar con GPS, utiliza un taller de prueba con geocerca válida para tu posición. Si hay un pendiente anterior, anota el contador base y comprueba que aumente en uno. Tras reconectar, la reconciliación automática puede retirar el pendiente antes de pulsar el botón. Muestra la confirmación y el taller correspondiente.
+Mantén los datos y la zona Wi-Fi del Samsung activos si el computador depende del teléfono. Para la cámara, el QR del taller `SPT:<id>` abre su ficha. Demuestra la **acreditación** con el QR `SP1:<id>` de un participante ficticio desde una segunda pantalla. Si hay un pendiente anterior, anota el contador base y comprueba que aumente en uno. Muestra el contador antes de pulsar «Sincronizar ahora» y luego el cambio en el panel web. En «Mis apuntes», guarda texto de prueba, comprueba la tarjeta pendiente y sincroniza para ver la tarjeta confirmada en la nube. La prueba con la conexión activa demuestra la escritura en Room y el envío manual. La operación en modo sin conexión tiene una prueba automatizada independiente.
 
 La demostración de GPS se puede mostrar en el escaneo si se está físicamente en el radio del taller o si se prepara un escenario local adecuado. La transcripción Gemini requiere el JAR y la clave configurados. Mencionar solo los flujos observados en esa toma.
 

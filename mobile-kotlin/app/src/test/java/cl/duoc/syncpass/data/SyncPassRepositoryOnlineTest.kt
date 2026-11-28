@@ -39,6 +39,7 @@ internal class FakeSyncPassApi : SyncPassApi {
     val publicacionesBitacora = mutableListOf<Pair<Long, PublicacionBitacora>>()
     var marcarPendienteResult: InscripcionDto = InscripcionDto(1, 1, "pendiente")
     var misInscripcionesResult: List<InscripcionDto> = emptyList()
+    var apuntesResult: List<ApunteRemoto> = emptyList()
 
     var errorOnJoinGuest: Throwable? = null
     var errorOnJoinAccount: Throwable? = null
@@ -97,6 +98,7 @@ internal class FakeSyncPassApi : SyncPassApi {
     }
     override suspend fun marcarPendiente(tallerId: Long, authorization: String): InscripcionDto = marcarPendienteResult
     override suspend fun misInscripciones(authorization: String): List<InscripcionDto> = misInscripcionesResult
+    override suspend fun misApuntes(tallerId: Long, authorization: String): List<ApunteRemoto> = apuntesResult
 }
 
 /**

@@ -50,6 +50,7 @@ fun HomeScreen(
     onNavigateToScanner: (Long) -> Unit,
     onNavigateToSurvey: (Long) -> Unit,
     onNavigateToBitacora: (Long) -> Unit,
+    onNavigateToApuntes: (Long) -> Unit,
     onNavigateToLogin: () -> Unit,
     onNavigateToMisInscripciones: () -> Unit = {}
 ) {
@@ -233,6 +234,7 @@ fun HomeScreen(
                     asistido = state.inscripcionesAsistidas.contains(taller.id.toLong()),
                     onAcreditar = { onNavigateToScanner(taller.id.toLong()) },
                     onEncuestar = { onNavigateToSurvey(taller.id.toLong()) },
+                    onApuntes = if (token != null) ({ onNavigateToApuntes(tallerId) }) else null,
                     onBitacora = if (token != null && tallerId in state.resumenesDisponibles)
                         ({ onNavigateToBitacora(tallerId) }) else null,
                     onGestionarBitacora = if (token != null && tallerId !in state.resumenesDisponibles &&
@@ -301,6 +303,7 @@ private fun TarjetaTaller(
     asistido: Boolean,
     onAcreditar: () -> Unit,
     onEncuestar: () -> Unit,
+    onApuntes: (() -> Unit)?,
     onBitacora: (() -> Unit)?,
     onGestionarBitacora: (() -> Unit)?
 ) {
@@ -388,6 +391,7 @@ private fun TarjetaTaller(
             if (onBitacora != null) TextButton(onClick = onBitacora) {
                 Text("Resumen y preguntas del taller")
             }
+            if (onApuntes != null) TextButton(onClick = onApuntes) { Text("Mis apuntes") }
             if (onGestionarBitacora != null) TextButton(onClick = onGestionarBitacora) {
                 Text("Gestionar bitácora")
             }
