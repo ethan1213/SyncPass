@@ -51,6 +51,7 @@ fun HomeScreen(
     onNavigateToSurvey: (Long) -> Unit,
     onNavigateToBitacora: (Long) -> Unit,
     onNavigateToApuntes: (Long) -> Unit,
+    onScanWorkshopQr: () -> Unit,
     onNavigateToLogin: () -> Unit,
     onNavigateToMisInscripciones: () -> Unit = {}
 ) {
@@ -195,6 +196,12 @@ fun HomeScreen(
                     else {
                         Text("Mi panel · ${AuthSession.roles.joinToString().ifBlank { "sin asignar" }}",
                             fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onBackground)
+                        Button(
+                            onClick = onScanWorkshopQr,
+                            modifier = Modifier.fillMaxWidth().heightIn(min = AREA_TACTIL_MINIMA)
+                        ) {
+                            Text("Escanear QR del taller")
+                        }
                         TicketConfirmacion(message, state.ticket, onDescartar = vm::descartarTicket)
                         val qr = remember(owner) { makeQr("SP1:$owner") }
                         qr?.let { Image(it, contentDescription = "Mi QR de acreditación", modifier = Modifier.size(220.dp)) }

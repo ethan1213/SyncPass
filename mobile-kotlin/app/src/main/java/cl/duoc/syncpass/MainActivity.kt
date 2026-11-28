@@ -104,9 +104,9 @@ fun SyncPassNavigation(repository: SyncPassRepository, onAuthenticated: () -> Un
         composable(Screen.GuestQr.route) {
             GuestQrScreen(entryVm,
                 onGuestTaller = { id ->
-                    guestTallerId = id
+                    if (AuthSession.accessToken == null) guestTallerId = id
                     navController.navigate(Screen.GuestTaller.route) {
-                        popUpTo(Screen.Entry.route) { inclusive = false }
+                        popUpTo(Screen.GuestQr.route) { inclusive = true }
                     }
                 },
                 onBack = { navController.popBackStack() })
@@ -124,6 +124,7 @@ fun SyncPassNavigation(repository: SyncPassRepository, onAuthenticated: () -> Un
                 onNavigateToSurvey = { selectedTaller = it; navController.navigate(Screen.Survey.route) },
                 onNavigateToBitacora = { selectedTaller = it; navController.navigate(Screen.Bitacora.route) },
                 onNavigateToApuntes = { selectedTaller = it; navController.navigate(Screen.Apuntes.route) },
+                onScanWorkshopQr = { navController.navigate(Screen.GuestQr.route) },
                 onNavigateToLogin = { navController.navigate(Screen.Login.route) },
                 onNavigateToMisInscripciones = { navController.navigate(Screen.MisInscripciones.route) }
             )

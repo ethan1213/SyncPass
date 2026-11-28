@@ -88,7 +88,7 @@ fun GuestQrScreen(vm: EntryViewModel, onGuestTaller: (Long) -> Unit, onBack: () 
                 Text("Permitir cámara")
             }
             Spacer(Modifier.height(12.dp))
-            Text("Este QR abre un taller. El QR de participante se usa después para acreditar asistencia.",
+            Text("Escanea el QR publicado en la ficha del taller para abrirlo y registrar tu asistencia.",
                 color = MaterialTheme.colorScheme.onSurfaceVariant)
         }
     }
