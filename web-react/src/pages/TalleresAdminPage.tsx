@@ -41,19 +41,42 @@ const pickFormFields = (t: Taller): TallerForm => ({
 export interface TalleresAdminPageProps {
   talleres: Taller[];
   onRefresh: () => Promise<void>;
+  proyectoId?: string;
 }
 
-export default function TalleresAdminPage({ talleres, onRefresh }: TalleresAdminPageProps) {
+export default function TalleresAdminPage({ talleres, onRefresh, proyectoId }: TalleresAdminPageProps) {
   const { getAccessTokenSilently } = useSession();
-  const [form, setForm] = useState<TallerForm>(blank);
+  const formularioVacio = { ...blank, proyectoId: proyectoId ?? '' };
+  const [form, setForm] = useState<TallerForm>(formularioVacio);
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState('');
   const [proyectos, setProyectos] = useState<Proyecto[]>([]);
   const [loadingProjects, setLoadingProjects] = useState(true);
+  const [ubicando, setUbicando] = useState(false);
+  const visibles = proyectoId ? talleres.filter((taller) => String(taller.proyectoId) === proyectoId) : talleres;
+  const proyecto = proyectos.find((item) => String(item.id) === proyectoId);
   useEffect(() => {
     getAccessTokenSilently().then((token) => request('/api/proyectos', { token })).then(setProyectos).catch((e) => setError(e.message)).finally(() => setLoadingProjects(false));
   }, []);
+  function usarUbicacion() {
+    setError('');
+    setMessage('');
+    if (!navigator.geolocation) {
+      setError('La ubicación no está disponible en este navegador. Puedes escribir las coordenadas.');
+      return;
+    }
+    setUbicando(true);
+    navigator.geolocation.getCurrentPosition(({ coords }) => {
+      setForm((prev) => ({ ...prev, latitud: coords.latitude, longitud: coords.longitude }));
+      setMessage('Ubicación obtenida. Revisa las coordenadas y define el radio antes de guardar.');
+      setUbicando(false);
+    }, () => {
+      setError('No se pudo obtener la ubicación. Revisa el permiso del navegador o completa las coordenadas.');
+      setUbicando(false);
+    }, { enableHighAccuracy: true, timeout: 12_000, maximumAge: 0 });
+  }
+
   async function save(e: FormEvent) {
     e.preventDefault();
     setError('');
@@ -76,7 +99,7 @@ export default function TalleresAdminPage({ talleres, onRefresh }: TalleresAdmin
         token: await getAccessTokenSilently(),
       });
       await onRefresh();
-      setForm(blank);
+      setForm(formularioVacio);
       setMessage('Taller guardado.');
     } catch (e) {
       const err = e as Error;
@@ -93,7 +116,7 @@ export default function TalleresAdminPage({ talleres, onRefresh }: TalleresAdmin
     try {
       await request('/api/eventos/' + t.id, { method: 'DELETE', token: await getAccessTokenSilently() });
       await onRefresh();
-      if (form.id === t.id) setForm(blank);
+      if (form.id === t.id) setForm(formularioVacio);
       setMessage('Taller eliminado.');
     } catch (e) {
       setError((e as Error).message);
@@ -101,24 +124,30 @@ export default function TalleresAdminPage({ talleres, onRefresh }: TalleresAdmin
       setBusy(false);
     }
   }
-  return <div className="contenedor" style={{ paddingBlock: 30 }}><h1>Gestión de talleres</h1>
+  return <div className="contenedor" style={{ paddingBlock: 30 }}>
+    {proyectoId && <Link href="/proyectos" className="enlace-volver">Volver a proyectos</Link>}
+    <h1>{proyecto?.title ? `Talleres de ${proyecto.title}` : 'Gestión de talleres'}</h1>
     {error && <p role="alert" className="alert alert-warning">{error}</p>}{message && <p role="status">{message}</p>}
     <div className="crud-grid"><form className="panel" onSubmit={save}><h2>{form.id ? 'Editar taller' : 'Nuevo taller'}</h2>
       <div className="form-field"><label htmlFor="t-proyecto">Proyecto comunitario</label><select id="t-proyecto" className="form-input" disabled={loadingProjects} value={form.proyectoId ?? ''} onChange={(e) => setForm({ ...form, proyectoId: e.target.value })}><option value="">Sin proyecto asociado</option>{proyectos.map((p) => <option key={p.id} value={p.id}>{p.title}</option>)}</select>{loadingProjects && <small role="status">Cargando proyectos…</small>}</div>
       {(Object.keys(labels) as TextField[]).map((key) => <div className="form-field" key={key}><label htmlFor={'t-' + key}>{labels[key]}</label><input id={'t-' + key} className="form-input" required type={key === 'cuposMaximos' ? 'number' : key === 'fechaHora' ? 'datetime-local' : 'text'} min={key === 'cuposMaximos' ? 1 : undefined} max={key === 'cuposMaximos' ? 10000 : undefined} maxLength={key === 'descripcion' ? 2000 : key === 'fechaHora' ? 50 : 100} value={form[key]} onChange={(e) => setForm({ ...form, [key]: key === 'cuposMaximos' ? Number(e.target.value) : e.target.value } as TallerForm)} /></div>)}
       <fieldset><legend>Ubicación del taller (opcional)</legend><p>Si completas estos tres datos, la asistencia exigirá GPS dentro del radio indicado.</p>
+        <button type="button" className="btn btn-secondary" disabled={ubicando || busy} onClick={usarUbicacion}>
+          {ubicando ? 'Obteniendo ubicación…' : 'Usar ubicación actual'}
+        </button>
         {geoFields.map(([key, label, min, max]) => <div className="form-field" key={key}><label htmlFor={'t-' + key}>{label}</label><input id={'t-' + key} className="form-input" type="number" step={key === 'radioMetros' ? '1' : 'any'} min={min} max={max} value={form[key] ?? ''} onChange={(e) => setForm({ ...form, [key]: e.target.value })} /></div>)}</fieldset>
       <fieldset><legend>Dominio de acceso (opcional)</legend><p>Deja todo vacío para que cualquiera pueda ver y unirse al taller.</p>
         <div className="form-field"><span>Roles que pueden unirse</span>{DOMINIO_ROLES.map((rol) => <label key={rol} style={{ display: 'block' }}><input type="checkbox" checked={form.rolesPermitidos.includes(rol)} onChange={(e) => setForm({ ...form, rolesPermitidos: e.target.checked ? [...form.rolesPermitidos, rol] : form.rolesPermitidos.filter((r) => r !== rol) })} /> {roleLabel(rol)}</label>)}</div>
         <div className="form-field"><label htmlFor="t-zona">Zona / unidad vecinal exigida</label><input id="t-zona" className="form-input" maxLength={120} value={form.zonaRestringida} onChange={(e) => setForm({ ...form, zonaRestringida: e.target.value })} /></div>
       </fieldset>
-      <button className="btn btn-primary" disabled={busy}>{busy ? 'Guardando…' : 'Guardar'}</button> <button type="button" className="btn btn-secondary" disabled={busy} onClick={() => setForm(blank)}>Cancelar edición</button></form>
-      <div><h2>Talleres registrados</h2>{!talleres.length && <p>No hay talleres. Crea el primero.</p>}
-        {talleres.map((t) => <article className="panel maintainer-card" key={t.id}><p className="eyebrow">{t.area} · {proyectos.find((p) => p.id === t.proyectoId)?.title || 'Actividad independiente'}</p><h3>{t.title}</h3><p>{t.comuna} · {t.fechaHora} · {t.cuposMaximos} cupos</p>
+      <button className="btn btn-primary" disabled={busy || ubicando}>{busy ? 'Guardando…' : 'Guardar'}</button> <button type="button" className="btn btn-secondary" disabled={busy || ubicando} onClick={() => setForm(formularioVacio)}>Cancelar edición</button></form>
+      <div><h2>Talleres registrados</h2>{!visibles.length && <p>No hay talleres. Crea el primero.</p>}
+        {visibles.map((t) => <article className="panel maintainer-card" key={t.id}><p className="eyebrow">{t.area} · {proyectos.find((p) => p.id === t.proyectoId)?.title || 'Actividad independiente'}</p><h3>{t.title}</h3><p>{t.comuna} · {t.fechaHora} · {t.cuposMaximos} cupos</p>
           <div className="acciones-fila">
-            <Link className="btn btn-primary" href={`/talleres/${t.id}/gestion`}>Gestionar</Link>
-            <button className="btn btn-secondary" disabled={busy} onClick={() => setForm(pickFormFields(t))}>Editar</button>
-            <button className="btn btn-secondary" disabled={busy} onClick={() => remove(t)}>Eliminar</button>
+            <Link className="btn btn-primary" href={`/taller/${t.id}/qr`}>Mostrar QR</Link>
+            <Link className="btn btn-secondary" href={`/talleres/${t.id}/gestion`}>Gestionar</Link>
+            <button className="btn btn-secondary" disabled={busy || ubicando} onClick={() => setForm(pickFormFields(t))}>Editar</button>
+            <button className="btn btn-secondary" disabled={busy || ubicando} onClick={() => remove(t)}>Eliminar</button>
           </div>
         </article>)}</div></div></div>;
 }

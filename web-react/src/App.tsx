@@ -8,7 +8,7 @@ import ScannerPage from './pages/ScannerPage';
 import SyncPage from './pages/SyncPage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
-import TallerDetailPage from './pages/TallerDetailPage';
+import TallerDetailPage, { TallerJoinQr } from './pages/TallerDetailPage';
 import PanelQuorumPage from './pages/PanelQuorumPage';
 import TalleresAdminPage from './pages/TalleresAdminPage';
 import GestionTallerPage from './pages/GestionTallerPage';
@@ -156,6 +156,14 @@ export default function App() {
         ) : (
           <Switch>
             <Route path="/"><HomePage talleres={talleres} onSelectTaller={(t) => navigate('/taller/' + t.id)} /></Route>
+            <Route path="/taller/:id/qr">{({ id }) => {
+              const taller = talleres.find((registro) => String(registro.id) === id);
+              return <main className="contenedor taller-qr-pagina">
+                <Link href={`/taller/${id}`} className="enlace-volver">Volver al taller</Link>
+                {taller ? <><h1>{taller.title}</h1><TallerJoinQr id={taller.id} expanded /></> :
+                  <p role="status">{catalogoCargado ? 'No encontramos ese taller.' : 'Cargando QR…'}</p>}
+              </main>;
+            }}</Route>
             <Route path="/taller/:id">{(params) => catalogoCargado
               ? <TallerDetailPage taller={talleres.find((t) => String(t.id) === params.id)}
                   puedeGestionarBitacora={roles.includes(ROLES.admin) || roles.includes(ROLES.coordinator)} />
@@ -171,6 +179,9 @@ export default function App() {
               [ROLES.admin, ROLES.coordinator]);
             }}</Route>
             <Route path="/talleres">{protect(<TalleresAdminPage talleres={talleres} onRefresh={refresh} />, [ROLES.admin, ROLES.coordinator])}</Route>
+            <Route path="/proyectos/:id/talleres">{({ id }) => protect(
+              <TalleresAdminPage key={id} talleres={talleres} proyectoId={id} onRefresh={refresh} />,
+              [ROLES.admin, ROLES.coordinator])}</Route>
             <Route path="/proyectos">{protect(<ProyectosAdminPage />, [ROLES.admin, ROLES.coordinator])}</Route>
             <Route path="/acreditar">
               {protect(

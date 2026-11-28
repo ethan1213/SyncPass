@@ -1,4 +1,5 @@
 import { useEffect, useState, type FormEvent } from 'react';
+import { Link } from 'wouter';
 import { useSession } from '../auth/SessionProvider';
 import { request } from '../clients/api';
 import { isStaleVersionConflict } from '../utils/errors';
@@ -67,5 +68,11 @@ export default function ProyectosAdminPage() {
       {fields.map(([key, label]) => <div className="form-field" key={key}><label htmlFor={'p-' + key}>{label}</label><input id={'p-' + key} className="form-input" required type={key.startsWith('fecha') ? 'date' : 'text'} maxLength={key === 'descripcion' ? 2000 : 160} value={form[key]} onChange={(e) => setForm({ ...form, [key]: e.target.value })} /></div>)}
       <div className="form-field"><label htmlFor="p-estado">Estado</label><select id="p-estado" className="form-input" value={form.estado} onChange={(e) => setForm({ ...form, estado: e.target.value })}><option value="planificado">Planificado</option><option value="activo">Activo</option><option value="finalizado">Finalizado</option></select></div>
       <button className="btn btn-primary" disabled={busy}>{busy ? 'Guardando…' : 'Guardar proyecto'}</button> <button type="button" className="btn btn-secondary" disabled={busy} onClick={() => setForm(empty)}>Cancelar edición</button></form>
-      <div><h2>Proyectos registrados</h2><button type="button" className="btn btn-secondary" disabled={busy || loading} onClick={() => { setLoading(true); refresh().catch((e) => setError(e.message)).finally(() => setLoading(false)); }}>Actualizar lista</button>{loading ? <p role="status">Cargando proyectos…</p> : !rows.length && <p>No hay proyectos registrados.</p>}{rows.map((row) => <article className="panel maintainer-card" key={row.id}><p className="eyebrow">{row.area} · {row.estado}</p><h3>{row.title}</h3><p>{row.descripcion}</p><p>{row.unidadVecinal} · {row.fechaInicio} a {row.fechaTermino}</p><button className="btn btn-secondary" disabled={busy} onClick={() => { setForm({ ...row }); setError(''); setMessage(''); }}>Editar</button> <button className="btn btn-secondary" disabled={busy} onClick={() => remove(row)}>Eliminar</button></article>)}</div></div></div>;
+      <div><h2>Proyectos registrados</h2><button type="button" className="btn btn-secondary" disabled={busy || loading} onClick={() => { setLoading(true); refresh().catch((e) => setError(e.message)).finally(() => setLoading(false)); }}>Actualizar lista</button>{loading ? <p role="status">Cargando proyectos…</p> : !rows.length && <p>No hay proyectos registrados.</p>}{rows.map((row) => <article className="panel maintainer-card" key={row.id}><p className="eyebrow">{row.area} · {row.estado}</p><h3>{row.title}</h3><p>{row.descripcion}</p><p>{row.unidadVecinal} · {row.fechaInicio} a {row.fechaTermino}</p>
+        <div className="acciones-fila">
+          <Link className="btn btn-primary" href={`/proyectos/${row.id}/talleres`}>Ver talleres y QR</Link>
+          <button className="btn btn-secondary" disabled={busy} onClick={() => { setForm({ ...row }); setError(''); setMessage(''); }}>Editar</button>
+          <button className="btn btn-secondary" disabled={busy} onClick={() => remove(row)}>Eliminar</button>
+        </div>
+      </article>)}</div></div></div>;
 }

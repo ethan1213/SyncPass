@@ -23,6 +23,7 @@ import cl.duoc.syncpass.ui.screens.EntryScreen
 import cl.duoc.syncpass.ui.screens.EntryViewModel
 import cl.duoc.syncpass.ui.syncPassViewModel
 import cl.duoc.syncpass.ui.screens.GuestQrScreen
+import cl.duoc.syncpass.ui.screens.TallerCodigoScreen
 import cl.duoc.syncpass.ui.screens.GuestTallerScreen
 import cl.duoc.syncpass.ui.screens.ApuntesScreen
 import cl.duoc.syncpass.ui.screens.LoginScreen
@@ -125,6 +126,7 @@ fun SyncPassNavigation(repository: SyncPassRepository, onAuthenticated: () -> Un
                 onNavigateToBitacora = { selectedTaller = it; navController.navigate(Screen.Bitacora.route) },
                 onNavigateToApuntes = { selectedTaller = it; navController.navigate(Screen.Apuntes.route) },
                 onScanWorkshopQr = { navController.navigate(Screen.GuestQr.route) },
+                onShowWorkshopQr = { id -> selectedTaller = id; navController.navigate(Screen.TallerCodigo.route) },
                 onNavigateToLogin = { navController.navigate(Screen.Login.route) },
                 onNavigateToMisInscripciones = { navController.navigate(Screen.MisInscripciones.route) }
             )
@@ -132,6 +134,10 @@ fun SyncPassNavigation(repository: SyncPassRepository, onAuthenticated: () -> Un
 
         composable(Screen.MisInscripciones.route) {
             MisInscripcionesScreen(repository = repository, onVolver = { navController.popBackStack() })
+        }
+
+        composable(Screen.TallerCodigo.route) {
+            TallerCodigoScreen(selectedTaller) { navController.popBackStack() }
         }
 
         composable(Screen.Scanner.route) {

@@ -31,18 +31,26 @@ function AccionesTaller({ id, puedeGestionarBitacora }: { id: number; puedeGesti
   </>;
 }
 
-export function TallerJoinQr({ id }: { id: number }) {
+export function TallerJoinQr({ id, expanded = false }: { id: number; expanded?: boolean }) {
   const [image, setImage] = useState('');
   useEffect(() => {
     let active = true;
-    QRCode.toDataURL(`SPT:${id}`, { width: 240, margin: 2 })
-      .then((url) => { if (active) setImage(url); });
+    QRCode.toDataURL(`SPT:${id}`, { width: 620, margin: 4, errorCorrectionLevel: 'M' })
+      .then((url) => { if (active) setImage(url); })
+      .catch(() => { if (active) setImage(''); });
     return () => { active = false; };
   }, [id]);
   return <section className="seccion-bloque" aria-label="QR de asistencia del taller">
     <h2>QR de asistencia</h2>
     <p>En Android, toca «Escanear QR del taller» y apunta la cámara a este código. Puedes registrar tu asistencia con tu cuenta o como invitado.</p>
-    {image && <img src={image} width="240" height="240" alt={`QR de acceso al taller ${id}`} />}
+    {image && <>
+      <img className={expanded ? 'taller-qr-grande' : 'taller-qr'} src={image}
+        width={expanded ? 560 : 280} height={expanded ? 560 : 280} alt={`QR de acceso al taller ${id}`} />
+      <div className="acciones-fila">
+        {!expanded && <Link className="btn btn-primary" href={`/taller/${id}/qr`}>Mostrar QR en grande</Link>}
+        <a className="btn btn-secondary" href={image} download={`taller-${id}-qr.png`}>Descargar imagen del QR</a>
+      </div>
+    </>}
   </section>;
 }
 
@@ -123,9 +131,10 @@ export default function TallerDetailPage({ taller, puedeGestionarBitacora = fals
             </div>
             <div>
               <dt>Recinto / dirección</dt>
-              <dd>
-                {taller.direccion}, {taller.comuna}
-              </dd>
+              <dd>{taller.direccion}, {taller.comuna}</dd>
+              {taller.latitud != null && taller.longitud != null && taller.latitud !== '' && taller.longitud !== '' &&
+                <dd><a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${taller.latitud},${taller.longitud}`)}`}
+                  target="_blank" rel="noreferrer">Ver ubicación en el mapa</a></dd>}
             </div>
             <div>
               <dt>Docente líder / coordinador(a)</dt>

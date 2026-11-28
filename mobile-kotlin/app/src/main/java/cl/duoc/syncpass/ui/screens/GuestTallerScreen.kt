@@ -1,7 +1,9 @@
 package cl.duoc.syncpass.ui.screens
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
@@ -59,6 +61,17 @@ fun GuestTallerScreen(vm: EntryViewModel, onBack: () -> Unit, onLogin: () -> Uni
                     DetailRow("Coordinador", taller.docenteLider)
                     DetailRow("Cupos", "${taller.inscritos} / ${taller.cuposMaximos}")
                 }
+            }
+            val latitud = taller.latitud
+            val longitud = taller.longitud
+            if (latitud != null && longitud != null) {
+                var mapaDisponible by remember { mutableStateOf(true) }
+                TextButton(onClick = {
+                    mapaDisponible = runCatching {
+                        context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("geo:$latitud,$longitud?q=$latitud,$longitud")))
+                    }.isSuccess
+                }) { Text("Ver ubicación del taller") }
+                if (!mapaDisponible) Text("Ubicación: $latitud, $longitud")
             }
             if (vm.attendance.isNotBlank()) Text(vm.attendance, color = MaterialTheme.colorScheme.primary)
             if (vm.recordingMessage.isNotBlank()) Text(vm.recordingMessage,

@@ -1328,3 +1328,20 @@ footer strong {
 .maintainer-card h3 { margin:.2em 0; }
 
 .apk-ayuda { max-width: 42rem; margin-top: 1rem; font-size: .9rem; }
+.taller-qr-pagina {
+  padding-block: 30px;
+  text-align: center;
+}
+
+.taller-qr,
+.taller-qr-grande {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 16px auto;
+  image-rendering: pixelated;
+}
+
+.taller-qr-pagina .acciones-fila {
+  justify-content: center;
+}

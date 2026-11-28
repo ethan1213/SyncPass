@@ -88,7 +88,7 @@ fun ScannerScreen(repository: SyncPassRepository, tallerId: Long, onNavigateBack
 
     Scaffold(topBar = {
         TopAppBar(
-            title = { Text("Acreditación QR") },
+            title = { Text("Acreditar participante") },
             navigationIcon = { TextButton(onClick = onNavigateBack) { Text("←") } }
         )
     }) { padding ->

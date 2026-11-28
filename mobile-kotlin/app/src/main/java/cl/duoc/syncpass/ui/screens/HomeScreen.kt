@@ -52,6 +52,7 @@ fun HomeScreen(
     onNavigateToBitacora: (Long) -> Unit,
     onNavigateToApuntes: (Long) -> Unit,
     onScanWorkshopQr: () -> Unit,
+    onShowWorkshopQr: (Long) -> Unit,
     onNavigateToLogin: () -> Unit,
     onNavigateToMisInscripciones: () -> Unit = {}
 ) {
@@ -215,8 +216,6 @@ fun HomeScreen(
                             Text("Mis talleres pendientes")
                         }
                     }
-                    if (AuthSession.roles.any { it in listOf("admin","coordinador","monitor") })
-                        TarjetaAccesoEscaner { talleres.firstOrNull()?.let { onNavigateToScanner(it.id.toLong()) } }
                 }
             }
 
@@ -240,6 +239,7 @@ fun HomeScreen(
                     pendiente = state.inscripcionesPendientes.contains(taller.id.toLong()),
                     asistido = state.inscripcionesAsistidas.contains(taller.id.toLong()),
                     onAcreditar = { onNavigateToScanner(taller.id.toLong()) },
+                    onMostrarQr = { onShowWorkshopQr(tallerId) },
                     onEncuestar = { onNavigateToSurvey(taller.id.toLong()) },
                     onApuntes = if (token != null) ({ onNavigateToApuntes(tallerId) }) else null,
                     onBitacora = if (token != null && tallerId in state.resumenesDisponibles)
@@ -256,7 +256,7 @@ fun HomeScreen(
     }
 }
 
-private fun makeQr(value: String): ImageBitmap? = runCatching {
+internal fun makeQr(value: String): ImageBitmap? = runCatching {
     val bits = MultiFormatWriter().encode(value, BarcodeFormat.QR_CODE, 320, 320)
     val bitmap = Bitmap.createBitmap(320, 320, Bitmap.Config.ARGB_8888)
     for (y in 0 until 320) for (x in 0 until 320)
@@ -265,50 +265,13 @@ private fun makeQr(value: String): ImageBitmap? = runCatching {
 }.getOrNull()
 
 @Composable
-private fun TarjetaAccesoEscaner(onNavigateToScanner: () -> Unit) {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 8.dp),
-        shape = RoundedCornerShape(12.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.primaryContainer
-        )
-    ) {
-        Column(modifier = Modifier.padding(16.dp)) {
-            Text(
-                text = "Acreditación en segundos",
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.onPrimaryContainer
-            )
-            Text(
-                text = "Lee el QR de cada participante. Si falta señal, el registro queda guardado en el teléfono.",
-                fontSize = 13.sp,
-                color = MaterialTheme.colorScheme.onPrimaryContainer,
-                modifier = Modifier.padding(vertical = 4.dp)
-            )
-            Button(
-                onClick = onNavigateToScanner,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .heightIn(min = AREA_TACTIL_MINIMA)
-                    .padding(top = 8.dp),
-                shape = RoundedCornerShape(8.dp)
-            ) {
-                Text("Abrir escáner QR", fontWeight = FontWeight.Bold)
-            }
-        }
-    }
-}
-
-@Composable
 private fun TarjetaTaller(
     taller: TallerComunitario,
     canScan: Boolean,
     pendiente: Boolean,
     asistido: Boolean,
     onAcreditar: () -> Unit,
+    onMostrarQr: () -> Unit,
     onEncuestar: () -> Unit,
     onApuntes: (() -> Unit)?,
     onBitacora: (() -> Unit)?,
@@ -383,7 +346,7 @@ private fun TarjetaTaller(
                         .weight(1f)
                         .heightIn(min = AREA_TACTIL_MINIMA)
                 ) {
-                    Text("Acreditar QR", fontSize = 12.sp)
+                    Text("Acreditar participante", fontSize = 12.sp)
                 }
                 if (AuthSession.accessToken != null) OutlinedButton(
                     onClick = onEncuestar,
@@ -395,6 +358,7 @@ private fun TarjetaTaller(
                 Text("Encuesta", fontSize = 12.sp)
                 }
             }
+            if (canScan) TextButton(onClick = onMostrarQr) { Text("Mostrar QR del taller") }
             if (onBitacora != null) TextButton(onClick = onBitacora) {
                 Text("Resumen y preguntas del taller")
             }

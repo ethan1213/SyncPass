@@ -11,6 +11,36 @@ const api = vi.mocked(request);
 beforeEach(() => { api.mockReset(); vi.stubGlobal('confirm', vi.fn(() => true)); });
 afterEach(() => { cleanup(); vi.unstubAllGlobals(); });
 
+it('abre los talleres del proyecto y muestra el QR del taller seleccionado', async () => {
+  api.mockResolvedValue([{ id: 4, title: 'Proyecto norte' }]);
+  const view = render(React.createElement(ProyectosAdminPage));
+  expect((await screen.findByRole('link', { name: 'Ver talleres y QR' })).getAttribute('href'))
+    .toBe('/proyectos/4/talleres');
+  view.unmount();
+
+  const rows = [
+    { id: 9, title: 'Taller del proyecto', proyectoId: 4 },
+    { id: 10, title: 'Taller externo', proyectoId: 5 },
+  ] as React.ComponentProps<typeof TalleresAdminPage>['talleres'];
+  render(React.createElement(TalleresAdminPage, { proyectoId: '4', talleres: rows, onRefresh: vi.fn() }));
+  expect((await screen.findByRole('link', { name: 'Mostrar QR' })).getAttribute('href')).toBe('/taller/9/qr');
+  expect(screen.queryByText('Taller externo')).toBeNull();
+});
+
+it('usa GPS para completar las coordenadas y deja el radio por definir', async () => {
+  api.mockResolvedValue([]);
+  vi.stubGlobal('navigator', { geolocation: {
+    getCurrentPosition: (onSuccess: PositionCallback) => onSuccess({
+      coords: { latitude: -33.45, longitude: -70.62 },
+    } as GeolocationPosition),
+  } });
+  render(React.createElement(TalleresAdminPage, { talleres: [], onRefresh: vi.fn() }));
+  fireEvent.click(screen.getByRole('button', { name: 'Usar ubicación actual' }));
+  expect((screen.getByLabelText('Latitud') as HTMLInputElement).value).toBe('-33.45');
+  expect((screen.getByLabelText('Longitud') as HTMLInputElement).value).toBe('-70.62');
+  expect((screen.getByLabelText('Radio en metros') as HTMLInputElement).value).toBe('');
+});
+
 describe('mantenedor de proyectos', () => {
   it('crea y vuelve a consultar el proyecto mediante la API', async () => {
     api.mockImplementation(async (path, options) => path === '/api/proyectos' && options?.method === 'POST'
