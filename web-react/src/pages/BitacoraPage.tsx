@@ -132,6 +132,8 @@ export default function BitacoraPage({ tallerId }: BitacoraPageProps) {
   }
 
   async function transcribir(entrada: Blob) {
+    if (entrada.type.startsWith('video/') && entrada.size > 4 * 1024 * 1024)
+      return setMensaje('Elige un video de hasta 4 MB.');
     if (entrada.size > 4 * 1024 * 1024) return setMensaje('Elige un audio de hasta 4 MB.');
     const mime = entrada.type.split(';')[0];
     const form = new FormData();
@@ -149,6 +151,49 @@ export default function BitacoraPage({ tallerId }: BitacoraPageProps) {
     } catch (error) {
       const detalle = (error as Error).message;
       setMensaje(error instanceof ApiHttpError && error.status === 503 ? 'Gemini no está disponible. Puedes pegar los apuntes o usar el dictado.' : detalle);
+    } finally {
+      setOcupado(false);
+    }
+  }
+
+  async function guardarArchivo(entrada: Blob) {
+    if (entrada.size > 4 * 1024 * 1024) return setMensaje('Elige un archivo de hasta 4 MB.');
+    const form = new FormData();
+    form.set('archivo', entrada.slice(0, entrada.size, entrada.type.split(';')[0]), 'grabacion');
+    setOcupado(true);
+    try {
+      await request(`/api/eventos/${tallerId}/bitacora/archivo`, {
+        method: 'PUT', token: await getAccessTokenSilently(), body: form,
+      });
+      setMensaje('Grabación guardada en el taller.');
+    } catch (error) {
+      setMensaje((error as Error).message);
+    } finally {
+      setOcupado(false);
+    }
+  }
+
+  async function descargarArchivo() {
+    setOcupado(true);
+    try {
+      const archivo = await request<{ formato: string; contenido: string }>(
+        `/api/eventos/${tallerId}/bitacora/archivo`, { token: await getAccessTokenSilently() },
+      );
+      if (!archivo) return;
+      const extensiones: Record<string, string> = {
+        'audio/mpeg': 'mp3', 'audio/m4a': 'm4a', 'video/quicktime': 'mov',
+      };
+      const extension = extensiones[archivo.formato] ?? archivo.formato.split('/')[1];
+      const bytes = Uint8Array.from(atob(archivo.contenido), (caracter) => caracter.charCodeAt(0));
+      const url = URL.createObjectURL(new Blob([bytes], { type: archivo.formato }));
+      const enlace = document.createElement('a');
+      enlace.href = url;
+      enlace.download = `syncpass-taller-${tallerId}.${extension}`;
+      enlace.click();
+      window.setTimeout(() => URL.revokeObjectURL(url), 1000);
+    } catch (error) {
+      setMensaje(error instanceof ApiHttpError && error.status === 404
+        ? 'Este taller todavía no tiene una grabación guardada.' : (error as Error).message);
     } finally {
       setOcupado(false);
     }
@@ -268,9 +313,14 @@ export default function BitacoraPage({ tallerId }: BitacoraPageProps) {
       {audioUrl && <p><a href={audioUrl} download={`syncpass-taller-${tallerId}.webm`} className="btn btn-secondary">Descargar grabación</a></p>}
       <fieldset disabled={ocupado || dictando || grabando}>
         <legend>Asistente de transcripción y resumen</legend>
-        <label><input type="checkbox" checked={autorizaProveedor} onChange={(e) => setAutorizaProveedor(e.target.checked)} /> Autorizo enviar el audio o texto de este taller a Gemini.</label>
+        <label><input type="checkbox" checked={autorizaProveedor} onChange={(e) => setAutorizaProveedor(e.target.checked)} /> Autorizo enviar el audio, video o texto de este taller a Gemini.</label>
         <div className="acciones-fila">
-          <label>Archivo de audio (hasta 4 MB) <input type="file" accept="audio/*" onChange={(e) => setArchivo(e.target.files?.[0] ?? null)} /></label>
+          <label>Archivo de audio o video (hasta 4 MB) <input type="file" accept="audio/*,video/mp4,video/webm,video/quicktime" onChange={(e) => setArchivo(e.target.files?.[0] ?? null)} /></label>
+          {(archivo || audio) && <button type="button" className="btn btn-secondary" onClick={() => {
+            const entrada = archivo ?? audio;
+            if (entrada) void guardarArchivo(entrada);
+          }}>Guardar grabación en el taller</button>}
+          <button type="button" className="btn btn-secondary" onClick={descargarArchivo}>Descargar archivo guardado</button>
           {archivo && <button type="button" className="btn btn-secondary" disabled={!autorizaProveedor} onClick={() => transcribir(archivo)}>Transcribir archivo</button>}
           {audio && <button type="button" className="btn btn-secondary" disabled={!autorizaProveedor} onClick={() => transcribir(audio)}>Transcribir grabación</button>}
           <button type="button" className="btn btn-secondary" disabled={!contenido.trim()} onClick={prepararBorrador}>Preparar borrador</button>

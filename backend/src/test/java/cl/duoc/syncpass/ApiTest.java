@@ -72,6 +72,33 @@ class ApiTest {
   mvc.perform(get("/api/eventos/"+id)).andExpect(status().isNotFound());
  }
  String batch(long id,String recordId,String type,int rating)throws Exception{return json.writeValueAsString(Map.of("registros",List.of(Map.of("id",recordId,"tipo",type,"tallerId",id,"participante","PART-DEMO","rating",rating,"timestamp",Instant.now().minusSeconds(1).toString()))));}
+ @Test void tallerManagementSeparatesAnonymousSurveyFromAttendance() throws Exception {
+  long id=create();
+  var identidad=UUID.randomUUID().toString();
+  var participante=jwt().jwt(j->j.subject(identidad)).authorities(new SimpleGrantedAuthority("ROLE_participante"));
+  var coordinador=jwt().authorities(new SimpleGrantedAuthority("ROLE_coordinador"));
+  String encuesta=UUID.randomUUID().toString();
+  mvc.perform(post("/api/sync/batch").with(participante).contentType(MediaType.APPLICATION_JSON)
+     .content(batch(id,encuesta,"encuesta",5))).andExpect(status().isOk());
+  String base="/api/eventos/"+id;
+  mvc.perform(post(base+"/ingreso/cuenta").with(participante).contentType(MediaType.APPLICATION_JSON)
+     .content("{}")).andExpect(status().isOk());
+  var qr=json.createObjectNode().put("id",UUID.randomUUID().toString()).put("tipo","asistencia")
+    .put("tallerId",id).put("participante","SP1:"+identidad).put("timestamp",Instant.now().minusSeconds(1).toString());
+  var monitor=jwt().jwt(j->j.subject("monitor-demo").claim("cognito:groups",List.of("monitor")))
+    .authorities(new SimpleGrantedAuthority("ROLE_monitor"));
+  mvc.perform(post("/api/sync/batch").with(monitor).contentType(MediaType.APPLICATION_JSON)
+     .content(json.createObjectNode().set("registros",json.createArrayNode().add(qr)).toString()))
+    .andExpect(status().isOk());
+  mvc.perform(get(base+"/marcaciones").with(coordinador)).andExpect(status().isOk())
+    .andExpect(jsonPath("$.length()").value(1));
+  mvc.perform(get(base+"/encuestas/resultados").with(participante)).andExpect(status().isForbidden());
+  var resultados=mvc.perform(get(base+"/encuestas/resultados").with(coordinador)).andExpect(status().isOk())
+    .andExpect(jsonPath("$.total").value(1)).andExpect(jsonPath("$.calificaciones[0].valor").value("5"))
+    .andReturn().getResponse().getContentAsString();
+  assertFalse(resultados.contains(identidad));
+  assertFalse(resultados.contains(encuesta));
+ }
  @Test void repeatedAttendanceForSameOwnerIsAcknowledgedWithoutDuplicate() throws Exception {
   long id=create();
   var auth=jwt().jwt(j->j.subject("monitor-demo").claim("cognito:groups",List.of("monitor")))

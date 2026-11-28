@@ -31,7 +31,7 @@ function AccionesTaller({ id, puedeGestionarBitacora }: { id: number; puedeGesti
   </>;
 }
 
-function TallerJoinQr({ id }: { id: number }) {
+export function TallerJoinQr({ id }: { id: number }) {
   const [image, setImage] = useState('');
   useEffect(() => {
     let active = true;
@@ -39,9 +39,9 @@ function TallerJoinQr({ id }: { id: number }) {
       .then((url) => { if (active) setImage(url); });
     return () => { active = false; };
   }, [id]);
-  return <section className="seccion-bloque" aria-label="Acceso invitado al taller">
-    <h2>Acceso invitado</h2>
-    <p>En Android, ingresa el código <strong>#{id}</strong> o escanea este QR para abrir el taller sin cuenta.</p>
+  return <section className="seccion-bloque" aria-label="QR de asistencia del taller">
+    <h2>QR de asistencia</h2>
+    <p>En Android, toca «Escanear QR del taller» y apunta la cámara a este código. Puedes registrar tu asistencia con tu cuenta o como invitado.</p>
     {image && <img src={image} width="240" height="240" alt={`QR de acceso al taller ${id}`} />}
   </section>;
 }
@@ -96,7 +96,7 @@ export default function TallerDetailPage({ taller, puedeGestionarBitacora = fals
           <div className="quorum-bloque">
             <div className="quorum-encabezado">
               <span>
-                Quórum inscrito: <strong>{taller.inscritos} / {taller.cuposMaximos}</strong>
+                Asistencias confirmadas: <strong>{taller.inscritos} / {taller.cuposMaximos}</strong>
               </span>
               <strong className="quorum-pct">{taller.quorumPct}%</strong>
             </div>
@@ -149,6 +149,7 @@ export default function TallerDetailPage({ taller, puedeGestionarBitacora = fals
       <section className="seccion-bloque">
         <div className="seccion-encabezado">
           <h2>Registro de asistencia</h2>
+          <p>Las marcaciones hechas desde este navegador aparecen aquí.</p>
           <p className="texto-apoyo">
             {sincronizados} sincronizado(s) con la API · {pendientes} pendiente(s) de envío
             (<code>is_synced = 0</code>)

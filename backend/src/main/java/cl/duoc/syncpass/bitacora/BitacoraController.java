@@ -1,5 +1,6 @@
 package cl.duoc.syncpass.bitacora;
 
+import java.io.IOException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -29,6 +30,24 @@ public class BitacoraController {
     public record Transcripcion(String contenido) {}
 
     public record Pregunta(@NotBlank @Size(max = 300) String pregunta) {}
+
+    @PutMapping(value = "/archivo", consumes = "multipart/form-data")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PreAuthorize("hasAnyRole('admin','coordinador')")
+    public void guardarArchivo(@PathVariable long tallerId, @RequestParam MultipartFile archivo) {
+        String formato = BitacoraGemini.formatoAdmitido(archivo);
+        try {
+            service.guardarArchivo(tallerId, new BitacoraService.Archivo(formato, archivo.getBytes()));
+        } catch (IOException ex) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No se pudo leer el archivo.");
+        }
+    }
+
+    @GetMapping("/archivo")
+    @PreAuthorize("hasAnyRole('admin','coordinador')")
+    public BitacoraService.Archivo archivo(@PathVariable long tallerId) {
+        return service.archivo(tallerId);
+    }
 
     @GetMapping
     @PreAuthorize("hasAnyRole('admin','coordinador','monitor','participante')")

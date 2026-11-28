@@ -64,8 +64,9 @@ public class IngresoService {
         verificarDominio(sitio, sub, rolesUsuario);
 
         var yaEstaba = db.queryForList(
-            "SELECT id FROM registros WHERE tipo='asistencia' AND taller_id=? AND participante=?",
-            tallerId, participante);
+            "SELECT id FROM registros WHERE tipo='asistencia' AND taller_id=? AND LOWER(participante) IN (?,?)",
+            tallerId, participante.toLowerCase(java.util.Locale.ROOT),
+            (invitado ? participante : "sp1:" + participante).toLowerCase(java.util.Locale.ROOT));
         if (!yaEstaba.isEmpty()) {
             inscripciones.marcarAsistio(tallerId, sub, deviceId);
             return new Resultado("ya_presente", yaEstaba.get(0).get("id").toString(), participante, invitado);

@@ -74,7 +74,7 @@ public class SyncService {
                 continue;
             }
 
-            if (registro.tipo().equals("asistencia") && yaAcreditada(registro, sub)) {
+            if (registro.tipo().equals("asistencia") && yaAcreditada(registro)) {
                 aceptados.add(registro.id().toString());
                 continue;
             }
@@ -96,6 +96,41 @@ public class SyncService {
     }
 
     public record Apunte(String id, String texto) {}
+    public record Marcacion(String id, Instant fecha, String invitado) {}
+    public record Frecuencia(String valor, long total) {}
+    public record ResultadosEncuesta(long total, List<Frecuencia> calificaciones,
+                                      List<Frecuencia> utilidad, List<String> comentarios) {}
+
+    @Transactional(readOnly = true)
+    public List<Marcacion> marcaciones(long tallerId) {
+        return db.query("""
+            SELECT id, registrado_en, nombre_invitado FROM registros
+            WHERE taller_id=? AND tipo='asistencia'
+            ORDER BY registrado_en DESC, id
+            """, (fila, indice) -> new Marcacion(fila.getString(1),
+                fila.getTimestamp(2).toInstant(), fila.getString(3)), tallerId);
+    }
+
+    @Transactional(readOnly = true)
+    public ResultadosEncuesta encuestas(long tallerId) {
+        var calificaciones = db.query("""
+            SELECT rating, COUNT(*) FROM registros
+            WHERE taller_id=? AND tipo='encuesta'
+            GROUP BY rating ORDER BY rating DESC
+            """, (fila, indice) -> new Frecuencia(fila.getString(1), fila.getLong(2)), tallerId);
+        var utilidad = db.query("""
+            SELECT utilidad, COUNT(*) FROM registros
+            WHERE taller_id=? AND tipo='encuesta' AND utilidad IS NOT NULL
+            GROUP BY utilidad ORDER BY utilidad
+            """, (fila, indice) -> new Frecuencia(fila.getString(1), fila.getLong(2)), tallerId);
+        var comentarios = db.queryForList("""
+            SELECT comentario FROM registros
+            WHERE taller_id=? AND tipo='encuesta' AND TRIM(comentario)<>''
+            ORDER BY comentario
+            """, String.class, tallerId);
+        return new ResultadosEncuesta(calificaciones.stream().mapToLong(Frecuencia::total).sum(),
+            calificaciones, utilidad, comentarios);
+    }
 
     @Transactional(readOnly = true)
     public List<Apunte> apuntes(long tallerId, String owner) {
@@ -116,17 +151,15 @@ public class SyncService {
         return true;
     }
 
-    /** Una segunda lectura del mismo QR por el mismo equipo confirma el envío sin duplicar asistencia. */
-    private boolean yaAcreditada(Registro registro, String sub) {
+    /** La misma persona puede haber entrado con su cuenta o haber mostrado su QR al equipo. */
+    private boolean yaAcreditada(Registro registro) {
         if (registro.participante() == null || !registro.participante().matches(QR_PARTICIPANTE)) return false;
-        var previo = db.queryForList("""
-            SELECT owner FROM registros
-             WHERE tipo='asistencia' AND taller_id=? AND participante=?
-            """, registro.tallerId(), registro.participante());
-        if (previo.isEmpty()) return false;
-        if (!sub.equals(previo.get(0).get("owner")))
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "La asistencia ya fue acreditada por otra cuenta");
-        return true;
+        db.queryForList("SELECT id FROM talleres WHERE id=? FOR UPDATE", Long.class, registro.tallerId());
+        String participante = UUID.fromString(registro.participante().substring(4)).toString();
+        return !db.queryForList("""
+            SELECT id FROM registros
+             WHERE tipo='asistencia' AND taller_id=? AND LOWER(participante) IN (?,?)
+            """, registro.tallerId(), "sp1:" + participante, participante).isEmpty();
     }
 
     private void validarAsistencia(Registro registro) {

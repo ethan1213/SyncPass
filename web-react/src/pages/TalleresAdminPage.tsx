@@ -1,4 +1,5 @@
 import { useEffect, useState, type FormEvent } from 'react';
+import { Link } from 'wouter';
 import { useSession } from '../auth/SessionProvider';
 import { request } from '../clients/api';
 import { isStaleVersionConflict } from '../utils/errors';
@@ -113,5 +114,11 @@ export default function TalleresAdminPage({ talleres, onRefresh }: TalleresAdmin
       </fieldset>
       <button className="btn btn-primary" disabled={busy}>{busy ? 'Guardando…' : 'Guardar'}</button> <button type="button" className="btn btn-secondary" disabled={busy} onClick={() => setForm(blank)}>Cancelar edición</button></form>
       <div><h2>Talleres registrados</h2>{!talleres.length && <p>No hay talleres. Crea el primero.</p>}
-        {talleres.map((t) => <article className="panel maintainer-card" key={t.id}><p className="eyebrow">{t.area} · {proyectos.find((p) => p.id === t.proyectoId)?.title || 'Actividad independiente'}</p><h3>{t.title}</h3><p>{t.comuna} · {t.fechaHora} · {t.cuposMaximos} cupos</p><button className="btn btn-secondary" disabled={busy} onClick={() => setForm(pickFormFields(t))}>Editar</button> <button className="btn btn-secondary" disabled={busy} onClick={() => remove(t)}>Eliminar</button></article>)}</div></div></div>;
+        {talleres.map((t) => <article className="panel maintainer-card" key={t.id}><p className="eyebrow">{t.area} · {proyectos.find((p) => p.id === t.proyectoId)?.title || 'Actividad independiente'}</p><h3>{t.title}</h3><p>{t.comuna} · {t.fechaHora} · {t.cuposMaximos} cupos</p>
+          <div className="acciones-fila">
+            <Link className="btn btn-primary" href={`/talleres/${t.id}/gestion`}>Gestionar</Link>
+            <button className="btn btn-secondary" disabled={busy} onClick={() => setForm(pickFormFields(t))}>Editar</button>
+            <button className="btn btn-secondary" disabled={busy} onClick={() => remove(t)}>Eliminar</button>
+          </div>
+        </article>)}</div></div></div>;
 }

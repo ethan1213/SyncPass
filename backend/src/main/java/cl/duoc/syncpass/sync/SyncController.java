@@ -33,6 +33,18 @@ public class SyncController {
         return service.apuntes(id, jwt.getSubject());
     }
 
+    @GetMapping("/eventos/{id}/marcaciones")
+    @PreAuthorize("hasAnyRole('admin','coordinador','monitor')")
+    public List<SyncService.Marcacion> marcaciones(@PathVariable long id) {
+        return service.marcaciones(id);
+    }
+
+    @GetMapping("/eventos/{id}/encuestas/resultados")
+    @PreAuthorize("hasAnyRole('admin','coordinador')")
+    public SyncService.ResultadosEncuesta encuestas(@PathVariable long id) {
+        return service.encuestas(id);
+    }
+
     @GetMapping("/quorum")
     @PreAuthorize("hasAnyRole('admin','coordinador','monitor')")
     public List<Map<String, Object>> quorum() {

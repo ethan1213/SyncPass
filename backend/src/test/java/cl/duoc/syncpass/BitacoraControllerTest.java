@@ -80,6 +80,17 @@ class BitacoraControllerTest {
    .andExpect(status().isServiceUnavailable());
  }
 
+ @Test void managementCanStoreAndReadVideoWithoutSendingItToTheProvider() throws Exception {
+  var path="/api/eventos/"+workshop()+"/bitacora/archivo";
+  var video=new org.springframework.mock.web.MockMultipartFile("archivo","demo.mp4","video/mp4",new byte[]{1,2,3});
+  mvc.perform(multipart(org.springframework.http.HttpMethod.PUT,path).file(video).with(role("coordinador")))
+   .andExpect(status().isNoContent());
+  mvc.perform(get(path).with(role("participante"))).andExpect(status().isForbidden());
+  mvc.perform(get(path).with(role("admin"))).andExpect(status().isOk())
+   .andExpect(jsonPath("$.formato").value("video/mp4"))
+   .andExpect(jsonPath("$.contenido").value("AQID"));
+ }
+
  @Test void secondAccountSeesPublishedWorkshopAndUpdatedSummary() throws Exception {
   long id=workshop();
   var path="/api/eventos/"+id+"/bitacora";

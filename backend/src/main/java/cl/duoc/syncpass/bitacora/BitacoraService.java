@@ -25,6 +25,24 @@ public class BitacoraService {
     }
 
     public record Bitacora(String contenido, String resumen, String actualizadoEn, List<String> fragmentos) {}
+    public record Archivo(String formato, byte[] contenido) {}
+
+    @Transactional
+    public void guardarArchivo(long tallerId, Archivo archivo) {
+        if (db.queryForList("SELECT id FROM talleres WHERE id=? FOR UPDATE", Long.class, tallerId).isEmpty())
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Taller no encontrado");
+        if (db.update("UPDATE taller_archivos SET formato=?, contenido=? WHERE taller_id=?",
+            archivo.formato(), archivo.contenido(), tallerId) == 0)
+            db.update("INSERT INTO taller_archivos(taller_id, formato, contenido) VALUES (?,?,?)",
+                tallerId, archivo.formato(), archivo.contenido());
+    }
+
+    @Transactional(readOnly = true)
+    public Archivo archivo(long tallerId) {
+        return db.query("SELECT formato, contenido FROM taller_archivos WHERE taller_id=?",
+            (fila, indice) -> new Archivo(fila.getString(1), fila.getBytes(2)), tallerId).stream()
+            .findFirst().orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No hay archivo guardado"));
+    }
 
     public record Respuesta(String respuesta, int fragmento, String cita, String origen) {}
 

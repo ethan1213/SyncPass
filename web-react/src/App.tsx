@@ -11,6 +11,7 @@ import RegisterPage from './pages/RegisterPage';
 import TallerDetailPage from './pages/TallerDetailPage';
 import PanelQuorumPage from './pages/PanelQuorumPage';
 import TalleresAdminPage from './pages/TalleresAdminPage';
+import GestionTallerPage from './pages/GestionTallerPage';
 import ProyectosAdminPage from './pages/ProyectosAdminPage';
 import DraftsPage from './pages/DraftsPage';
 import RoleDashboard from './pages/RoleDashboard';
@@ -163,6 +164,12 @@ export default function App() {
             <Route path="/mi-panel">{protect(<RoleDashboard />)}</Route>
             <Route path="/mi-qr">{protect(<MyQrPage />)}</Route>
             <Route path="/mis-talleres">{protect(<MisTalleresPendientesPage />)}</Route>
+            <Route path="/talleres/:id/gestion">{({ id }) => {
+              const taller = talleres.find((registro) => String(registro.id) === id);
+              return protect(taller ? <GestionTallerPage key={id} taller={taller} /> :
+                <p className="contenedor" role="status">{catalogoCargado ? 'No encontramos ese taller.' : 'Cargando taller…'}</p>,
+              [ROLES.admin, ROLES.coordinator]);
+            }}</Route>
             <Route path="/talleres">{protect(<TalleresAdminPage talleres={talleres} onRefresh={refresh} />, [ROLES.admin, ROLES.coordinator])}</Route>
             <Route path="/proyectos">{protect(<ProyectosAdminPage />, [ROLES.admin, ROLES.coordinator])}</Route>
             <Route path="/acreditar">

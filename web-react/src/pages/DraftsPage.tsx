@@ -56,6 +56,7 @@ export default function DraftsPage({ talleres, onQueue }: DraftsPageProps) {
     }
   }
   return <div className="contenedor" style={{ paddingBlock: 30 }}><h1>Borradores de encuestas</h1><p>Se guardan en este navegador y puedes editarlos sin conexión.</p>
+    <p>Los resultados se muestran de forma anónima. Evita escribir nombres o correos en los comentarios.</p>
     {error && <p role="alert">{error}</p>}{message && <p role="status">{message}</p>}
     <form className="panel" onSubmit={save}><h2>{form.id ? 'Editar borrador' : 'Nuevo borrador'}</h2><div className="form-field"><label htmlFor="draft-taller">Taller</label><select id="draft-taller" required className="form-input" value={form.tallerId} onChange={(e) => setForm({ ...form, tallerId: e.target.value })}><option value="">Selecciona un taller</option>{talleres.map((t) => <option key={t.id} value={t.id}>{t.title}</option>)}</select></div>
       <div className="form-field"><label htmlFor="draft-rating">Satisfacción (1 a 5)</label><input id="draft-rating" className="form-input" required type="number" min="1" max="5" value={form.rating} onChange={(e) => setForm({ ...form, rating: Number(e.target.value) })} /></div>
